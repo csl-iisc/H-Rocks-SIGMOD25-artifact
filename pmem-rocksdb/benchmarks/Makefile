@@ -17,7 +17,7 @@ EXEC_LDFLAGS += $(LDFLAGS)
 
 .PHONY: clean librocksdb
 
-all: test_puts test_deletes test_gets test_updates test_ranges
+all: test_puts test_deletes test_gets test_updates test_ranges test_ycsbA test_ycsbB test_ycsbC test_ycsbD
 
 begin:
 	mkdir -p $(BIN_DIR)
@@ -36,3 +36,15 @@ bin/test_updates: librocksdb test_updates.cc
 
 bin/test_ranges: librocksdb test_ranges.cc
 	$(CXX) $(CXXFLAGS) test_ranges.cc -o$@ ../librocksdb.a -I../include -O2 -std=c++11 $(PLATFORM_LDFLAGS) $(PLATFORM_CXXFLAGS) $(EXEC_LDFLAGS)
+
+bin/test_ycsbA: librocksdb test_ycsbA.cc
+	$(CXX) $(CXXFLAGS) test_ycsbA.cc -o$@ ../librocksdb.a -I../include -O2 -std=c++11 $(PLATFORM_LDFLAGS) $(PLATFORM_CXXFLAGS) $(EXEC_LDFLAGS)
+
+bin/test_ycsbB: librocksdb test_ycsbB.cc
+	$(CXX) $(CXXFLAGS) test_ycsbB.cc -o$@ ../librocksdb.a -I../include -O2 -std=c++11 $(PLATFORM_LDFLAGS) $(PLATFORM_CXXFLAGS) $(EXEC_LDFLAGS)
+
+bin/test_ycsbC: librocksdb test_ycsbC.cc
+	$(CXX) $(CXXFLAGS) test_ycsbC.cc -o$@ ../librocksdb.a -I../include -O2 -std=c++11 $(PLATFORM_LDFLAGS) $(PLATFORM_CXXFLAGS) $(EXEC_LDFLAGS)
+
+bin/test_ycsbD: librocksdb test_ycsbD.cc
+	$(CXX) $(CXXFLAGS) test_ycsbD.cc -o$@ ../librocksdb.a -I../include -O2 -std=c++11 $(PLATFORM_LDFLAGS) $(PLATFORM_CXXFLAGS) $(EXEC_LDFLAGS)
