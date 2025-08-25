@@ -1,0 +1,7 @@
+Number of put keys: 50000
+use pmdk!
+create new one.
+list_head=0x7fc7803c0550
+keys generated
+insert_time: 41.6813
+throughput: 1.21951 Mops/sec
