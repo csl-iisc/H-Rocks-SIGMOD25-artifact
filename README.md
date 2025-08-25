@@ -45,25 +45,22 @@ H-Rocks is built on top of pmem-rocksdb and uses NVIDIA GPUs.
 
 After extracting the artifact, you should see:
 
+```csharp
 artifact-root/
 ├─ pmem-rocksdb/
 │ └─ h-rocks/ # H-Rocks lives here
 │ ├─ src/ # (hrocksdb.h, hrocksdb.cu, …)
 │ ├─ benchmarks/ # (test_puts, test_gets, …)
 │ ├─ Makefile / scripts …
-│ └─ compile.sh / run.sh / parse.sh / plot.sh
+│ └─ compile.sh / run.sh / parse.sh 
 ├─ viper/
-│ ├─ compile.sh / run.sh / parse.sh / plot.sh
-│ └─ (sources / helpers)
+│ ├─ compile.sh / run.sh / parse.sh 
 ├─ plush/
-│ ├─ compile.sh / run.sh / parse.sh / plot.sh
-│ └─ (sources / helpers)
+│ ├─ compile.sh / run.sh / parse.sh 
 ├─ utree/
-│ ├─ compile.sh / run.sh / parse.sh / plot.sh
-│ └─ (sources / helpers)
+│ ├─ compile.sh / run.sh / parse.sh 
 ├─ gpkvs/
-│ ├─ compile.sh / run.sh / parse.sh / plot.sh
-│ └─ (sources / helpers)
+│ ├─ compile.sh / run.sh / parse.sh 
 ├─ scripts/
 │ ├─ dependencies.sh
 │ ├─ pmem-setup/
@@ -75,10 +72,9 @@ artifact-root/
 │ ├─ parse_all.sh
 │ ├─ plot_all.sh
 │ ├─ end_to_end.sh
-│ ├─ run_figure8a.sh … run_figure12d.sh
-│ └─ shared helpers
+│ ├─ run_figure8a.sh … run_figure13d.sh
 └─ out/ # created by runs: logs/, parsed/, plots/
-
+```
 
 Each top-level system dir (`pmem-rocksdb/h-rocks`, `viper/`, `plush/`, `utree/`, `gpkvs/`) contains its own `compile.sh`, `run.sh`, `parse.sh`, `plot.sh`. Top-level `*_all.sh` iterate into each system directory.
 
@@ -190,33 +186,72 @@ Other tests follow the same pattern.
 
 ## 8. End-to-End: Compile → Run → Parse → Plot
 
-Top-level orchestrators (from scripts/):
+One shot end to end: 
 
 ```bash
-./compile_all.sh   # builds all systems (h-rocks, viper, plush, utree, gpkvs)
-./run_all.sh       # runs all experiments across systems
-./parse_all.sh     # parses logs -> CSVs
-./plot_all.sh      # generates all plots
-```
-
-One-shot pipeline:
-
-```bash
+cd scripts/
 ./end_to_end.sh    # compile + run + parse + plot everything
 ```
+That one command will:
+Compile all systems (via scripts/compile_all.sh if present, else per-system compile.sh),
+Run figure scripts (all the ones currently included in scripts/),
+Parse and plot, then
+Collect every plot PDF in a single folder.
 
-Per-system (inside each system dir):
+### Prerequisites
+
+Python 3 + matplotlib for plotting:
 
 ```bash 
-./compile.sh
-./run.sh
-./parse.sh
-./plot.sh
+python3 -m pip install --user matplotlib
 ```
 
-Most scripts accept env overrides (e.g., CUDA_VISIBLE_DEVICES, PMEM_DIR, dataset sizes). See script headers.
+The plotting helper exists and is executable: scripts/plot_lines_from_csvs.py
 
-## 9. Reproducing Paper Figures
+Make scripts executable (once):
+
+```bash
+chmod +x scripts/*.sh
+chmod +x scripts/plot_lines_from_csvs.py
+```
+
+### Environment knobs (optional)
+
+Limit the data sizes used by parsers/plots, or choose a GET value size for systems that expose it:
+
+export SIZES="10000 100000 1000000"   # only these sizes will be parsed/plotted
+export VAL_SIZES=8                    # e.g., GET value size selector (used by some GET parsers)
+bash scripts/run_end_to_end.sh
+
+### Where do results appear?
+Per-figure outputs
+Each figure runner writes its CSVs (one per system) and a combined PDF to a dedicated folder under out/.
+Actual names depend on your figure scripts; examples:
+
+```csharp
+out/
+  fig8a/                 # example name; yours may differ
+    hrocks_puts.csv
+    pmem_puts.csv
+    viper_puts.csv
+    plush_puts.csv
+    fig8a_puts.pdf
+  fig9b/
+    ...
+  fig13c/
+    ...
+```
+CSV format is consistently: size,throughput_ops_per_s
+
+### Final “all plots” folder
+
+At the end, every PDF discovered under out/fig*/ is copied into:
+
+out/plots_all/
+  <figure-folder>_<original-pdf-name>.pdf
+  plots_manifest.txt   # index of all PDFs collected
+
+## 9. Reproducing Individual Paper Figures
 
 We provide per-figure convenience scripts (from scripts/):
 
@@ -247,29 +282,6 @@ We provide per-figure convenience scripts (from scripts/):
 ```
 
 Each script performs the minimal compile → run → parse → plot for that figure.
-
-## 10. Outputs & Verification
-
-All outputs are placed under out/:
-
-```bash 
-out/
-  logs/                   # raw logs from runs
-  parsed/                 # CSVs after parsing
-  plots/
-    fig8a.pdf
-    fig8b.pdf
-    ...
-    fig12d.pdf
-```
-
-Verification checklist
-
-Per-figure script prints a final OK/summary line.
-
-Expected plot(s) appear in out/plots/.
-
-CSVs have sensible non-zero metrics.
 
 ## 11. H-Rocks Source & API Overview (for reference)
 
