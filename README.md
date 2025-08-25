@@ -277,24 +277,25 @@ Key files: pmem-rocksdb/h-rocks/src/hrocksdb.h, pmem-rocksdb/h-rocks/src/hrocksd
 
 Main APIs
 
-Ctor / Dtor
 
 ```cpp
+// Ctor / Dtor
+
 HRocksDB(Config config);
 
 ~HRocksDB();
 
-DB ops
-
-void Close();
+// KVS setup ops
 
 void HOpen(std::string fileLocation);
 
-void Delete(std::string fileLocation);
+void Close();
 
-KVS ops
+// KVS ops
 
 void Put(const std::string& key, const std::string& value);
+
+void Get(const std::string& key);
 
 void Delete(const std::string& key);
 
@@ -302,9 +303,7 @@ void Range(const std::string& startKey, const std::string& endKey);
 
 void Merge(const std::string& key);
 
-void Get(const std::string& key);
-
-Config knobs
+// Config knobs
 
 setMemtableSize(uint64_t size);
 
