@@ -116,13 +116,13 @@ target_link_libraries(test_ycsbB PRIVATE hashtable)
 
 add_subdirectory(test)
 
-add_subdirectory(dash)
-add_subdirectory(viper)
-add_subdirectory(pmemkv)
-add_subdirectory(dptree)
-add_subdirectory(fptree)
-add_subdirectory(pibench)
-add_subdirectory(faster/cc)
+# add_subdirectory(dash)
+# add_subdirectory(viper)
+# add_subdirectory(pmemkv)
+# add_subdirectory(dptree)
+# add_subdirectory(fptree)
+# add_subdirectory(pibench)
+# add_subdirectory(faster/cc)
 
 #missing rocksdb
 

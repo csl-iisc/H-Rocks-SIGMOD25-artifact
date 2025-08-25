@@ -59,7 +59,7 @@ set(TBB_EXAMPLES OFF CACHE INTERNAL "")
 FetchContent_Declare(
     oneTBB
     GIT_REPOSITORY https://github.com/oneapi-src/oneTBB.git
-    GIT_TAG        v2021.1.1
+    GIT_TAG        v2021.13.1
     )
 FetchContent_MakeAvailable(oneTBB)
 include_directories(${oneTBB_SOURCE_DIR}/include)
