@@ -1,0 +1,22 @@
+operationcount=50000000
+recordcount=50000000
+workload=site.ycsb.workloads.CoreWorkload
+# The number of fields in a record
+fieldcount=1
+
+# The size of each field (in bytes)
+fieldlength=8
+readallfields=false
+# What proportion of operations are reads
+readproportion=1.00
+# What proportion of operations are updates
+#updateproportion=0.50
+
+scanlengthdistribution=uniform
+
+#scanlengthdistribution=zipfian
+
+
+requestdistribution=zipfian
+#requestdistribution=uniform
+#requestdistribution=latest

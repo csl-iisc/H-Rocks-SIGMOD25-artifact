@@ -1,0 +1,5 @@
+python3 extract_ycsb_data.py YCSB_data/YCSB_A YCSB_data/YCSB_A_processed
+python3 extract_ycsb_data.py YCSB_data/YCSB_B YCSB_data/YCSB_B_processed
+python3 extract_ycsb_data.py YCSB_data/YCSB_C YCSB_data/YCSB_C_processed
+python3 extract_ycsb_data.py YCSB_data/YCSB_D YCSB_data/YCSB_D_processed
+python3 extract_ycsb_data.py YCSB_data/YCSB_A YCSB_data/YCSB_E_processed
