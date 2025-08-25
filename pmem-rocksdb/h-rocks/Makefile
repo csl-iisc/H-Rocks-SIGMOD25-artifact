@@ -42,6 +42,7 @@ HOST_CXXFLAGS := -O3 -std=c++14 $(PLATFORM_CXXFLAGS)
 CUDA_CXXFLAGS := -O3 -std=c++14 -Xcompiler -fopenmp -rdc=true -arch=sm_$(SM)
 
 # Link libs (CUDA + system)
+EXEC_LDFLAGS+= -lzstd -lsnappy -llz4 -lbz2 -lz
 CUDA_LDLIBS := -L/usr/local/cuda/lib64 -lcuda -lcudart
 SYS_LDLIBS  := -lpthread -lrt -lm
 PMEM_LDLIBS ?= -lpmem
