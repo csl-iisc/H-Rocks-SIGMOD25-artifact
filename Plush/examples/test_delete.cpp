@@ -6,7 +6,6 @@
 #include <unordered_map>
 #include <string>
 #include "../src/hashtable/Hashtable.h"
-#include <omp.h>
 
 #include <cstdio>
 #include <fstream>
@@ -55,17 +54,19 @@ std::string generate_random_string(size_t length, std::function<char(void)> rand
 
 int main(int argc, char **argv) {
     int option_char;
-    int num_puts, nthreads;
+    uint64_t num_puts, num_deletes;
+    int nthreads; 
     int batch;
     int ratio;
     size_t key_size, value_size;
 
     // Declare R and provide seed
 
-    while ((option_char = getopt (argc, argv, ":n:k:v:t:")) != -1){
+    while ((option_char = getopt (argc, argv, ":n:k:v:p:t:")) != -1){
         switch (option_char)
         {
-            case 'n': num_puts = atoi (optarg); break;
+            case 'p': num_puts = atoi (optarg); break;
+            case 'n': num_deletes = atoi (optarg); break;
             case 'k': key_size = atoi (optarg); break;
             case 'v': value_size = atoi (optarg); break;
             case 't': nthreads = atoi (optarg); break;
@@ -77,12 +78,11 @@ int main(int argc, char **argv) {
     std::cout << "Number of keys: " << num_puts << std::endl;
     std::cout << "Key size: " << key_size << std::endl;
     std::cout << "Value size: "<< value_size << std::endl;
-    std::cout << "Num threads: "<< nthreads << std::endl;
 
     // A hash table with 8 byte keys and values
     const std::string data_location = "/pmem/plush_table";
     Hashtable<std::span<const std::byte>, std::span<const std::byte>, PartitionType::Hash> table("/pmem/plush_table", true); 
-    cout << "HT opened\n"; 
+    cout << "Opened table\n"; 
 
     const auto ch_set = charset();
     std::default_random_engine rng(std::random_device{}());
@@ -97,21 +97,32 @@ int main(int argc, char **argv) {
         values[i] = generate_random_string(value_size,randchar);
     }
 
-    cout << "Inserting..\n"; 
-    uint64_t num_puts_per_thread = num_puts/nthreads; 
-    cout << "num puts per thread: " << num_puts_per_thread << "\n"; 
-
-    auto start = TIME_NOW; 
-#pragma omp parallel for num_threads(nthreads) 
+uint64_t num_puts_per_thread = num_puts/nthreads; 
+#pragma omp parallel for num_threads(nthreads)
     for(uint64_t j = 0; j < nthreads; ++j) {
         for(uint64_t i = 0; i < num_puts_per_thread; ++i) {
-            if(j * nthreads + i >= num_puts) 
+            if(j * nthreads + i >= num_puts)
                 break; 
             table.insert(std::span<std::byte>(reinterpret_cast<std::byte*>(keys[j * nthreads + i].data()), keys[j * nthreads + i].size()), std::span<std::byte>(reinterpret_cast<std::byte*>(values[j * nthreads + i].data()), values[j * nthreads + i].size()));
         }
     }
-    auto put_time = (TIME_NOW - start).count(); 
-    cout << "put_time: " << put_time/1000000.0 << "\n"; 
     
+    cout << "************ PREFILL DONE ************\n"; 
+    uint64_t num_deletes_per_thread = num_deletes/nthreads; 
+
+    auto start = TIME_NOW; 
+   #pragma omp parallel for num_threads(nthreads)
+    for(uint64_t j = 0; j < nthreads; ++j) {
+        for(uint64_t i = 0; i < num_deletes_per_thread; ++i) {
+            if(j * nthreads + i >= num_deletes)
+                break; 
+        uint64_t idx = rand() % num_puts; 
+        table.remove(std::span<std::byte>(reinterpret_cast<std::byte*>(keys[idx].data()), keys[idx].size()));
+    }
+    }
+    auto delete_time = (TIME_NOW - start).count(); 
+
+    cout << "delete_time: " << delete_time/1000000.0 << "\n"; 
+
     return 0; 
 } 
