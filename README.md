@@ -125,23 +125,23 @@ If these succeed and produce output logs, you’re ready for figure scripts.
 
 Danger: This reconfigures namespaces and reboots. Do this only on a dedicated AE machine.
 
-# 1) Install PMEM deps
+### 1) Install PMEM deps
 ```bash
 chmod +x scripts/dependencies.sh
 sudo ./scripts/dependencies.sh
 ```
 
-# 2) Tear down old configs
+### 2) Tear down old configs
 ```bash
 sudo ./scripts/pmem-setup/teardown.bashrc
 ```
 
-# 3) Pre-boot cleanup (destroys namespaces + reboots)
+### 3) Pre-boot cleanup (destroys namespaces + reboots)
 ```bash
 sudo ./scripts/pmem-setup/preboot.bashrc
 ```
 
-# 4) Configure App-Direct + interleaving (as root)
+### 4) Configure App-Direct + interleaving (as root)
 ```bash
 sudo su
 ./scripts/pmem-setup/config-setup.bashrc
