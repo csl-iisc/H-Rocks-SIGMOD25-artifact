@@ -118,33 +118,40 @@ make bin/test_puts
 
 make bin/test_gets
 ./bin/test_gets -p 100000 -n 100000 -k 8 -v 8
-
+```
 If these succeed and produce output logs, you’re ready for figure scripts.
 
-4. PMEM Setup (Bare-Metal)
+## 4. PMEM Setup (Bare-Metal)
 
 Danger: This reconfigures namespaces and reboots. Do this only on a dedicated AE machine.
 
 # 1) Install PMEM deps
+```bash
 chmod +x scripts/dependencies.sh
 sudo ./scripts/dependencies.sh
+```
 
 # 2) Tear down old configs
+```bash
 sudo ./scripts/pmem-setup/teardown.bashrc
+```
 
 # 3) Pre-boot cleanup (destroys namespaces + reboots)
+```bash
 sudo ./scripts/pmem-setup/preboot.bashrc
+```
 
 # 4) Configure App-Direct + interleaving (as root)
+```bash
 sudo su
 ./scripts/pmem-setup/config-setup.bashrc
 exit
-
+```
 
 This prepares an interleaved namespace and (by default) a /pmem/... path used by scripts.
 If your mount differs, export PMEM_DIR and/or adjust scripts accordingly.
 
-5. CUDA & NVIDIA Drivers
+## 5. CUDA & NVIDIA Drivers
 
 Install per NVIDIA guidance:
 
@@ -157,59 +164,65 @@ Verify:
 nvcc --version
 nvidia-smi
 
-6. Building H-Rocks (Manual)
+## 6. Building H-Rocks (Manual)
 
 From pmem-rocksdb/h-rocks:
 
+```bash
 make hrocksdb                  # release
 # or
 make hrocksdb -DENABLE_DEBUG   # debug with extra logs
-
+```
 
 Where are the sources? pmem-rocksdb/h-rocks/src/ (key files: hrocksdb.h, hrocksdb.cu).
 
-7. Running H-Rocks Manually (Optional)
+## 7. Running H-Rocks Manually (Optional)
 
 From pmem-rocksdb/h-rocks:
 
+```bash
 make bin/test_puts
 ./bin/test_puts -n <num_keys> -k <key_size> -v <value_size>
 
 make bin/test_gets
 ./bin/test_gets -p <prefill_keys> -n <num_keys> -k <key_size> -v <value_size>
-
+```
 
 Other tests follow the same pattern.
 
-8. End-to-End: Compile → Run → Parse → Plot
+## 8. End-to-End: Compile → Run → Parse → Plot
 
 Top-level orchestrators (from scripts/):
 
+```bash
 ./compile_all.sh   # builds all systems (h-rocks, viper, plush, utree, gpkvs)
 ./run_all.sh       # runs all experiments across systems
 ./parse_all.sh     # parses logs -> CSVs
 ./plot_all.sh      # generates all plots
-
+```
 
 One-shot pipeline:
 
+```bash
 ./end_to_end.sh    # compile + run + parse + plot everything
-
+```
 
 Per-system (inside each system dir):
 
+```bash 
 ./compile.sh
 ./run.sh
 ./parse.sh
 ./plot.sh
-
+```
 
 Most scripts accept env overrides (e.g., CUDA_VISIBLE_DEVICES, PMEM_DIR, dataset sizes). See script headers.
 
-9. Reproducing Paper Figures
+## 9. Reproducing Paper Figures
 
 We provide per-figure convenience scripts (from scripts/):
 
+```bash
 # Figure 8
 ./run_figure8a.sh
 ./run_figure8b.sh
@@ -233,7 +246,7 @@ We provide per-figure convenience scripts (from scripts/):
 ./run_figure12b.sh
 ./run_figure12c.sh
 ./run_figure12d.sh
-
+```
 
 Each script performs the minimal compile → run → parse → plot for that figure.
 
@@ -241,6 +254,7 @@ Each script performs the minimal compile → run → parse → plot for that fig
 
 All outputs are placed under out/:
 
+```bash 
 out/
   logs/                   # raw logs from runs
   parsed/                 # CSVs after parsing
@@ -249,7 +263,7 @@ out/
     fig8b.pdf
     ...
     fig12d.pdf
-
+```
 
 Verification checklist
 
