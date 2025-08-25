@@ -336,23 +336,23 @@ We mount /pmem so the container can access host PMEM. Adjust if your PMEM path d
 
 ## 13. Common Pitfalls & Troubleshooting
 
-### PMEM path confusion (/pmem/...)
+1. PMEM path confusion (/pmem/...)
 Some scripts auto-prefix /pmem. If you also pass a path including /pmem, you may end up with a non-existent double prefix like /pmem/pmem/....
 ✔️ Use a relative or non-/pmem path if the script auto-prefixes; or export PMEM_DIR explicitly.
 
-### Permissions
+2. Permissions
 PMEM setup requires root; experiments do not (except external profilers you might use).
 
-### CUDA/Driver mismatch
+3. CUDA/Driver mismatch
 Ensure nvidia-smi driver is compatible with CUDA Toolkit (Toolkit ≤ 12.1, Driver ≥ 530.xx).
 
-### Viper errors
+4. Viper errors
 Viper requires that the database it is trying to create must not already exist. Please clear /pmem/ before running viper experiments. Our scripts take care of this.
 
-### Plush errors
+5. Plush errors
 Plush requires plush_table in /pmem/. Please create the folder before executing Plush. Our scripts take care of it. 
 
-### Docker & PMEM
+6. Docker & PMEM
 Use --privileged (or grant required caps) and mount the PMEM path.
 
 ## 14. License & Citation
