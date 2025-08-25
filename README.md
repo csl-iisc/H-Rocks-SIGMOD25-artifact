@@ -125,23 +125,23 @@ If these succeed and produce output logs, you’re ready for figure scripts.
 
 Danger: This reconfigures namespaces and reboots. Do this only on a dedicated AE machine.
 
-### 1) Install PMEM deps
+1) Install PMEM deps
 ```bash
 chmod +x scripts/dependencies.sh
 sudo ./scripts/dependencies.sh
 ```
 
-### 2) Tear down old configs
+2) Tear down old configs
 ```bash
 sudo ./scripts/pmem-setup/teardown.bashrc
 ```
 
-### 3) Pre-boot cleanup (destroys namespaces + reboots)
+3) Pre-boot cleanup (destroys namespaces + reboots)
 ```bash
 sudo ./scripts/pmem-setup/preboot.bashrc
 ```
 
-### 4) Configure App-Direct + interleaving (as root)
+4) Configure App-Direct + interleaving (as root)
 ```bash
 sudo su
 ./scripts/pmem-setup/config-setup.bashrc
@@ -173,8 +173,6 @@ make hrocksdb                  # release
 # or
 make hrocksdb -DENABLE_DEBUG   # debug with extra logs
 ```
-
-Where are the sources? pmem-rocksdb/h-rocks/src/ (key files: hrocksdb.h, hrocksdb.cu).
 
 ## 7. Running H-Rocks Manually (Optional)
 
@@ -250,7 +248,7 @@ We provide per-figure convenience scripts (from scripts/):
 
 Each script performs the minimal compile → run → parse → plot for that figure.
 
-10. Outputs & Verification
+## 10. Outputs & Verification
 
 All outputs are placed under out/:
 
@@ -269,13 +267,11 @@ Verification checklist
 
 Per-figure script prints a final OK/summary line.
 
-Expected plot(s) appear in out/plots/ and open cleanly.
+Expected plot(s) appear in out/plots/.
 
 CSVs have sensible non-zero metrics.
 
-Repeated runs show consistent trends (minor variance is normal).
-
-11. H-Rocks Source & API Overview (for reference)
+## 11. H-Rocks Source & API Overview (for reference)
 
 Key files: pmem-rocksdb/h-rocks/src/hrocksdb.h, pmem-rocksdb/h-rocks/src/hrocksdb.cu.
 
@@ -283,6 +279,7 @@ Main APIs
 
 Ctor / Dtor
 
+```cpp
 HRocksDB(Config config);
 
 ~HRocksDB();
@@ -314,11 +311,13 @@ setMemtableSize(uint64_t size);
 setNumMemtables(int num);
 
 setBatchSize(uint64_t size);
+```
 
-12. Docker (Alternative)
+## 12. Docker (Alternative)
 
 If you prefer a containerized setup:
 
+```bash
 # Install Docker (Ubuntu)
 sudo apt install docker.io
 
@@ -332,38 +331,38 @@ docker run -it --runtime=nvidia --gpus all --privileged \
   -v "$(pwd)":/workspace \
   -w /workspace \
   hrocks-ae:v1 bash
-
+```
 
 We mount /pmem so the container can access host PMEM. Adjust if your PMEM path differs.
 
-13. Common Pitfalls & Troubleshooting
+## 13. Common Pitfalls & Troubleshooting
 
-PMEM path confusion (/pmem/...)
+### PMEM path confusion (/pmem/...)
 Some scripts auto-prefix /pmem. If you also pass a path including /pmem, you may end up with a non-existent double prefix like /pmem/pmem/....
 ✔️ Use a relative or non-/pmem path if the script auto-prefixes; or export PMEM_DIR explicitly.
 
-Permissions
+### Permissions
 PMEM setup requires root; experiments do not (except external profilers you might use).
 
-CUDA/Driver mismatch
+### CUDA/Driver mismatch
 Ensure nvidia-smi driver is compatible with CUDA Toolkit (Toolkit ≤ 12.1, Driver ≥ 530.xx).
 
-Viper errors
+### Viper errors
 Viper requires that the database it is trying to create must not already exist. Please clear /pmem/ before running viper experiments. Our scripts take care of this.
 
-Plush errors
+### Plush errors
 Plush requires plush_table in /pmem/. Please create the folder before executing Plush. Our scripts take care of it. 
 
-Docker & PMEM
+### Docker & PMEM
 Use --privileged (or grant required caps) and mount the PMEM path.
 
-14. License & Citation
+## 14. License & Citation
 
 Please cite our paper:
 
 Shweta Pandey and Arkaprava Basu. H-Rocks: CPU-GPU accelerated Heterogeneous RocksDB on Persistent Memory. Proc. ACM on Management of Data (SIGMOD), 2025. DOI: 10.1145/3709694.
 
-References
+## References
 [1] RocksDB (Code) — https://github.com/facebook/rocksdb
 
 [2] pmem-rocksDB (Code) — https://github.com/pmem/pmem-rocksdb
