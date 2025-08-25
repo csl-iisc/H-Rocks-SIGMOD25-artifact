@@ -113,6 +113,12 @@ target_link_libraries(test_put_int PRIVATE hashtable)
 target_link_libraries(test_get_int PRIVATE hashtable)
 target_link_libraries(test_ycsbA PRIVATE hashtable)
 target_link_libraries(test_ycsbB PRIVATE hashtable)
+target_link_libraries(test_ycsbD PRIVATE hashtable)
+target_link_libraries(test_ycsbC PRIVATE hashtable)
+target_link_libraries(test_delete PRIVATE hashtable)
+target_link_libraries(test_range PRIVATE hashtable)
+
+
 
 add_subdirectory(test)
 

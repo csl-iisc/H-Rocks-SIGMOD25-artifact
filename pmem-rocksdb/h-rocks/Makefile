@@ -80,7 +80,7 @@ TESTS_ROCKS := \
   test_ycsbA \
   test_ycsbB \
   test_ycsbC \
-  test_ycsb \
+  test_ycsbD \
   test_atomic_txn \
   test_batch \
   test_range \

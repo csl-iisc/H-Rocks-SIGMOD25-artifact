@@ -1,18 +1,20 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-PUT_SIZES="500 1000 2000 4000 8000 10000 16000 25000 50000 100000 200000 400000 800000 1000000 2000000 4000000 8000000 10000000 20000000 40000000 50000000 80000000 100000000"
+SIZES="10000 1000000 10000000 25000000 50000000 75000000 100000000"
 VAL_SIZES="100"
 KEY_SIZE="16"
 
-mkdir -p output_ycsbD
-make lib && make bin/test_ycsbB
-for val_size in $VAL_SIZES; do
-    for size in $PUT_SIZES; do
-        rm -rf /pmem/*
-        rm -rf /dev/shm/*
-        echo $size
-        ./bin/test_ycsbB -n $size -k ${KEY_SIZE} -v $val_size > output_ycsbD/output_${size}_${KEY_SIZE}_${val_size}
-        sleep 1
-    done
-done
+OUT_DIR="output_ycsbD"
+mkdir -p "$OUT_DIR"
 
+make lib && make bin/test_ycsbD
+for v in $VAL_SIZES; do
+  for n in $PUT_SIZES; do
+    echo "$n"
+    rm -rf /pmem/* /dev/shm/*
+    ./bin/test_ycsbD -n "$n" -k "$KEY_SIZE" -v "$v" \
+      > "${OUT_DIR}/output_${n}_${KEY_SIZE}_${v}"
+    sleep 1
+  done
+done
