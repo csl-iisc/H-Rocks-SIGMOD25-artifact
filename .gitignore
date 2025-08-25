@@ -1,4 +1,6 @@
 **bin**
+**build**
 **lib**
 **obj**
 h-rocks/libgpu.a
+Plush/build/
