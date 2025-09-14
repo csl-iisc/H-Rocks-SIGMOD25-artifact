@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# pmem_parse_updates_min.sh
+# pmem_parse_updates.sh
 # Usage:
-#   ./pmem_parse_updates_min.sh [INPUT_DIR] [OUTPUT_CSV]
+#   ./pmem_parse_updates.sh [INPUT_DIR] [OUTPUT_CSV]
 # Example:
-#   ./pmem_parse_updates_min.sh output_updates pmem_updates_throughput.csv
+#   ./pmem_parse_updates.sh output_updates pmem_updates_throughput.csv
 set -euo pipefail
 IN_DIR="${1:-output_updates}"
 OUT_CSV="${2:-pmem_updates_throughput.csv}"

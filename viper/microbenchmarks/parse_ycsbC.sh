@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# viper_parse_ycsbC_min.sh
+# viper_parse_ycsbC.sh
 set -euo pipefail
 IN_DIR="${1:-output_ycsbC}"
 OUT_CSV="${2:-viper_ycsbC_throughput.csv}"

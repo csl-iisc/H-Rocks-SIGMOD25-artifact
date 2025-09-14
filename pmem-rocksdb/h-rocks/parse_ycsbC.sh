@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# parse_ycsbC_min.sh
-# Usage: ./parse_ycsbC_min.sh [INPUT_DIR] [OUTPUT_CSV]
+# parse_ycsbC.sh
+# Usage: ./parse_ycsbC.sh [INPUT_DIR] [OUTPUT_CSV]
 set -euo pipefail
 IN_DIR="${1:-.}"
 OUT_CSV="${2:-ycsbC_throughput.csv}"

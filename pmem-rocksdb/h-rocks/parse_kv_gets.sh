@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Parse PUT results for specific KV pairs and compute MOps/s
-# Usage: ./parse_puts_kv_min.sh [IN_DIR] [OUT_CSV]
+# Usage: ./parse_puts_kv.sh [IN_DIR] [OUT_CSV]
 # Default IN_DIR=output_diff_sizes_values  OUT_CSV=rocksdb_puts_kv.csv
 set -euo pipefail
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# parse_deletes_min.sh
-# Usage: ./parse_deletes_min.sh [INPUT_DIR] [OUTPUT_CSV]
-# Ex:    ./parse_deletes_min.sh output_deletes delete_throughput.csv
+# parse_deletes.sh
+# Usage: ./parse_deletes.sh [INPUT_DIR] [OUTPUT_CSV]
+# Ex:    ./parse_deletes.sh output_deletes delete_throughput.csv
 set -euo pipefail
 IN_DIR="${1:-.}"
 OUT_CSV="${2:-delete_throughput.csv}"

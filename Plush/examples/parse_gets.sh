@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# plush_parse_gets_min.sh
-# Usage: ./plush_parse_gets_min.sh [INPUT_DIR] [OUTPUT_CSV]
+# plush_parse_gets.sh
+# Usage: ./plush_parse_gets.sh [INPUT_DIR] [OUTPUT_CSV]
 set -euo pipefail
 IN_DIR="${1:-.}"
 OUT_CSV="${2:-plush_gets_throughput.csv}"

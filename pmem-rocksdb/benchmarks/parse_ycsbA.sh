@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# pmem_parse_ycsbA_min.sh
-# Usage: ./pmem_parse_ycsbA_min.sh [INPUT_DIR] [OUTPUT_CSV]
-# Ex:    ./pmem_parse_ycsbA_min.sh output_ycsbA pmem_ycsbA_throughput.csv
+# pmem_parse_ycsbA.sh
+# Usage: ./pmem_parse_ycsbA.sh [INPUT_DIR] [OUTPUT_CSV]
+# Ex:    ./pmem_parse_ycsbA.sh output_ycsbA pmem_ycsbA_throughput.csv
 set -euo pipefail
 IN_DIR="${1:-output_ycsbA}"
 OUT_CSV="${2:-pmem_ycsbA_throughput.csv}"

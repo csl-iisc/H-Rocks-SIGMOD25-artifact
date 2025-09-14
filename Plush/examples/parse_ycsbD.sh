@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# plush_parse_ycsbD_min.sh
+# plush_parse_ycsbD.sh
 set -euo pipefail
 IN_DIR="${1:-.}"
 OUT_CSV="${2:-plush_ycsbD_throughput.csv}"

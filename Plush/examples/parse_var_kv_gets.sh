@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Usage: ./plush_parse_var_kv_gets_min.sh [INPUT_DIR] [OUTPUT_CSV]
-# Ex:    ./plush_parse_var_kv_gets_min.sh output_var_kv_gets plush_var_kv_gets.csv
+# Usage: ./plush_parse_var_kv_gets.sh [INPUT_DIR] [OUTPUT_CSV]
+# Ex:    ./plush_parse_var_kv_gets.sh output_var_kv_gets plush_var_kv_gets.csv
 # Notes: expects files named output_<count>_<k>_<v>
 # Env filters (optional): SIZES="5000000" KEYS="8 16" VALS="8 32 128"
 set -euo pipefail

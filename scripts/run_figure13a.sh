@@ -14,10 +14,10 @@ PL="$ROOT/Plush/examples"
 [[ -x "$PL/run_ycsbA.sh" ]] && (cd "$PL" && ./run_ycsbA.sh) || echo "[Plush] run_ycsbA.sh not found."
 
 SIZES="${SIZES:-}"
-( cd "$HR" && SIZES="$SIZES" ./parse_ycsbA_min.sh . "$OUT/hrocks_ycsbA.csv" )
-( cd "$PM" && SIZES="$SIZES" ./pmem_parse_ycsbA_min.sh output_ycsbA "$OUT/pmem_ycsbA.csv" )
-( cd "$VP" && SIZES="$SIZES" ./viper_parse_ycsbA_min.sh output_ycsbA "$OUT/viper_ycsbA.csv" )
-( cd "$PL" && SIZES="$SIZES" ./plush_parse_ycsbA_min.sh . "$OUT/plush_ycsbA.csv" )
+( cd "$HR" && SIZES="$SIZES" ./parse_ycsbA.sh . "$OUT/hrocks_ycsbA.csv" )
+( cd "$PM" && SIZES="$SIZES" ./pmem_parse_ycsbA.sh output_ycsbA "$OUT/pmem_ycsbA.csv" )
+( cd "$VP" && SIZES="$SIZES" ./viper_parse_ycsbA.sh output_ycsbA "$OUT/viper_ycsbA.csv" )
+( cd "$PL" && SIZES="$SIZES" ./plush_parse_ycsbA.sh . "$OUT/plush_ycsbA.csv" )
 
 python3 "$ROOT/scripts/plot_lines_from_csvs.py" \
   --title "Figure 13a: YCSB-A Throughput vs Size" \

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# parse_updates_min.sh
-# Usage: ./parse_updates_min.sh [INPUT_DIR] [OUTPUT_CSV]
-# Ex:    ./parse_updates_min.sh output_updates updates_throughput.csv
+# parse_updates.sh
+# Usage: ./parse_updates.sh [INPUT_DIR] [OUTPUT_CSV]
+# Ex:    ./parse_updates.sh output_updates updates_throughput.csv
 set -euo pipefail
 IN_DIR="${1:-.}"
 OUT_CSV="${2:-updates_throughput.csv}"

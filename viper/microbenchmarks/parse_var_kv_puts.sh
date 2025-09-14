@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # Usage:
-#   ./viper_parse_var_kv_puts_min.sh [INPUT_DIR] [OUTPUT_CSV]
+#   ./viper_parse_var_kv_puts.sh [INPUT_DIR] [OUTPUT_CSV]
 # Example:
-#   ./viper_parse_var_kv_puts_min.sh output_var_kv_puts viper_var_kv_puts.csv
+#   ./viper_parse_var_kv_puts.sh output_var_kv_puts viper_var_kv_puts.csv
 # Optional filters (env):
-#   SIZES="1000000 5000000" KEYS="8 16" VALS="8 32 128" ./viper_parse_var_kv_puts_min.sh
+#   SIZES="1000000 5000000" KEYS="8 16" VALS="8 32 128" ./viper_parse_var_kv_puts.sh
 set -euo pipefail
 
 IN_DIR="${1:-output_var_kv_puts}"

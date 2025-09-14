@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# viper_parse_ycsbA_min.sh
+# viper_parse_ycsbA.sh
 # Usage:
-#   ./viper_parse_ycsbA_min.sh [INPUT_DIR] [OUTPUT_CSV]
+#   ./viper_parse_ycsbA.sh [INPUT_DIR] [OUTPUT_CSV]
 # Example:
-#   ./viper_parse_ycsbA_min.sh output_ycsbA viper_ycsbA_throughput.csv
+#   ./viper_parse_ycsbA.sh output_ycsbA viper_ycsbA_throughput.csv
 # Optional:
-#   SIZES="100000 200000" ./viper_parse_ycsbA_min.sh output_ycsbA viper_ycsbA_throughput.csv
+#   SIZES="100000 200000" ./viper_parse_ycsbA.sh output_ycsbA viper_ycsbA_throughput.csv
 
 set -euo pipefail
 IN_DIR="${1:-output_ycsbA}"

@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# viper_parse_deletes_min.sh
+# viper_parse_deletes.sh
 # Usage:
-#   ./viper_parse_deletes_min.sh [INPUT_DIR] [OUTPUT_CSV]
+#   ./viper_parse_deletes.sh [INPUT_DIR] [OUTPUT_CSV]
 # Example:
-#   ./viper_parse_deletes_min.sh output_deletes viper_deletes_throughput.csv
+#   ./viper_parse_deletes.sh output_deletes viper_deletes_throughput.csv
 # Limit sizes:
-#   SIZES="100000 200000 400000" ./viper_parse_deletes_min.sh output_deletes viper_deletes_throughput.csv
+#   SIZES="100000 200000 400000" ./viper_parse_deletes.sh output_deletes viper_deletes_throughput.csv
 
 set -euo pipefail
 IN_DIR="${1:-output_deletes}"

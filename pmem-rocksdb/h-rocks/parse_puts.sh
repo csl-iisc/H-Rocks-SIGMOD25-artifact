@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# parse_puts_min.sh
+# parse_puts.sh
 # Usage:
-#   ./parse_puts_min.sh [INPUT_DIR] [OUTPUT_CSV]
+#   ./parse_puts.sh [INPUT_DIR] [OUTPUT_CSV]
 # Example:
-#   ./parse_puts_min.sh output_puts put_throughput.csv
-#   ./parse_puts_min.sh output_puts put_throughput.csv
+#   ./parse_puts.sh output_puts put_throughput.csv
+#   ./parse_puts.sh output_puts put_throughput.csv
 
 set -euo pipefail
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# pmem_parse_ycsbD_min.sh
+# pmem_parse_ycsbD.sh
 set -euo pipefail
 IN_DIR="${1:-output_ycsbD}"
 OUT_CSV="${2:-pmem_ycsbD_throughput.csv}"

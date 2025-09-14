@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# pmem_parse_puts_min.sh
-# Usage: ./pmem_parse_puts_min.sh [INPUT_DIR] [OUTPUT_CSV]
-# Ex:    ./pmem_parse_puts_min.sh output_puts pmem_puts_throughput.csv
+# pmem_parse_puts.sh
+# Usage: ./pmem_parse_puts.sh [INPUT_DIR] [OUTPUT_CSV]
+# Ex:    ./pmem_parse_puts.sh output_puts pmem_puts_throughput.csv
 set -euo pipefail
 IN_DIR="${1:-output_puts}"
 OUT_CSV="${2:-pmem_puts_throughput.csv}"

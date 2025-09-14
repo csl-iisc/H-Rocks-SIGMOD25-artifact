@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# parse_gets_min.sh
+# parse_gets.sh
 # Usage:
-#   ./parse_gets_min.sh [INPUT_DIR] [OUTPUT_CSV]
+#   ./parse_gets.sh [INPUT_DIR] [OUTPUT_CSV]
 # Example:
-#   ./parse_gets_min.sh . get_throughput.csv
-#   ./parse_gets_min.sh output_gets get_throughput.csv
+#   ./parse_gets.sh . get_throughput.csv
+#   ./parse_gets.sh output_gets get_throughput.csv
 #
 # Notes:
 # - Looks for files named like: output_50M_8_8_<size>

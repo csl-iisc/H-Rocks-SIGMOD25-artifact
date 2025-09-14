@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# viper_parse_updates_min.sh
+# viper_parse_updates.sh
 # Usage:
-#   ./viper_parse_updates_min.sh [INPUT_DIR] [OUTPUT_CSV]
+#   ./viper_parse_updates.sh [INPUT_DIR] [OUTPUT_CSV]
 # Example:
-#   ./viper_parse_updates_min.sh output_updates viper_updates_throughput.csv
+#   ./viper_parse_updates.sh output_updates viper_updates_throughput.csv
 # Optional:
-#   SIZES="100000 200000 400000" ./viper_parse_updates_min.sh output_updates viper_updates_throughput.csv
+#   SIZES="100000 200000 400000" ./viper_parse_updates.sh output_updates viper_updates_throughput.csv
 
 set -euo pipefail
 IN_DIR="${1:-output_updates}"

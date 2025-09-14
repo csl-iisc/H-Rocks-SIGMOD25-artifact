@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# plush_parse_deletes_min.sh
+# plush_parse_deletes.sh
 set -euo pipefail
 IN_DIR="${1:-.}"
 OUT_CSV="${2:-plush_deletes_throughput.csv}"

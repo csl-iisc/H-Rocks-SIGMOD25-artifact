@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# pmem_parse_deletes_min.sh
+# pmem_parse_deletes.sh
 # Usage:
-#   ./pmem_parse_deletes_min.sh [INPUT_DIR] [OUTPUT_CSV]
+#   ./pmem_parse_deletes.sh [INPUT_DIR] [OUTPUT_CSV]
 # Example:
-#   ./pmem_parse_deletes_min.sh output_deletes pmem_deletes_throughput.csv
+#   ./pmem_parse_deletes.sh output_deletes pmem_deletes_throughput.csv
 set -euo pipefail
 IN_DIR="${1:-output_deletes}"
 OUT_CSV="${2:-pmem_deletes_throughput.csv}"

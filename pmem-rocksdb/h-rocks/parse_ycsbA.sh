@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# parse_ycsbA_min.sh
-# Usage: ./parse_ycsbA_min.sh [INPUT_DIR] [OUTPUT_CSV]
-# Ex:    ./parse_ycsbA_min.sh output_ycsb ycsbA_throughput.csv
+# parse_ycsbA.sh
+# Usage: ./parse_ycsbA.sh [INPUT_DIR] [OUTPUT_CSV]
+# Ex:    ./parse_ycsbA.sh output_ycsb ycsbA_throughput.csv
 set -euo pipefail
 IN_DIR="${1:-.}"
 OUT_CSV="${2:-ycsbA_throughput.csv}"

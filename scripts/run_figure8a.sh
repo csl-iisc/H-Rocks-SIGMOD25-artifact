@@ -16,10 +16,10 @@ PL="$ROOT/Plush/examples"
 
 # 2) Parse -> CSV (size,throughput_ops_per_s)
 SIZES="${SIZES:-}" # forward to parsers if set
-( cd "$HR" && SIZES="$SIZES" ./parse_puts_min.sh output_puts "$OUT/hrocks_puts.csv" )
-( cd "$PM" && SIZES="$SIZES" ./pmem_parse_puts_min.sh output_puts "$OUT/pmem_puts.csv" )
-( cd "$VP" && SIZES="$SIZES" ./viper_parse_puts_min.sh output_puts "$OUT/viper_puts.csv" )
-( cd "$PL" && SIZES="$SIZES" ./plush_parse_puts_min.sh . "$OUT/plush_puts.csv" )
+( cd "$HR" && SIZES="$SIZES" ./parse_puts.sh output_puts "$OUT/hrocks_puts.csv" )
+( cd "$PM" && SIZES="$SIZES" ./pmem_parse_puts.sh output_puts "$OUT/pmem_puts.csv" )
+( cd "$VP" && SIZES="$SIZES" ./viper_parse_puts.sh output_puts "$OUT/viper_puts.csv" )
+( cd "$PL" && SIZES="$SIZES" ./plush_parse_puts.sh . "$OUT/plush_puts.csv" )
 
 # 3) Plot
 python3 "$ROOT/scripts/plot_lines_from_csvs.py" \

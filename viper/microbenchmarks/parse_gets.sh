@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# viper_parse_gets_min.sh
+# viper_parse_gets.sh
 # Usage:
-#   ./viper_parse_gets_min.sh [INPUT_DIR] [OUTPUT_CSV]
+#   ./viper_parse_gets.sh [INPUT_DIR] [OUTPUT_CSV]
 # Example:
-#   ./viper_parse_gets_min.sh output_gets viper_gets_throughput.csv
+#   ./viper_parse_gets.sh output_gets viper_gets_throughput.csv
 # Optional:
-#   VAL_SIZES="8 100" SIZES="100000 200000" ./viper_parse_gets_min.sh output_gets viper_gets_throughput.csv
+#   VAL_SIZES="8 100" SIZES="100000 200000" ./viper_parse_gets.sh output_gets viper_gets_throughput.csv
 
 set -euo pipefail
 IN_DIR="${1:-output_gets}"

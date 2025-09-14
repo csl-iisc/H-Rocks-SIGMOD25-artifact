@@ -14,10 +14,10 @@ PL="$ROOT/Plush/examples"
 [[ -x "$PL/run_gets.sh" ]] && (cd "$PL" && ./run_gets.sh) || echo "[Plush] run_gets.sh not found."
 
 SIZES="${SIZES:-}"; VAL_SIZES="${VAL_SIZES:-8}"
-( cd "$HR" && SIZES="$SIZES" ./parse_gets_min.sh . "$OUT/hrocks_gets.csv" )
-( cd "$PM" && SIZES="$SIZES" ./pmem_parse_gets_min.sh output_gets "$OUT/pmem_gets.csv" )
-( cd "$VP" && SIZES="$SIZES" VAL_SIZES="$VAL_SIZES" ./viper_parse_gets_min.sh output_gets "$OUT/viper_gets.csv" )
-( cd "$PL" && SIZES="$SIZES" ./plush_parse_gets_min.sh . "$OUT/plush_gets.csv" )
+( cd "$HR" && SIZES="$SIZES" ./parse_gets.sh . "$OUT/hrocks_gets.csv" )
+( cd "$PM" && SIZES="$SIZES" ./pmem_parse_gets.sh output_gets "$OUT/pmem_gets.csv" )
+( cd "$VP" && SIZES="$SIZES" VAL_SIZES="$VAL_SIZES" ./viper_parse_gets.sh output_gets "$OUT/viper_gets.csv" )
+( cd "$PL" && SIZES="$SIZES" ./plush_parse_gets.sh . "$OUT/plush_gets.csv" )
 
 python3 "$ROOT/scripts/plot_lines_from_csvs.py" \
   --title "Figure 8b: GETS Throughput vs Size" \

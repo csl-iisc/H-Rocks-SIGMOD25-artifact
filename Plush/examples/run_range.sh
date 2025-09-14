@@ -1,20 +1,29 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-SIZES="500 1000 2000 4000 8000 10000 16000 25000 50000 100000 200000 400000 800000 1000000 2000000 4000000 8000000 10000000 20000000 40000000 50000000 80000000 100000000"
+# Override via env if you like:
+SIZES="${SIZES:-500 1000 2000 4000 8000 10000 16000 25000 50000 100000 200000 400000 800000 1000000 2000000 4000000 8000000 10000000 20000000 40000000 50000000 80000000 100000000}"
+VAL_SIZE="${VAL_SIZE:-8}"
+THREADS="${THREADS:-128}"
+PREFILL_SIZE="${PREFILL_SIZE:-50000000}"
+NQUERIES="${NQUERIES:-100}"
+OUT_DIR="${OUT_DIR:-output_range}"
+DB_PATH="/pmem/plush_table"
 
-val_size=8
-thread=128
-PREFILL_SIZE=50000000
-num_queries=100
-
-mkdir -p ../output_range/
-cd ../build/
-cmake .. && make -j 10
-cd ../
+mkdir -p "$OUT_DIR" build
+pushd ../build >/dev/null
+cmake .. >/dev/null
+make -j"$(nproc)" test_range
+popd >/dev/null
 
 for size in $SIZES; do
-    echo $size
-    rm -rf /pmem/plush_table
-    mkdir -p /pmem/plush_table
-    ./build/test_range -p $PREFILL_SIZE -n $size -e $num_queries -t $thread > output_range/output_${size}_8_${val_size}_${thread}
+  echo "RANGE  arrival_n=$size  prefill=$PREFILL_SIZE  v=$VAL_SIZE  t=$THREADS"
+  rm -rf "$DB_PATH" /dev/shm/*
+  mkdir -p "$DB_PATH"
+  ./build/test_range \
+    -p "$PREFILL_SIZE" \
+    -n "$size" \
+    -e "$NQUERIES" \
+    -t "$THREADS" \
+    > "$OUT_DIR/output_${size}_k8_v${VAL_SIZE}_t${THREADS}"
 done

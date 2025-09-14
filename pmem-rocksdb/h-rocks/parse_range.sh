@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# parse_range_min.sh
-# Usage: ./parse_range_min.sh [INPUT_DIR] [OUTPUT_CSV]
-# Ex:    ./parse_range_min.sh output_range range_throughput.csv
+# parse_range.sh
+# Usage: ./parse_range.sh [INPUT_DIR] [OUTPUT_CSV]
+# Ex:    ./parse_range.sh output_range range_throughput.csv
 set -euo pipefail
 IN_DIR="${1:-.}"
 OUT_CSV="${2:-range_throughput.csv}"
