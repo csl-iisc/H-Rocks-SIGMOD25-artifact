@@ -11,7 +11,7 @@ make bin/test_range
 
 #for i in 0 1 2 3 4; do
 for size in $SIZES; do
-    rm -rf /pmem/*
+    rm -rf /pmem/* && rm -rf /dev/shm/*
     echo $size
     ./bin/test_range -p $NKEYS -g $size -k 8 -v 8 > output_range_updated2/output_50M_$size
 done
