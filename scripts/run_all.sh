@@ -16,6 +16,7 @@ FIG_SCRIPTS=(
   "run_figure8d.sh"   # UPDATE vs size
   "run_figure9a.sh"   # RANGE arrival vs sustained (Plush/RocksDB/H-Rocks)
   "run_figure10.sh"   # Var-KV PUT/GET (6 KV pairs)
+  "run_figure12.sh"   # Latency graphs
   "run_figure13a.sh"  # YCSB-A
   "run_figure13b.sh"  # YCSB-B
   "run_figure13c.sh"  # YCSB-C
