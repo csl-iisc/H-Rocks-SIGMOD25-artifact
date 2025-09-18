@@ -14,9 +14,10 @@ def read_xy(csv_path, pick_val_size=None):
             x = float(row["size"])
             y = float(row.get("throughput_ops_per_s") or row.get("throughput"))
             xs.append(x); ys.append(y)
-    # sort by x
     pairs = sorted(zip(xs, ys), key=lambda p: p[0])
-    return [p[0] for p in pairs], [p[1] for p in pairs]
+    xs = [p[0] for p in pairs]
+    ys = [p[1] for p in pairs]
+    return xs, ys
 
 def main():
     ap = argparse.ArgumentParser()
@@ -29,6 +30,11 @@ def main():
                     help="If a CSV has val_size column (e.g., Viper GETS), pick this one.")
     ap.add_argument("--series", action="append", required=True,
                     help="Format: /path/to.csv:Label")
+    # NEW:
+    ap.add_argument("--cap-to-x", action="store_true",
+                    help="Clamp y so y<=x (useful for sustained throughput vs arrival-rate).")
+    ap.add_argument("--y-mops", action="store_true",
+                    help="Plot Y in Mops/s (divide by 1e6) and adjust ylabel automatically.")
     args = ap.parse_args()
 
     plt.figure()
@@ -37,11 +43,20 @@ def main():
         xs, ys = read_xy(path, pick_val_size=args.val_size)
         if not xs:
             continue
+
+        # cap throughput to offered load (per-point)
+        if args.cap_to_x:
+            ys = [min(y, x) for x, y in zip(xs, ys)]
+
+        # convert to Mops/s
+        if args.y_mops:
+            ys = [y/1e6 for y in ys]
+
         plt.plot(xs, ys, marker="o", label=label)
 
     plt.title(args.title)
     plt.xlabel(args.xlabel)
-    plt.ylabel(args.ylabel)
+    plt.ylabel("Sustained T.put (Mops/sec)" if args.y_mops else args.ylabel)
     plt.grid(True, which="both", linestyle="--", alpha=0.4)
     if args.xlog:
         plt.xscale("log")
