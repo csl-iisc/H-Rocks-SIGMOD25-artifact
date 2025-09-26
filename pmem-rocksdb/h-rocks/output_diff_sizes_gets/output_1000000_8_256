@@ -1,0 +1,4 @@
+Number of puts: 10000000
+Number of gets: 1000000
+Key size: 8
+Value size: 256

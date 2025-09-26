@@ -1,58 +1,56 @@
-# --- H-Rocks (hrocks) Makefile (cleaned) -------------------------------------
+# --- H-Rocks (hrocks) Makefile ----------------------------------------------
 # Usage:
-#   make            # builds lib + all tests
-#   make lib        # builds libgpu.a
-#   make tests      # builds all test binaries
+#   make              # builds lib + all tests
+#   make lib          # builds libgpu.a
+#   make tests        # builds all test binaries
 #   make clean
 #
 # Customize:
-#   make SM=90      # CUDA arch (default: 75)
-#   make DEBUG=1    # add debug flags
+#   make SM=86        # CUDA arch (default: 86; set 75 for T4/V100)
+#   make DEBUG=1      # debug flags
 # -----------------------------------------------------------------------------
 
-# include ../make_config.mk
-
-ifndef DISABLE_JEMALLOC
-  ifdef JEMALLOC
-    PLATFORM_CXXFLAGS += -DROCKSDB_JEMALLOC -DJEMALLOC_NO_DEMANGLE
-  endif
-  EXEC_LDFLAGS := $(JEMALLOC_LIB) $(EXEC_LDFLAGS) -lpthread
-  PLATFORM_CXXFLAGS += $(JEMALLOC_INCLUDE)
-endif
-
-# RTTI is needed by RocksDB tools & some tests; keep default enabled
-ifneq ($(USE_RTTI), 1)
-  # CXXFLAGS += -fno-rtti
-endif
-
+include ../make_config.mk
 include ../dcpmm.mk
-EXEC_LDFLAGS += $(LDFLAGS)
 
 # -------------------------- Toolchain & Paths --------------------------------
 CXX        ?= g++
 NVCC       ?= nvcc
 BIN_DIR    ?= bin
 LIB_NAME   ?= libgpu.a
-SM         ?= 75
+SM         ?= 86
 
-INCLUDES := -I. -I$(BIN_DIR) -I../libgpm/include -I/usr/local/cuda/include -I../include
+# Header search paths (this dir layout is for pmem-rocksdb/h-rocks/)
+INCLUDES := -I/usr/local/include -I. -I$(BIN_DIR) -I../libgpm/include -I/usr/local/cuda/include -I../include
 
 # ------------------------------ Flags ----------------------------------------
-HOST_CXXFLAGS := -O3 -std=c++14 $(PLATFORM_CXXFLAGS)
-CUDA_CXXFLAGS := -O3 -std=c++14 -Xcompiler -fopenmp -rdc=true -arch=sm_$(SM)
+# These macros mirror your working line; keep them on compile & link
+PLATFORM_CXXDEFS := -DON_DCPMM \
+  -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX -DOS_LINUX \
+  -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DNUMA -DTBB \
+  -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE \
+  -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT \
+  -DHAVE_SSE42 -DHAVE_PCLMUL -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL
 
-# Link libs (CUDA + system)
-EXEC_LDFLAGS+= -lzstd -lsnappy -llz4 -lbz2 -lz
-CUDA_LDLIBS := -L/usr/local/cuda/lib64 -lcuda -lcudart
-SYS_LDLIBS  := -lpthread -lrt -lm
-PMEM_LDLIBS ?= -lpmem
-NVIDIA_ML   ?= -lnvidia-ml
-PCI_LIB     ?= -lpci
+HOST_CXXFLAGS := -O3 -std=c++14 $(PLATFORM_CXXFLAGS) $(PLATFORM_CXXDEFS)
+CUDA_CXXFLAGS := -O3 -std=c++14 -Xcompiler -fopenmp -rdc=true -arch=sm_$(SM) $(PLATFORM_CXXDEFS)
+
+# Libraries / link search paths
+LIB_DIRS    := -L/usr/local/lib/ -L/usr/local/lib64/ -L/usr/local/cuda/lib64
+CODEC_LIBS  := -lsnappy -lgflags -lz -lbz2 -llz4 -lzstd
+SYS_LDLIBS  := -ldl -lpthread -lrt -lm -lnuma -ltbb
+PMEM_LIBS   := -lpmem -lpmemobj
+CUDA_LDLIBS := -lcuda -lcudart
+EXTRA_LIBS  := -lnvidia-ml -lpci
+
+# Compose EXEC_LDFLAGS (order matters but we’ll still place libs after object)
+EXEC_LDFLAGS := $(LIB_DIRS) $(CODEC_LIBS) $(SYS_LDLIBS) $(PMEM_LIBS) $(CUDA_LDLIBS) $(EXTRA_LIBS)
+EXEC_LDFLAGS += $(PLATFORM_LDFLAGS) $(LDFLAGS)
 
 # Debug knobs
 ifdef DEBUG
   CUDA_CXXFLAGS += -g -G
-  HOST_CXXFLAGS += -g # (enable ASan if you want) -fsanitize=address
+  HOST_CXXFLAGS += -g
 endif
 
 # --------------------------- Sources & Objects -------------------------------
@@ -116,30 +114,24 @@ $(BIN_DIR):
 # ----------------------------- Link Rules ------------------------------------
 # Simple apps (no RocksDB at link time)
 $(BIN_DIR)/main: main.cc $(LIB_NAME) | $(BIN_DIR)
-	$(NVCC) $(CUDA_CXXFLAGS) $(INCLUDES) \
-	  $(CUDA_LDLIBS) $(SYS_LDLIBS) $(PMEM_LDLIBS) $(NVIDIA_ML) $(PCI_LIB) \
-	  $(LIB_NAME) $< -o $@
+	$(NVCC) $(CUDA_CXXFLAGS) $(INCLUDES) main.cc -o $@ \
+	  $(LIB_NAME) $(EXEC_LDFLAGS)
 
 $(BIN_DIR)/test: test.cc $(LIB_NAME) | $(BIN_DIR)
-	$(NVCC) $(CUDA_CXXFLAGS) $(INCLUDES) \
-	  $(CUDA_LDLIBS) $(SYS_LDLIBS) $(PMEM_LDLIBS) $(NVIDIA_ML) $(PCI_LIB) \
-	  $(LIB_NAME) $< -o $@
+	$(NVCC) $(CUDA_CXXFLAGS) $(INCLUDES) test.cc -o $@ \
+	  $(LIB_NAME) $(EXEC_LDFLAGS)
 
 $(BIN_DIR)/memcpy_experiment: memcpy_experiment.cu | $(BIN_DIR)
-	$(NVCC) $(CUDA_CXXFLAGS) $(INCLUDES) \
-	  $(CUDA_LDLIBS) $(SYS_LDLIBS) $(PMEM_LDLIBS) \
-	  $< -o $@
+	$(NVCC) $(CUDA_CXXFLAGS) $(INCLUDES) memcpy_experiment.cu -o $@ \
+	  $(EXEC_LDFLAGS)
 
-# Tests that link against RocksDB and platform flags
+# Tests that link against RocksDB (ORDER: source -> -o -> libs)
 define LINK_ROCKSDB_TEMPLATE
 $(BIN_DIR)/$(1): $(1).cc $(LIB_NAME) | $(BIN_DIR)
-	$$(NVCC) $$(CUDA_CXXFLAGS) $$(INCLUDES) \
+	$$(NVCC) $$(CUDA_CXXFLAGS) $$(INCLUDES) $$(PLATFORM_CXXDEFS) $$< -o $$@ \
 	  $$(LIB_NAME) ../librocksdb.a \
-	  $$(PLATFORM_LDFLAGS) $$(EXEC_LDFLAGS) \
-	  $$(CUDA_LDLIBS) $$(SYS_LDLIBS) $$(PMEM_LDLIBS) $$(NVIDIA_ML) $$(PCI_LIB) \
-	  -o $$@ $$<
+	  $$(EXEC_LDFLAGS)
 endef
-
 $(foreach t,$(TESTS_ROCKS),$(eval $(call LINK_ROCKSDB_TEMPLATE,$(t))))
 
 # ------------------------------- Clean ---------------------------------------
@@ -149,7 +141,7 @@ clean:
 # ------------------------------- Help ----------------------------------------
 help:
 	@echo "Targets:"
-	@echo "  make [SM=75] [DEBUG=1]   Build lib + all tests"
+	@echo "  make [SM=86] [DEBUG=1]   Build lib + all tests"
 	@echo "  make lib                  Build libgpu.a"
 	@echo "  make tests                Build all test binaries"
 	@echo "  make apps                 Build simple apps (main,test,memcpy_experiment)"
