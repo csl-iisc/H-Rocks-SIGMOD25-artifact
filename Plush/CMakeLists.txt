@@ -80,6 +80,16 @@ add_executable(test_update
         src/hashtable/Hashtable.h
         )
 
+add_executable(test_delete
+        examples/test_delete.cpp
+        src/hashtable/Hashtable.h
+        )
+
+add_executable(test_range
+        examples/test_range.cpp
+        src/hashtable/Hashtable.h
+        )
+
 add_executable(test_put_int
         examples/test_put_int.cpp
         src/hashtable/Hashtable.h
@@ -100,7 +110,15 @@ add_executable(test_ycsbB
         src/hashtable/Hashtable.h
         )
 
+add_executable(test_ycsbC
+        examples/test_ycsbC.cpp
+        src/hashtable/Hashtable.h
+        )
 
+add_executable(test_ycsbD
+        examples/test_ycsbD.cpp
+        src/hashtable/Hashtable.h
+        )
 
 target_link_libraries(gutenberg PRIVATE hashtable)
 target_link_libraries(demo PRIVATE hashtable)
