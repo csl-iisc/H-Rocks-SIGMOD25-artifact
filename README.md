@@ -270,10 +270,6 @@ We provide per-figure convenience scripts (from scripts/):
 ./run_figure10a.sh
 ./run_figure10b.sh
 
-# Figure 11
-./run_figure11a.sh
-./run_figure11b.sh
-
 # Figure 12
 ./run_figure12a.sh
 ./run_figure12b.sh
@@ -282,6 +278,7 @@ We provide per-figure convenience scripts (from scripts/):
 ```
 
 Each script performs the minimal compile → run → parse → plot for that figure.
+To reproduce Figure 11, we need to make manual changes. This requires setting putsWithValues = true; in the file pmem-rocksdb/h-rocks/batch.cu.
 
 ## 11. H-Rocks Source & API Overview (for reference)
 
