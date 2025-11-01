@@ -21,14 +21,14 @@
 
 struct StringCompare
 {
-    __host__ __device__ bool operator()(const char *a, const char *b) const
+    __host__ __device__ __forceinline__ bool operator()(const char *a, const char *b) const
     {
         return strcmp(a, b) < 0;
     }
 };
 
 __host__ __device__
-bool string_compare(const char* a, const char* b, size_t length) {
+bool inline string_compare(const char* a, const char* b, size_t length) {
     for (size_t i = 0; i < length; ++i) {
         if (a[i] < b[i]) return true;
         if (a[i] > b[i]) return false;

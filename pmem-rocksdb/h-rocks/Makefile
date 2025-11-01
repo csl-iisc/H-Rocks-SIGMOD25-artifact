@@ -18,7 +18,7 @@ CXX        ?= g++
 NVCC       ?= nvcc
 BIN_DIR    ?= bin
 LIB_NAME   ?= libgpu.a
-SM         ?= 86
+SM         ?= 75
 
 # Header search paths (this dir layout is for pmem-rocksdb/h-rocks/)
 INCLUDES := -I/usr/local/include -I. -I$(BIN_DIR) -I../libgpm/include -I/usr/local/cuda/include -I../include
@@ -141,7 +141,7 @@ clean:
 # ------------------------------- Help ----------------------------------------
 help:
 	@echo "Targets:"
-	@echo "  make [SM=86] [DEBUG=1]   Build lib + all tests"
+	@echo "  make [SM=75] [DEBUG=1]   Build lib + all tests"
 	@echo "  make lib                  Build libgpu.a"
 	@echo "  make tests                Build all test binaries"
 	@echo "  make apps                 Build simple apps (main,test,memcpy_experiment)"

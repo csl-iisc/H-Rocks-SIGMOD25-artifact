@@ -48,6 +48,7 @@ int sstWriter(char* keys,
 
   std::vector<std::unique_ptr<rocksdb::SstFileWriter>> writers;
   std::vector<std::string> file_path(NTHREADS);
+  std::vector<uint64_t> written_counts(NTHREADS, 0);
   writers.reserve(NTHREADS);
 
   for (int i = 0; i < NTHREADS; ++i) {
@@ -68,6 +69,7 @@ int sstWriter(char* keys,
   for (int t = 0; t < NTHREADS; ++t) {
     const uint64_t begin = static_cast<uint64_t>(t) * chunk;
     const uint64_t end   = std::min(begin + chunk, nkeys);
+    uint64_t local_writes = 0;
 
     if (begin >= end) {
       // still finalize an empty file
@@ -96,16 +98,25 @@ int sstWriter(char* keys,
         fprintf(stderr, "[thread %d] Put failed at i=%lu: %s\n",
                 t, (unsigned long)i, s.ToString().c_str());
       }
+      ++local_writes;
     }
 
     rocksdb::Status s = writers[t]->Finish();
     if (!s.ok()) {
       fprintf(stderr, "[thread %d] Finish failed: %s\n", t, s.ToString().c_str());
     }
+    written_counts[t] = local_writes;
   }
 
   // Ingest files sequentially (safe & simple)
   for (int t = 0; t < NTHREADS; ++t) {
+    if (written_counts[t] == 0) {
+      rocksdb::Status del_status = rocksdb::Env::Default()->DeleteFile(file_path[t]);
+      if (!del_status.ok()) {
+        std::cerr << "DeleteFile(" << file_path[t] << ") failed: " << del_status.ToString() << "\n";
+      }
+      continue;
+    }
     rocksdb::Status s = db->IngestExternalFile({file_path[t]}, ifo);
     if (!s.ok()) {
       std::cerr << "IngestExternalFile(" << file_path[t] << ") failed: " << s.ToString() << "\n";
