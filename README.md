@@ -21,7 +21,7 @@ DOI: https://doi.org/10.1145/3709694
 ## 0. Artifact at a Glance
 
 - **Goal:** Build H-Rocks and baselines; run bundled experiments; reproduce **Figures 8–12** from the paper.
-- **What’s provided:** End-to-end scripts to **compile → run → parse → plot**, plus per-figure convenience scripts.
+- **What's provided:** End-to-end scripts to **compile → run → parse → plot**, plus per-figure convenience scripts.
 - **AE scope:** Functional and results-reproduced for the included figures (see §8, §11).
 - **Contact:** Please contact on hotcrp for any queries or reach out to shwetapandey@iisc.ac.in. 
 
@@ -115,7 +115,7 @@ make bin/test_puts
 make bin/test_gets
 ./bin/test_gets -p 100000 -n 100000 -k 8 -v 8
 ```
-If these succeed and produce output logs, you’re ready for figure scripts.
+If these succeed and produce output logs, you're ready for figure scripts.
 
 ## 4. PMEM Setup (Bare-Metal)
 
@@ -149,16 +149,98 @@ If your mount differs, export PMEM_DIR and/or adjust scripts accordingly.
 
 ## 5. CUDA & NVIDIA Drivers
 
-Install per NVIDIA guidance:
+### Installing CUDA Toolkit 12.1
 
-CUDA Toolkit ≤ 12.1
+For Ubuntu/Debian systems:
 
-NVIDIA Driver ≥ 530.xx
+```bash
+# Download CUDA 12.1 installer
+wget https://developer.download.nvidia.com/compute/cuda/12.1.0/local_installers/cuda_12.1.0_530.30.02_linux.run
 
-Verify:
+# Run installer
+sudo sh cuda_12.1.0_530.30.02_linux.run
 
+# Follow the prompts:
+# - Accept the license
+# - Install CUDA Toolkit 12.1
+# - Install NVIDIA Driver 530.30.02 (if not already installed)
+```
+
+For other distributions or manual download, visit:
+https://developer.nvidia.com/cuda-12-1-0-download-archive
+
+### Setting up CUDA PATH
+
+**Important:** CUDA binaries are in two locations that both need to be in your PATH:
+- `/usr/local/cuda-12.1/bin` (main CUDA tools: nvcc, etc.)
+- `/usr/local/cuda-12.1/nvvm/bin` (includes cicc compiler)
+
+#### Option 1: Add to `.bashrc` (Permanent - Recommended)
+
+```bash
+# Add CUDA 12.1 to your PATH permanently
+echo 'export PATH=/usr/local/cuda-12.1/bin:/usr/local/cuda-12.1/nvvm/bin:$PATH' >> ~/.bashrc
+echo 'export LD_LIBRARY_PATH=/usr/local/cuda-12.1/lib64:$LD_LIBRARY_PATH' >> ~/.bashrc
+echo 'export CUDA_HOME=/usr/local/cuda-12.1' >> ~/.bashrc
+
+# Reload your shell configuration
+source ~/.bashrc
+```
+
+#### Option 2: Export for Current Session Only
+
+```bash
+export PATH=/usr/local/cuda-12.1/bin:/usr/local/cuda-12.1/nvvm/bin:$PATH
+export LD_LIBRARY_PATH=/usr/local/cuda-12.1/lib64:$LD_LIBRARY_PATH
+export CUDA_HOME=/usr/local/cuda-12.1
+```
+
+### Verify Installation
+
+```bash
+# Check CUDA compiler version
 nvcc --version
+
+# Check NVIDIA driver
 nvidia-smi
+
+# Verify cicc is accessible
+which cicc
+# Should output: /usr/local/cuda-12.1/nvvm/bin/cicc
+```
+
+**Expected output for `nvcc --version`:**
+```
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2023 NVIDIA Corporation
+Built on Mon_Apr__3_17:16:06_PDT_2023
+Cuda compilation tools, release 12.1, V12.1.105
+```
+
+### Troubleshooting CUDA Issues
+
+**Problem: `cicc: not found` error during compilation**
+
+Solution:
+1. Verify CUDA 12.1 installation: `ls /usr/local/cuda-12.1/nvvm/bin/cicc`
+2. Ensure `/usr/local/cuda-12.1/nvvm/bin` is in your PATH
+3. Check that you've sourced your `.bashrc`: `source ~/.bashrc`
+
+**Problem: Multiple CUDA versions installed**
+
+If you have multiple CUDA versions on your system:
+```bash
+# Find all installed CUDA versions
+ls -d /usr/local/cuda*
+
+# Find where cicc is located
+find /usr/local/cuda* -name cicc 2>/dev/null
+
+# Make sure CUDA 12.1 comes first in your PATH
+echo $PATH | grep cuda-12.1
+```
+
+To switch to CUDA 12.1, ensure it appears first in your PATH before other CUDA versions.
 
 ## 6. Building H-Rocks (Manual)
 
@@ -243,7 +325,7 @@ out/
 ```
 CSV format is consistently: size,throughput_ops_per_s
 
-### Final “all plots” folder
+### Final "all plots" folder
 
 At the end, every PDF discovered under out/fig*/ is copied into:
 
@@ -374,4 +456,3 @@ Shweta Pandey and Arkaprava Basu. H-Rocks: CPU-GPU accelerated Heterogeneous Roc
 [1] RocksDB (Code) — https://github.com/facebook/rocksdb
 
 [2] pmem-rocksDB (Code) — https://github.com/pmem/pmem-rocksdb
-
