@@ -21,7 +21,7 @@ SIZES="${SIZES:-}" # forward to parsers if set
 ( cd "$HR" && SIZES="$SIZES" ./parse_puts.sh output_puts "$OUT/hrocks_puts.csv" )
 ( cd "$PM" && SIZES="$SIZES" ./parse_puts.sh output_puts "$OUT/pmem_puts.csv" )
 ( cd "$VP" && SIZES="$SIZES" ./parse_puts.sh output_puts "$OUT/viper_puts.csv" )
-( cd "$PL" && SIZES="$SIZES" ./parse_puts.sh . "$OUT/plush_puts.csv" )
+( cd "$PL" && SIZES="$SIZES" ./parse_puts.sh ../output_puts "$OUT/plush_puts.csv" )
 ( cd "$UT" && SIZES="$SIZES" ./parse_inserts.sh output_inserts "$OUT/utree_puts.csv" )
 
 # 3) Plot

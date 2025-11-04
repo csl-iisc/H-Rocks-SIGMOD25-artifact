@@ -19,7 +19,7 @@ SIZES="${SIZES:-}"; VAL_SIZES="${VAL_SIZES:-8}"
 ( cd "$HR" && SIZES="$SIZES" ./parse_gets.sh . "$OUT/hrocks_gets.csv" )
 ( cd "$PM" && SIZES="$SIZES" ./parse_gets.sh output_gets "$OUT/pmem_gets.csv" )
 ( cd "$VP" && SIZES="$SIZES" VAL_SIZES="$VAL_SIZES" ./parse_gets.sh output_gets "$OUT/viper_gets.csv" )
-( cd "$PL" && SIZES="$SIZES" ./parse_gets.sh . "$OUT/plush_gets.csv" )
+( cd "$PL" && SIZES="$SIZES" ./parse_gets.sh ../output_gets "$OUT/plush_gets.csv" )
 ( cd "$UT" && SIZES="$SIZES" VAL_SIZES="$VAL_SIZES" ./parse_gets.sh output_gets "$OUT/utree_gets.csv" )
 
 python3 "$ROOT/scripts/plot_lines_from_csvs.py" \

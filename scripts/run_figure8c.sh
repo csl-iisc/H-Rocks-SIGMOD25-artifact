@@ -19,7 +19,7 @@ SIZES="${SIZES:-}"
 ( cd "$HR" && SIZES="$SIZES" ./parse_deletes.sh . "$OUT/hrocks_deletes.csv" )
 ( cd "$PM" && SIZES="$SIZES" ./parse_deletes.sh output_deletes "$OUT/pmem_deletes.csv" )
 ( cd "$VP" && SIZES="$SIZES" ./parse_delete.sh output_deletes "$OUT/viper_deletes.csv" )
-( cd "$PL" && SIZES="$SIZES" ./parse_deletes.sh . "$OUT/plush_deletes.csv" )
+( cd "$PL" && SIZES="$SIZES" ./parse_deletes.sh ../output_deletes "$OUT/plush_deletes.csv" )
 ( cd "$UT" && SIZES="$SIZES" ./parse_removes.sh output_removes "$OUT/utree_deletes.csv" )
 
 python3 "$ROOT/scripts/plot_lines_from_csvs.py" \
