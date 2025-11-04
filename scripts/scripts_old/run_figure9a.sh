@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# root + outputs
 ROOT="$(cd "$(dirname "$0")"/.. && pwd)"
 OUT="$ROOT/out/fig9a"; mkdir -p "$OUT"
 
+# projects
 HR="$ROOT/pmem-rocksdb/h-rocks"
-PM="$ROOT/pmem-rocksdb/benchmarks"
+PM="$ROOT/pmem-rocksdb/examples"
 PL="$ROOT/Plush/examples"
 
 echo "[Fig9a] output dir: $OUT"
@@ -37,10 +39,10 @@ else
 fi
 
 # pmem-rocksdb
-if [[ -x "$PM/parse_range.sh" ]]; then
-  ( cd "$PM" && SIZES="$SIZES" ./parse_range.sh output_range "$OUT/pmem_range.csv" )
+if [[ -x "$PM/pmem_parse_range.sh" ]]; then
+  ( cd "$PM" && SIZES="$SIZES" ./pmem_parse_range.sh output_range "$OUT/pmem_range.csv" )
 else
-  echo "[pmem-rocksdb] parse_range.sh not found; skipping parse."
+  echo "[pmem-rocksdb] pmem_parse_range.sh not found; skipping parse."
 fi
 
 # Plush

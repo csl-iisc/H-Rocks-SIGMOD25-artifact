@@ -4,7 +4,7 @@ ROOT="$(cd "$(dirname "$0")"/.. && pwd)"
 OUT="$ROOT/out/fig13d"; mkdir -p "$OUT"
 
 HR="$ROOT/pmem-rocksdb/h-rocks"
-PM="$ROOT/pmem-rocksdb/benchmarks"
+PM="$ROOT/pmem-rocksdb/examples"
 VP="$ROOT/viper/microbenchmarks"
 PL="$ROOT/Plush/examples"
 
@@ -15,9 +15,9 @@ PL="$ROOT/Plush/examples"
 
 SIZES="${SIZES:-}"
 ( cd "$HR" && SIZES="$SIZES" ./parse_ycsbD.sh . "$OUT/hrocks_ycsbD.csv" )
-( cd "$PM" && SIZES="$SIZES" ./parse_ycsbD.sh output_ycsbD "$OUT/pmem_ycsbD.csv" )
-( cd "$VP" && SIZES="$SIZES" ./parse_ycsbD.sh output_ycsbD "$OUT/viper_ycsbD.csv" )
-( cd "$PL" && SIZES="$SIZES" ./parse_ycsbD.sh . "$OUT/plush_ycsbD.csv" )
+( cd "$PM" && SIZES="$SIZES" ./pmem_parse_ycsbD.sh output_ycsbD "$OUT/pmem_ycsbD.csv" )
+( cd "$VP" && SIZES="$SIZES" ./viper_parse_ycsbD.sh output_ycsbD "$OUT/viper_ycsbD.csv" )
+( cd "$PL" && SIZES="$SIZES" ./plush_parse_ycsbD.sh . "$OUT/plush_ycsbD.csv" )
 
 python3 "$ROOT/scripts/plot_lines_from_csvs.py" \
   --title "Figure 13d: YCSB-D Throughput vs Size" \

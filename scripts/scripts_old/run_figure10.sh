@@ -5,7 +5,7 @@ ROOT="$(cd "$(dirname "$0")"/.. && pwd)"
 OUT="$ROOT/out/fig10"; mkdir -p "$OUT"
 
 HR="$ROOT/pmem-rocksdb/h-rocks"
-PM="$ROOT/pmem-rocksdb/benchmarks"
+PM="$ROOT/pmem-rocksdb/examples"
 VP="$ROOT/viper/microbenchmarks"
 PL="$ROOT/Plush/examples"
 
@@ -29,42 +29,42 @@ PUTS_ARGS=()
 GETS_ARGS=()
 
 # H-Rocks (if you have parsers)
-if [[ -x "$HR/parse_kv_puts.sh" ]]; then
-  (cd "$HR" && ./parse_kv_puts.sh output_diff_sizes_values "$OUT/hrocks_puts.csv")
+if [[ -x "$HR/hrocks_parse_var_kv_puts.sh" ]]; then
+  (cd "$HR" && ./hrocks_parse_var_kv_puts.sh output_var_kv_puts "$OUT/hrocks_puts.csv")
   PUTS_ARGS+=( "--puts" "$OUT/hrocks_puts.csv:H-Rocks" )
 fi
-if [[ -x "$HR/parse_kv_gets.sh" ]]; then
-  (cd "$HR" && ./parse_kv_gets.sh output_diff_sizes_values "$OUT/hrocks_gets.csv")
+if [[ -x "$HR/hrocks_parse_var_kv_gets.sh" ]]; then
+  (cd "$HR" && ./hrocks_parse_var_kv_gets.sh output_var_kv_gets "$OUT/hrocks_gets.csv")
   GETS_ARGS+=( "--gets" "$OUT/hrocks_gets.csv:H-Rocks" )
 fi
 
 # pmem-rocksdb
-if [[ -x "$PM/parse_var_kv_puts.sh" ]]; then
-  (cd "$PM" && ./parse_var_kv_puts.sh output_var_kv_puts "$OUT/pmem_puts.csv")
+if [[ -x "$PM/pmem_parse_var_kv_puts.sh" ]]; then
+  (cd "$PM" && ./pmem_parse_var_kv_puts.sh output_var_kv_puts "$OUT/pmem_puts.csv")
   PUTS_ARGS+=( "--puts" "$OUT/pmem_puts.csv:RocksDB" )
 fi
-if [[ -x "$PM/parse_var_kv_gets.sh" ]]; then
-  (cd "$PM" && ./parse_var_kv_gets.sh output_var_kv_gets "$OUT/pmem_gets.csv")
+if [[ -x "$PM/pmem_parse_var_kv_gets.sh" ]]; then
+  (cd "$PM" && ./pmem_parse_var_kv_gets.sh output_var_kv_gets "$OUT/pmem_gets.csv")
   GETS_ARGS+=( "--gets" "$OUT/pmem_gets.csv:RocksDB" )
 fi
 
 # Viper (parsers optional—add if present)
-if [[ -x "$VP/parse_var_kv_puts.sh" ]]; then
-  (cd "$VP" && ./parse_var_kv_puts.sh output_var_kv_puts "$OUT/viper_puts.csv")
+if [[ -x "$VP/viper_parse_var_kv_puts.sh" ]]; then
+  (cd "$VP" && ./viper_parse_var_kv_puts.sh output_var_kv_puts "$OUT/viper_puts.csv")
   PUTS_ARGS+=( "--puts" "$OUT/viper_puts.csv:Viper" )
 fi
-if [[ -x "$VP/parse_var_kv_gets.sh" ]]; then
-  (cd "$VP" && ./parse_var_kv_gets.sh output_var_kv_gets "$OUT/viper_gets.csv")
+if [[ -x "$VP/viper_parse_var_kv_gets.sh" ]]; then
+  (cd "$VP" && ./viper_parse_var_kv_gets.sh output_var_kv_gets "$OUT/viper_gets.csv")
   GETS_ARGS+=( "--gets" "$OUT/viper_gets.csv:Viper" )
 fi
 
 # Plush
-if [[ -x "$PL/parse_var_kv_puts.sh" ]]; then
-  (cd "$PL" && ./parse_var_kv_puts.sh output_var_kv_puts "$OUT/plush_puts.csv")
+if [[ -x "$PL/plush_parse_var_kv_puts.sh" ]]; then
+  (cd "$PL" && ./plush_parse_var_kv_puts.sh output_var_kv_puts "$OUT/plush_puts.csv")
   PUTS_ARGS+=( "--puts" "$OUT/plush_puts.csv:Plush" )
 fi
-if [[ -x "$PL/parse_var_kv_gets.sh" ]]; then
-  (cd "$PL" && ./parse_var_kv_gets.sh output_var_kv_gets "$OUT/plush_gets.csv")
+if [[ -x "$PL/plush_parse_var_kv_gets.sh" ]]; then
+  (cd "$PL" && ./plush_parse_var_kv_gets.sh output_var_kv_gets "$OUT/plush_gets.csv")
   GETS_ARGS+=( "--gets" "$OUT/plush_gets.csv:Plush" )
 fi
 
@@ -77,3 +77,4 @@ python3 "$ROOT/scripts/plot_kv_mops.py" \
   "${GETS_ARGS[@]}"
 
 echo "[Figure 10] Done: $OUT"
+

@@ -5,7 +5,7 @@ ROOT="$(cd "$(dirname "$0")"/.. && pwd)"
 OUT="$ROOT/out/fig12_latency"; mkdir -p "$OUT"
 
 HR="$ROOT/pmem-rocksdb/h-rocks"
-PM="$ROOT/pmem-rocksdb/benchmarks"
+PM="$ROOT/pmem-rocksdb/examples"
 
 echo "[Fig12] output dir: $OUT"
 
@@ -14,11 +14,11 @@ SIZES="${SIZES:-}"
 
 # PUTS
 ( cd "$HR" && SIZES="$SIZES" ./parse_puts.sh   output_puts   "$OUT/hrocks_puts.csv" )
-( cd "$PM" && SIZES="$SIZES" ./parse_puts.sh   output_puts   "$OUT/pmem_puts.csv" )
+( cd "$PM" && SIZES="$SIZES" ./pmem_parse_puts.sh output_puts "$OUT/pmem_puts.csv" )
 
 # GETS
 ( cd "$HR" && SIZES="$SIZES" ./parse_gets.sh   .             "$OUT/hrocks_gets.csv" )
-( cd "$PM" && SIZES="$SIZES" ./parse_gets.sh   output_gets   "$OUT/pmem_gets.csv" )
+( cd "$PM" && SIZES="$SIZES" ./pmem_parse_gets.sh output_gets "$OUT/pmem_gets.csv" )
 
 # 2) Plot latency (ms). Use log-x to match the figure look. Y-limits from your panel.
 python3 "$ROOT/scripts/plot_latency_from_csvs.py" \
