@@ -1,5 +1,7 @@
 include ../make_config.mk
 
+BIN_DIR ?= bin
+
 ifndef DISABLE_JEMALLOC
 	ifdef JEMALLOC
 		PLATFORM_CXXFLAGS += -DROCKSDB_JEMALLOC -DJEMALLOC_NO_DEMANGLE
@@ -15,9 +17,10 @@ endif
 include ../dcpmm.mk
 EXEC_LDFLAGS += $(LDFLAGS)
 
-.PHONY: clean librocksdb
+.PHONY: clean librocksdb begin
 
-all: test_puts test_deletes test_gets test_updates test_ranges test_ycsbA test_ycsbB test_ycsbC test_ycsbD
+all: begin $(BIN_DIR)/test_puts $(BIN_DIR)/test_deletes $(BIN_DIR)/test_gets $(BIN_DIR)/test_updates \
+	$(BIN_DIR)/test_ranges $(BIN_DIR)/test_ycsbA $(BIN_DIR)/test_ycsbB $(BIN_DIR)/test_ycsbC $(BIN_DIR)/test_ycsbD
 
 begin:
 	mkdir -p $(BIN_DIR)
@@ -48,3 +51,6 @@ bin/test_ycsbC: librocksdb test_ycsbC.cc
 
 bin/test_ycsbD: librocksdb test_ycsbD.cc
 	$(CXX) $(CXXFLAGS) test_ycsbD.cc -o$@ ../librocksdb.a -I../include -O2 -std=c++11 $(PLATFORM_LDFLAGS) $(PLATFORM_CXXFLAGS) $(EXEC_LDFLAGS)
+
+clean:
+	rm -rf $(BIN_DIR)

@@ -21,4 +21,22 @@ for dir in "${PROJECTS[@]}"; do
   fi
 done
 
+# pmem-rocksdb/benchmarks has no compile.sh; build via make if present.
+BENCH_DIR="$ROOT/pmem-rocksdb/benchmarks"
+if [[ -f "$BENCH_DIR/Makefile" ]]; then
+  echo "==> Building pmem-rocksdb/benchmarks"
+  ( cd "$BENCH_DIR" && make all )
+else
+  echo "==> Skipping pmem-rocksdb/benchmarks (Makefile not found)"
+fi
+
+# uTree (multiThread)
+UTREE_DIR="$ROOT/utree/multiThread/utree"
+if [[ -x "$UTREE_DIR/build.sh" ]]; then
+  echo "==> Building utree/multiThread"
+  ( cd "$UTREE_DIR" && bash ./build.sh )
+else
+  echo "==> Skipping utree/multiThread (build.sh not found or not executable)"
+fi
+
 echo "All done."
