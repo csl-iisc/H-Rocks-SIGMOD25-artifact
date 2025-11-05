@@ -9,11 +9,26 @@ VP="$ROOT/viper/microbenchmarks"
 PL="$ROOT/Plush/examples"
 UT="$ROOT/utree/multiThread/utree"
 
-[[ -x "$HR/run_gets.sh" ]] && (cd "$HR" && ./run_gets.sh) || echo "[H-Rocks] run_gets.sh not found."
-[[ -x "$PM/run_gets.sh" ]] && (cd "$PM" && ./run_gets.sh) || echo "[pmem-rocksdb] run_gets.sh not found."
-[[ -x "$VP/run_prefill_get.sh" ]] && (cd "$VP" && ./run_prefill_get.sh) || echo "[Viper] run_prefill_get.sh not found."
-[[ -x "$PL/run_get.sh" ]] && (cd "$PL" && ./run_get.sh) || echo "[Plush] run_get.sh not found."
-[[ -x "$UT/run_gets.sh" ]] && (cd "$UT" && ./run_gets.sh) || echo "[uTree] run_gets.sh not found."
+run_component() {
+  local label="$1"
+  local dir="$2"
+  local script="$3"
+
+  if [[ ! -x "$dir/$script" ]]; then
+    echo "[$label] $script not found."
+    return 0
+  fi
+
+  if ! (cd "$dir" && "./$script"); then
+    echo "[$label] $script failed. See logs above for details."
+  fi
+}
+
+run_component "H-Rocks" "$HR" "run_gets.sh"
+run_component "pmem-rocksdb" "$PM" "run_gets.sh"
+run_component "Viper" "$VP" "run_prefill_get.sh"
+run_component "Plush" "$PL" "run_get.sh"
+run_component "uTree" "$UT" "run_gets.sh"
 
 SIZES="${SIZES:-}"; VAL_SIZES="${VAL_SIZES:-8}"
 ( cd "$HR" && SIZES="$SIZES" ./parse_gets.sh . "$OUT/hrocks_gets.csv" )
