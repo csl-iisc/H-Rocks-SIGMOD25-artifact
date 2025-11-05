@@ -12,7 +12,7 @@ for f in "$IN_DIR"/ycsbC_*.log; do
   base="$(basename "$f")"; size="${base#ycsbC_}"; size="${size%.log}"
   if [[ -n "$SIZES_LIST" && " $SIZES_LIST " != *" $size "* ]]; then continue; fi
   g="$(ms_from_key 'get_time' "$f")"; : "${g:=0}"
-  thr="$(awk -v n="$size" -v t="$g" 'BEGIN{ if(t>0) printf "%.2f",(n*1000.0)/t; else printf "0"}')"
+  thr="$(awk -v n="$size" -v t="$g" 'BEGIN{ if(t>0){val=(n*1000.0)/t; if(val>n) val=n; printf "%.2f",val} else printf "0"}')"
   echo "$size,$thr" >> "$OUT_CSV"
 done
 

@@ -23,7 +23,7 @@ for f in "$IN_DIR"/updates_*.log "$IN_DIR"/update_*.log; do
   if [[ -n "$SIZES_LIST" && " $SIZES_LIST " != *" $size "* ]]; then continue; fi
 
   ms="$(ms_from_key 'update_time' "$f")"; : "${ms:=0}"
-  thr="$(awk -v n="$size" -v t="$ms" 'BEGIN{ if(t>0) printf "%.2f",(n*1000.0)/t; else printf "0"}')"
+  thr="$(awk -v n="$size" -v t="$ms" 'BEGIN{ if(t>0){val=(n*1000.0)/t; if(val>n) val=n; printf "%.2f",val} else printf "0"}')"
   echo "$size,$thr" >> "$OUT_CSV"
 done
 

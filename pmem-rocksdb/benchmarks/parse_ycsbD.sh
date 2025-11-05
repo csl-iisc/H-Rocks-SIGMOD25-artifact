@@ -14,7 +14,7 @@ for f in "$IN_DIR"/ycsbD_*.log; do
   p="$(ms_from_key 'put_time' "$f")"; : "${p:=0}"
   g="$(ms_from_key 'get_time' "$f")"; : "${g:=0}"
   total_ms="$(awk -v a="$p" -v b="$g" 'BEGIN{printf "%.6f",(a+b)}')"
-  thr="$(awk -v n="$size" -v t="$total_ms" 'BEGIN{ if(t>0) printf "%.2f",(n*1000.0)/t; else printf "0"}')"
+  thr="$(awk -v n="$size" -v t="$total_ms" 'BEGIN{ if(t>0){val=(n*1000.0)/t; if(val>n) val=n; printf "%.2f",val} else printf "0"}')"
   echo "$size,$thr" >> "$OUT_CSV"
 done
 

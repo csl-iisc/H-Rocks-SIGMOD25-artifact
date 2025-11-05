@@ -46,7 +46,7 @@ for f in "$IN_DIR"/output_50M_*_*_*; do
   cb="$(get_num 'copy_back_time'   "$f")"
 
   total_ms="$(awk -v a="$rs" -v b="$rk" -v c="$rb" -v d="$cb" 'BEGIN{printf "%.6f",(a+b+c+d)}')"
-  thr_ops_s="$(awk -v n="$size" -v ms="$total_ms" 'BEGIN{if(ms>0)printf "%.2f",(n*1000.0)/ms;else printf "0"}')"
+  thr_ops_s="$(awk -v n="$size" -v ms="$total_ms" 'BEGIN{if(ms>0){val=(n*1000.0)/ms;if(val>n)val=n;printf "%.2f",val}else printf "0"}')"
 
   echo "${size},${thr_ops_s}" >> "$OUT_CSV"
 done

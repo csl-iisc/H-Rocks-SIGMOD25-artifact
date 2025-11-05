@@ -21,7 +21,7 @@ for f in "$IN_DIR"/output_8_8_*; do
   w="$(get_num 'delete_write_batch_time|write_batch_time' "$f")"
   m="$(get_num 'delete_memtable_time|memtable_time' "$f")"
   total_ms="$(awk -v a="$s" -v b="$so" -v c="$w" -v d="$m" 'BEGIN{printf "%.6f",(a+b+c+d)}')"
-  thr="$(awk -v n="$size" -v ms="$total_ms" 'BEGIN{if(ms>0)printf "%.2f",(n*1000.0)/ms; else printf "0"}')"
+  thr="$(awk -v n="$size" -v ms="$total_ms" 'BEGIN{if(ms>0){val=(n*1000.0)/ms;if(val>n)val=n;printf "%.2f",val}else printf "0"}')"
   echo "$size,$thr" >> "$OUT_CSV"
 done
 

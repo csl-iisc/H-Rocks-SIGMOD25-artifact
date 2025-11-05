@@ -23,7 +23,7 @@ for f in "$IN_DIR"/output_*; do
   line="$(grep -E 'throughput:' "$f" | head -n1 || true)"
   [[ -z "$line" ]] && continue
   mops="$(awk '{print $(NF-1)}' <<<"$line")"
-  ops="$(awk -v m="$mops" 'BEGIN{printf "%.6f", m*1e6}')"
+  ops="$(awk -v m="$mops" -v n="$size" 'BEGIN{val=m*1e6;if(val>n)val=n;printf "%.6f",val}')"
   echo "$size,$ops" >> "$OUT_CSV"
 done
 

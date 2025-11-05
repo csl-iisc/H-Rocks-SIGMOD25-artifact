@@ -31,7 +31,7 @@ for f in "$IN_DIR"/output_*_8_8; do
 
   total_ms="$(awk -v a="$ws" -v b="$wso" -v c="$ww" -v d="$wm" -v e="$rs" -v g="$rk" -v h="$rb" -v i="$rc" \
                  'BEGIN{printf "%.6f",(a+b+c+d+e+g+h+i)}')"
-  thr="$(awk -v n="$size" -v ms="$total_ms" 'BEGIN{if(ms>0)printf "%.2f",(n*1000.0)/ms; else printf "0"}')"
+  thr="$(awk -v n="$size" -v ms="$total_ms" 'BEGIN{if(ms>0){val=(n*1000.0)/ms;if(val>n)val=n;printf "%.2f",val}else printf "0"}')"
   echo "$size,$thr" >> "$OUT_CSV"
 done
 

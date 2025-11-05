@@ -22,9 +22,22 @@ get_num() {
   [[ -n "${v:-}" ]] && echo "$v" || echo "0"
 }
 
-for f in "$IN_DIR"/output_*_*_*; do
-  base="$(basename "$f")"         # e.g., output_8_8_100000
-  size="${base##*_}"              # -> 100000
+for f in "$IN_DIR"/output_*_*_* "$IN_DIR"/puts_*.log; do
+  [[ -f "$f" ]] || continue
+  base="$(basename "$f")"
+  size=""
+
+  if [[ "$base" == output_*_*_* ]]; then
+    size="${base##*_}"                  # output_8_8_100000 -> 100000
+  elif [[ "$base" == puts_* ]]; then
+    tmp="${base%.log}"                   # puts_k8_v8_n1000000.log -> puts_k8_v8_n1000000
+    tmp="${tmp##*_}"                     # -> n1000000
+    size="${tmp#n}"                      # -> 1000000
+  else
+    continue
+  fi
+
+  [[ "$size" =~ ^[0-9]+$ ]] || continue
 
   setup_ms="$(get_num 'setup_time'         "$f")"
   sort_ms="$(get_num 'sort_time'           "$f")"
@@ -35,7 +48,7 @@ for f in "$IN_DIR"/output_*_*_*; do
   total_ms="$(awk -v a="$setup_ms" -v b="$sort_ms" -v c="$write_ms" -v d="$memtbl_ms" \
                  'BEGIN{printf "%.6f",(a+b+c+d)}')"
   thr_ops_s="$(awk -v n="$size" -v ms="$total_ms" \
-                 'BEGIN{if(ms>0)printf "%.2f",(n*1000.0)/ms;else printf "0"}')"
+                 'BEGIN{if(ms>0){val=(n*1000.0)/ms;if(val>n)val=n;printf "%.2f",val}else printf "0"}')"
 
   echo "${size},${thr_ops_s}" >> "$OUT_CSV"
 done
