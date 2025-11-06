@@ -14,7 +14,7 @@ make bin/test_puts bin/test_get_put
 for v in $VAL_SIZES; do
   for n in $SIZES; do
     echo "==> GET+PUT n=$n k=$KEY_SIZE v=$v (prefill first)"
-    rm -rf /pmem/rocksdb_* /pmem/values* /dev/shm/*
+    rm -rf /pmem/rocksdb_* /pmem/values* /dev/shm/rocksdb_* /dev/shm/values* /dev/shm/hrocks_*
     ./bin/test_puts -n "$n" -k "$KEY_SIZE" -v "$v" > /dev/null
     sleep 1
     ./bin/test_get_put -n "$n" -k "$KEY_SIZE" -v "$v" > "$OUT_DIR/get_put_k${KEY_SIZE}_v${v}_n${n}.log"

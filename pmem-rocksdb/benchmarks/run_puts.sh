@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+mkdir -p "$DIR/bin"
 make -C "$DIR" bin/test_puts
 OUT_DIR=output_puts
 mkdir -p "$OUT_DIR"
