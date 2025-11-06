@@ -9,9 +9,9 @@ SLEEP_BETWEEN=2
 
 mkdir -p "$OUT_DIR"
 make lib
-make -k bin/test_puts bin/test_deletes || true
+make -k bin/test_puts || true
 
-if [[ ! -x ./bin/test_deletes ]]; then
+if [[ ! -x ./bin/test_puts ]]; then
   echo "WARNING: ./bin/test_deletes not found; skipping deletes."
   exit 0
 fi
