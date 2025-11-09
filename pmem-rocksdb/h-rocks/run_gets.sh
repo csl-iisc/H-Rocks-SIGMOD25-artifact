@@ -15,9 +15,9 @@ for v in $VAL_SIZES; do
   for n in $SIZES; do
     echo "==> GET+PUT n=$n k=$KEY_SIZE v=$v (prefill first)"
     rm -rf /pmem/rocksdb_* /pmem/values* /dev/shm/rocksdb_* /dev/shm/values* /dev/shm/hrocks_*
-    ./bin/test_puts -n "$n" -k "$KEY_SIZE" -v "$v" > /dev/null
+    # ./bin/test_puts -n "$n" -k "$KEY_SIZE" -v "$v" > /dev/null
     sleep 1
-    ./bin/test_get_put -n "$n" -k "$KEY_SIZE" -v "$v" > "$OUT_DIR/get_put_k${KEY_SIZE}_v${v}_n${n}.log"
+    ./bin/test_get_put -p 50000000 -g "$n" -k "$KEY_SIZE" -v "$v" > "$OUT_DIR/get_put_k${KEY_SIZE}_v${v}_n${n}.log"
     sleep "$SLEEP_BETWEEN"
   done
 done

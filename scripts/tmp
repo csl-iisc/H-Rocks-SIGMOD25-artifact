@@ -1,0 +1,802 @@
+[run_all] ==> run_figure8a.sh
+rm -rf bin libgpu.a
+mkdir -p bin
+nvcc -O3 -std=c++14 -Xcompiler -fopenmp -rdc=true -arch=sm_75 -DON_DCPMM -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX -DOS_LINUX -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -DHAVE_SSE42 -DHAVE_PCLMUL -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL -I/usr/local/include -I. -Ibin -I../libgpm/include -I/usr/local/cuda/include -I../include -c gpu_puts.cu -o bin/gpu_puts.o
+gpu_puts.cu(165): warning #177-D: variable "gridSize" was declared but never referenced
+      int gridSize = (num_elems + 512 - 1) / 512;
+          ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+libgpm.cuh: In function ‘void pmem_mt_persist(void*, size_t)’:
+libgpm.cuh:351:8: warning: format ‘%d’ expects argument of type ‘int’, but argument 2 has type ‘size_t’ {aka ‘long unsigned int’} [-Wformat=]
+  351 |     printf("Using %d threads to persist\n", threads);
+      |        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~
+      |                                         |
+      |                                         size_t {aka long unsigned int}
+nvcc -O3 -std=c++14 -Xcompiler -fopenmp -rdc=true -arch=sm_75 -DON_DCPMM -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX -DOS_LINUX -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -DHAVE_SSE42 -DHAVE_PCLMUL -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL -I/usr/local/include -I. -Ibin -I../libgpm/include -I/usr/local/cuda/include -I../include -c gpu_puts_values.cu -o bin/gpu_puts_values.o
+libgpm.cuh: In function ‘void pmem_mt_persist(void*, size_t)’:
+libgpm.cuh:351:8: warning: format ‘%d’ expects argument of type ‘int’, but argument 2 has type ‘size_t’ {aka ‘long unsigned int’} [-Wformat=]
+  351 |     printf("Using %d threads to persist\n", threads);
+      |        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~
+      |                                         |
+      |                                         size_t {aka long unsigned int}
+nvcc -O3 -std=c++14 -Xcompiler -fopenmp -rdc=true -arch=sm_75 -DON_DCPMM -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX -DOS_LINUX -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -DHAVE_SSE42 -DHAVE_PCLMUL -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL -I/usr/local/include -I. -Ibin -I../libgpm/include -I/usr/local/cuda/include -I../include -c gpu_gets_values.cu -o bin/gpu_gets_values.o
+gpu_gets_values.cu(41): warning #68-D: integer conversion resulted in a change of sign
+      if (tag == -1);
+                 ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+gpu_gets_values.cu(41): warning #68-D: integer conversion resulted in a change of sign
+      if (tag == -1);
+                 ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+gpu_gets_values.cu(149): warning #177-D: variable "h_resultIdx" was declared but never referenced
+      int* resultIdx, *h_resultIdx;
+                       ^
+
+nvcc -O3 -std=c++14 -Xcompiler -fopenmp -rdc=true -arch=sm_75 -DON_DCPMM -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX -DOS_LINUX -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -DHAVE_SSE42 -DHAVE_PCLMUL -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL -I/usr/local/include -I. -Ibin -I../libgpm/include -I/usr/local/cuda/include -I../include -c memtable.cu -o bin/memtable.o
+nvcc -O3 -std=c++14 -Xcompiler -fopenmp -rdc=true -arch=sm_75 -DON_DCPMM -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX -DOS_LINUX -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -DHAVE_SSE42 -DHAVE_PCLMUL -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL -I/usr/local/include -I. -Ibin -I../libgpm/include -I/usr/local/cuda/include -I../include -c gpu_gets.cu -o bin/gpu_gets.o
+gpu_gets.cu(41): warning #68-D: integer conversion resulted in a change of sign
+      if (tag == -1);
+                 ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+gpu_gets.cu(41): warning #68-D: integer conversion resulted in a change of sign
+      if (tag == -1);
+                 ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+gpu_gets.cu(82): warning #181-D: argument is incompatible with corresponding format string conversion (expected type "int" but argument has type "unsigned long")
+          printf("%s %d\n", active->d_sortedKeys + (i * 8), active->d_sortedOperationIDs[i]);
+                                                            ^
+
+gpu_gets.cu(148): warning #177-D: variable "h_resultIdx" was declared but never referenced
+      int* resultIdx, *h_resultIdx;
+                       ^
+
+nvcc -O3 -std=c++14 -Xcompiler -fopenmp -rdc=true -arch=sm_75 -DON_DCPMM -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX -DOS_LINUX -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -DHAVE_SSE42 -DHAVE_PCLMUL -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL -I/usr/local/include -I. -Ibin -I../libgpm/include -I/usr/local/cuda/include -I../include -c search.cu -o bin/search.o
+nvcc -O3 -std=c++14 -Xcompiler -fopenmp -rdc=true -arch=sm_75 -DON_DCPMM -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX -DOS_LINUX -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -DHAVE_SSE42 -DHAVE_PCLMUL -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL -I/usr/local/include -I. -Ibin -I../libgpm/include -I/usr/local/cuda/include -I../include -c gpu_updates.cu -o bin/gpu_updates.o
+libgpm.cuh: In function ‘void pmem_mt_persist(void*, size_t)’:
+libgpm.cuh:351:8: warning: format ‘%d’ expects argument of type ‘int’, but argument 2 has type ‘size_t’ {aka ‘long unsigned int’} [-Wformat=]
+  351 |     printf("Using %d threads to persist\n", threads);
+      |        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~
+      |                                         |
+      |                                         size_t {aka long unsigned int}
+nvcc -O3 -std=c++14 -Xcompiler -fopenmp -rdc=true -arch=sm_75 -DON_DCPMM -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX -DOS_LINUX -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -DHAVE_SSE42 -DHAVE_PCLMUL -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL -I/usr/local/include -I. -Ibin -I../libgpm/include -I/usr/local/cuda/include -I../include -c batch.cu -o bin/batch.o
+batch.cu(440): warning #549-D: variable "getValuePointers" is used before its value is set
+      searchGetsOnGPU(getCommand.keys, activeMemtable, immutableMemtable, keyLength, numReads, getValuePointers, getCommand.operationIDs, cache);
+                                                                                               ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+batch.cu(440): warning #549-D: variable "getValuePointers" is used before its value is set
+      searchGetsOnGPU(getCommand.keys, activeMemtable, immutableMemtable, keyLength, numReads, getValuePointers, getCommand.operationIDs, cache);
+                                                                                               ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+libgpm.cuh: In function ‘void pmem_mt_persist(void*, size_t)’:
+libgpm.cuh:351:8: warning: format ‘%d’ expects argument of type ‘int’, but argument 2 has type ‘size_t’ {aka ‘long unsigned int’} [-Wformat=]
+  351 |     printf("Using %d threads to persist\n", threads);
+      |        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~
+      |                                         |
+      |                                         size_t {aka long unsigned int}
+nvcc -O3 -std=c++14 -Xcompiler -fopenmp -rdc=true -arch=sm_75 -DON_DCPMM -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX -DOS_LINUX -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -DHAVE_SSE42 -DHAVE_PCLMUL -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL -I/usr/local/include -I. -Ibin -I../libgpm/include -I/usr/local/cuda/include -I../include -c block_cache.cu -o bin/block_cache.o
+g++  -O3 -std=c++14 -std=c++11  -faligned-new -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX  -DOS_LINUX -fno-builtin-memcmp -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DLZ4 -DZSTD -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -march=native   -DHAVE_SSE42  -DHAVE_PCLMUL  -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL -DON_DCPMM -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX -DOS_LINUX -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -DHAVE_SSE42 -DHAVE_PCLMUL -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL -I/usr/local/include -I. -Ibin -I../libgpm/include -I/usr/local/cuda/include -I../include -c sst_writer.cc -o bin/sst_writer.o
+sst_writer.cc:17: warning: "TOMBSTONE_MARKER" redefined
+   17 | #define TOMBSTONE_MARKER nullptr
+      | 
+In file included from sst_writer.cc:14:
+batch.h:13: note: this is the location of the previous definition
+   13 | #define TOMBSTONE_MARKER NULL
+      | 
+nvcc -O3 -std=c++14 -Xcompiler -fopenmp -rdc=true -arch=sm_75 -DON_DCPMM -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX -DOS_LINUX -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -DHAVE_SSE42 -DHAVE_PCLMUL -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL -I/usr/local/include -I. -Ibin -I../libgpm/include -I/usr/local/cuda/include -I../include -c gpu_range.cu -o bin/gpu_range.o
+libgpm.cuh: In function ‘void pmem_mt_persist(void*, size_t)’:
+libgpm.cuh:351:8: warning: format ‘%d’ expects argument of type ‘int’, but argument 2 has type ‘size_t’ {aka ‘long unsigned int’} [-Wformat=]
+  351 |     printf("Using %d threads to persist\n", threads);
+      |        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~
+      |                                         |
+      |                                         size_t {aka long unsigned int}
+ar rcs libgpu.a bin/gpu_puts.o bin/gpu_puts_values.o bin/gpu_gets_values.o bin/memtable.o bin/gpu_gets.o bin/search.o bin/gpu_updates.o bin/batch.o bin/block_cache.o bin/sst_writer.o bin/gpu_range.o
+nvcc -O3 -std=c++14 -Xcompiler -fopenmp -rdc=true -arch=sm_75 -DON_DCPMM -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX -DOS_LINUX -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -DHAVE_SSE42 -DHAVE_PCLMUL -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL -I/usr/local/include -I. -Ibin -I../libgpm/include -I/usr/local/cuda/include -I../include -DON_DCPMM -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX -DOS_LINUX -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -DHAVE_SSE42 -DHAVE_PCLMUL -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL test_puts.cc -o bin/test_puts libgpu.a ../librocksdb.a -L/usr/local/lib/ -L/usr/local/lib64/ -L/usr/local/cuda/lib64 -lsnappy -lgflags -lz -lbz2 -llz4 -lzstd -ldl -lpthread -lrt -lm -lnuma -ltbb -lpmem -lpmemobj -lcuda -lcudart -lnvidia-ml -lpci -lpthread -lrt -lsnappy -lgflags -lz -lbz2 -llz4 -lzstd -lnuma -ltbb -L/usr/local/lib/ -L/usr/local/lib64/ -lpmem -lpmemobj
+==> PUTS n=10000 k=8 v=8
+==> PUTS n=1000000 k=8 v=8
+==> PUTS n=10000000 k=8 v=8
+==> PUTS n=25000000 k=8 v=8
+==> PUTS n=50000000 k=8 v=8
+==> PUTS n=75000000 k=8 v=8
+==> PUTS n=100000000 k=8 v=8
+make: Entering directory '/home/shweta/testing/H-Rocks-SIGMOD25-artifact/pmem-rocksdb/benchmarks'
+g++ -fno-rtti -I/usr/local/include -DON_DCPMM test_puts.cc -obin/test_puts ../librocksdb.a -I../include -O2 -std=c++11 -lpthread -lrt -lsnappy -lgflags -lz -lbz2 -llz4 -lzstd -lnuma -ltbb -std=c++11  -faligned-new -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX  -DOS_LINUX -fno-builtin-memcmp -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DLZ4 -DZSTD -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -march=native   -DHAVE_SSE42  -DHAVE_PCLMUL  -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL -DROCKSDB_JEMALLOC -DJEMALLOC_NO_DEMANGLE   -ldl -lpthread -L/usr/local/lib/ -L/usr/local/lib64/ -lpmem -lpmemobj
+/usr/bin/ld: cannot open output file bin/test_puts: No such file or directory
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:29: bin/test_puts] Error 1
+make: Leaving directory '/home/shweta/testing/H-Rocks-SIGMOD25-artifact/pmem-rocksdb/benchmarks'
+[pmem-rocksdb] run_puts.sh not found, skipping run.
+-- Failed to find LLVM FileCheck
+-- Google Benchmark version: v1.9.4-66-g18b746f8, normalized to 1.9.4.66
+-- Performing Test HAVE_STD_REGEX -- success
+-- Performing Test HAVE_GNU_POSIX_REGEX -- failed to compile
+-- Performing Test HAVE_POSIX_REGEX -- success
+-- Performing Test HAVE_STEADY_CLOCK -- success
+-- Performing Test HAVE_PTHREAD_AFFINITY -- failed to compile
+-- Found PMDK. Including /usr/include and linking /usr/local/lib/libpmem.so
+-- IPO enabled
+-- The tbbbind_2_0 target will be configured using the HWLOC 2.1.0
+-- BUILDING BENCHMARKS IN RELEASE
+-- Configuring done (6.2s)
+-- Generating done (0.1s)
+-- Build files have been written to: /home/shweta/testing/H-Rocks-SIGMOD25-artifact/viper/microbenchmarks/build
+[ 21%] Built target benchmark
+[ 23%] Built target put_key_value
+[ 25%] Built target prefill_put
+[ 27%] Built target same_key_update
+[ 29%] Built target test_same_key3
+[ 31%] Built target prefill_delete
+[ 33%] Built target put_latency
+[ 35%] Built target recovery_test
+[ 37%] Built target put_rps
+[ 40%] Built target get_rps
+[ 42%] Built target ycsbA
+[ 44%] Built target ycsbB
+[ 46%] Built target get_key_value
+[ 48%] Built target prefill_get
+[ 50%] Built target prefill_update
+[ 52%] Built target benchmark_main
+[ 87%] Built target tbb
+[ 94%] Built target tbbmalloc
+[ 97%] Built target tbbmalloc_proxy
+[100%] Built target tbbbind_2_0
+10000
+100000
+200000
+400000
+800000
+1000000
+2000000
+4000000
+8000000
+10000000
+20000000
+40000000
+50000000
+80000000
+100000000
+10000
+1000000
+10000000
+25000000
+50000000
+75000000
+100000000
+main-gu-zipfian.c: In function ‘int main(int, char**)’:
+main-gu-zipfian.c:512:23: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
+  512 |         bt->insert(i, (char*) i);
+      |                       ^~~~~~~~~
+In file included from main-gu-zipfian.c:1:
+utree.h: In static member function ‘static void* page::operator new(size_t)’:
+utree.h:204:21: warning: ignoring return value of ‘int posix_memalign(void**, size_t, size_t)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  204 |       posix_memalign(&ret,64,size);
+      |       ~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+In file included from insert_test.cc:1:
+utree.h: In static member function ‘static void* page::operator new(size_t)’:
+utree.h:204:21: warning: ignoring return value of ‘int posix_memalign(void**, size_t, size_t)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  204 |       posix_memalign(&ret,64,size);
+      |       ~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+In file included from get_test.cc:1:
+utree.h: In static member function ‘static void* page::operator new(size_t)’:
+utree.h:204:21: warning: ignoring return value of ‘int posix_memalign(void**, size_t, size_t)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  204 |       posix_memalign(&ret,64,size);
+      |       ~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+In file included from remove_test.cc:1:
+utree.h: In static member function ‘static void* page::operator new(size_t)’:
+utree.h:204:21: warning: ignoring return value of ‘int posix_memalign(void**, size_t, size_t)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  204 |       posix_memalign(&ret,64,size);
+      |       ~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+In file included from update_test.cc:1:
+utree.h: In static member function ‘static void* page::operator new(size_t)’:
+utree.h:204:21: warning: ignoring return value of ‘int posix_memalign(void**, size_t, size_t)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  204 |       posix_memalign(&ret,64,size);
+      |       ~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+In file included from concurrency_test.cc:1:
+utree.h: In static member function ‘static void* page::operator new(size_t)’:
+utree.h:204:21: warning: ignoring return value of ‘int posix_memalign(void**, size_t, size_t)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  204 |       posix_memalign(&ret,64,size);
+      |       ~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+500
+1000
+2000
+4000
+8000
+10000
+16000
+25000
+50000
+100000
+200000
+400000
+800000
+1000000
+2000000
+4000000
+8000000
+10000000
+20000000
+40000000
+50000000
+80000000
+100000000
+Wrote /home/shweta/testing/H-Rocks-SIGMOD25-artifact/out/fig8a/hrocks_puts.csv
+Wrote /home/shweta/testing/H-Rocks-SIGMOD25-artifact/out/fig8a/pmem_puts.csv
+Wrote /home/shweta/testing/H-Rocks-SIGMOD25-artifact/out/fig8a/viper_puts.csv
+Wrote /home/shweta/testing/H-Rocks-SIGMOD25-artifact/out/fig8a/plush_puts.csv
+Wrote /home/shweta/testing/H-Rocks-SIGMOD25-artifact/out/fig8a/utree_puts.csv
+Wrote /home/shweta/testing/H-Rocks-SIGMOD25-artifact/out/fig8a/fig8a_puts.pdf
+Done: /home/shweta/testing/H-Rocks-SIGMOD25-artifact/out/fig8a
+[run_all] ==> run_figure8b.sh
+make: Nothing to be done for 'lib'.
+make: 'bin/test_puts' is up to date.
+nvcc -O3 -std=c++14 -Xcompiler -fopenmp -rdc=true -arch=sm_75 -DON_DCPMM -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX -DOS_LINUX -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -DHAVE_SSE42 -DHAVE_PCLMUL -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL -I/usr/local/include -I. -Ibin -I../libgpm/include -I/usr/local/cuda/include -I../include -DON_DCPMM -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX -DOS_LINUX -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -DHAVE_SSE42 -DHAVE_PCLMUL -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL test_get_put.cc -o bin/test_get_put libgpu.a ../librocksdb.a -L/usr/local/lib/ -L/usr/local/lib64/ -L/usr/local/cuda/lib64 -lsnappy -lgflags -lz -lbz2 -llz4 -lzstd -ldl -lpthread -lrt -lm -lnuma -ltbb -lpmem -lpmemobj -lcuda -lcudart -lnvidia-ml -lpci -lpthread -lrt -lsnappy -lgflags -lz -lbz2 -llz4 -lzstd -lnuma -ltbb -L/usr/local/lib/ -L/usr/local/lib64/ -lpmem -lpmemobj
+==> GET+PUT n=10000 k=8 v=8 (prefill first)
+rm: cannot remove '/dev/shm/fdbserver_shared_memory_id': Operation not permitted
+rm: cannot remove '/dev/shm/PostgreSQL.2063724637': Operation not permitted
+[H-Rocks] run_gets.sh failed. See logs above for details.
+make: Entering directory '/home/shweta/testing/H-Rocks-SIGMOD25-artifact/pmem-rocksdb/benchmarks'
+g++ -fno-rtti -I/usr/local/include -DON_DCPMM test_gets.cc -obin/test_gets ../librocksdb.a -I../include -O2 -std=c++11 -lpthread -lrt -lsnappy -lgflags -lz -lbz2 -llz4 -lzstd -lnuma -ltbb -std=c++11  -faligned-new -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX  -DOS_LINUX -fno-builtin-memcmp -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DLZ4 -DZSTD -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -march=native   -DHAVE_SSE42  -DHAVE_PCLMUL  -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL -DROCKSDB_JEMALLOC -DJEMALLOC_NO_DEMANGLE   -ldl -lpthread -L/usr/local/lib/ -L/usr/local/lib64/ -lpmem -lpmemobj
+/usr/bin/ld: cannot open output file bin/test_gets: No such file or directory
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:35: bin/test_gets] Error 1
+make: Leaving directory '/home/shweta/testing/H-Rocks-SIGMOD25-artifact/pmem-rocksdb/benchmarks'
+[pmem-rocksdb] run_gets.sh failed. See logs above for details.
+-- Failed to find LLVM FileCheck
+-- Google Benchmark version: v1.9.4-66-g18b746f8, normalized to 1.9.4.66
+-- Performing Test HAVE_STD_REGEX -- success
+-- Performing Test HAVE_GNU_POSIX_REGEX -- failed to compile
+-- Performing Test HAVE_POSIX_REGEX -- success
+-- Performing Test HAVE_STEADY_CLOCK -- success
+-- Performing Test HAVE_PTHREAD_AFFINITY -- failed to compile
+-- Found PMDK. Including /usr/include and linking /usr/local/lib/libpmem.so
+-- IPO enabled
+-- The tbbbind_2_0 target will be configured using the HWLOC 2.1.0
+-- BUILDING BENCHMARKS IN RELEASE
+-- Configuring done (4.9s)
+-- Generating done (0.1s)
+-- Build files have been written to: /home/shweta/testing/H-Rocks-SIGMOD25-artifact/viper/microbenchmarks/build
+[  2%] Built target tbbbind_2_0
+[  9%] Built target tbbmalloc
+[ 30%] Built target benchmark
+[ 33%] Built target tbbmalloc_proxy
+[ 35%] Built target put_key_value
+[ 37%] Built target test_same_key3
+[ 40%] Built target same_key_update
+[ 42%] Built target get_rps
+[ 46%] Built target recovery_test
+[ 46%] Built target prefill_put
+[ 48%] Built target put_rps
+[ 50%] Built target put_latency
+[ 52%] Built target prefill_delete
+[ 87%] Built target tbb
+[ 89%] Built target benchmark_main
+[ 91%] Built target ycsbA
+[ 93%] Built target prefill_get
+[ 95%] Built target get_key_value
+[ 97%] Built target ycsbB
+[100%] Built target prefill_update
+8 10000
+8 100000
+8 200000
+8 400000
+8 800000
+8 1000000
+8 2000000
+8 4000000
+8 8000000
+8 10000000
+8 20000000
+8 40000000
+8 50000000
+8 80000000
+8 100000000
+100 10000
+100 100000
+100 200000
+100 400000
+100 800000
+100 1000000
+100 2000000
+100 4000000
+100 8000000
+./run_prefill_get.sh: line 15: 3578647 Segmentation fault      (core dumped) ./build/prefill_get -p $PREFILL_SIZE -n $size -k 8 -v $val_size -t 128 > output_prefill_get2/output_8_${val_size}_$size
+100 10000000
+100 20000000
+100 40000000
+100 50000000
+100 80000000
+./run_prefill_get.sh: line 15: 3581764 Segmentation fault      (core dumped) ./build/prefill_get -p $PREFILL_SIZE -n $size -k 8 -v $val_size -t 128 > output_prefill_get2/output_8_${val_size}_$size
+100 100000000
+10000
+1000000
+10000000
+25000000
+50000000
+75000000
+100000000
+main-gu-zipfian.c: In function ‘int main(int, char**)’:
+main-gu-zipfian.c:512:23: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
+  512 |         bt->insert(i, (char*) i);
+      |                       ^~~~~~~~~
+In file included from main-gu-zipfian.c:1:
+utree.h: In static member function ‘static void* page::operator new(size_t)’:
+utree.h:204:21: warning: ignoring return value of ‘int posix_memalign(void**, size_t, size_t)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  204 |       posix_memalign(&ret,64,size);
+      |       ~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+In file included from insert_test.cc:1:
+utree.h: In static member function ‘static void* page::operator new(size_t)’:
+utree.h:204:21: warning: ignoring return value of ‘int posix_memalign(void**, size_t, size_t)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  204 |       posix_memalign(&ret,64,size);
+      |       ~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+In file included from get_test.cc:1:
+utree.h: In static member function ‘static void* page::operator new(size_t)’:
+utree.h:204:21: warning: ignoring return value of ‘int posix_memalign(void**, size_t, size_t)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  204 |       posix_memalign(&ret,64,size);
+      |       ~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+In file included from remove_test.cc:1:
+utree.h: In static member function ‘static void* page::operator new(size_t)’:
+utree.h:204:21: warning: ignoring return value of ‘int posix_memalign(void**, size_t, size_t)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  204 |       posix_memalign(&ret,64,size);
+      |       ~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+In file included from update_test.cc:1:
+utree.h: In static member function ‘static void* page::operator new(size_t)’:
+utree.h:204:21: warning: ignoring return value of ‘int posix_memalign(void**, size_t, size_t)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  204 |       posix_memalign(&ret,64,size);
+      |       ~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+In file included from concurrency_test.cc:1:
+utree.h: In static member function ‘static void* page::operator new(size_t)’:
+utree.h:204:21: warning: ignoring return value of ‘int posix_memalign(void**, size_t, size_t)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  204 |       posix_memalign(&ret,64,size);
+      |       ~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+500
+1000
+2000
+4000
+8000
+10000
+16000
+25000
+50000
+100000
+200000
+400000
+800000
+1000000
+2000000
+4000000
+8000000
+10000000
+20000000
+40000000
+50000000
+80000000
+100000000
+Wrote /home/shweta/testing/H-Rocks-SIGMOD25-artifact/out/fig8b/hrocks_gets.csv
+Wrote /home/shweta/testing/H-Rocks-SIGMOD25-artifact/out/fig8b/pmem_gets.csv
+Wrote /home/shweta/testing/H-Rocks-SIGMOD25-artifact/out/fig8b/viper_gets.csv
+Wrote /home/shweta/testing/H-Rocks-SIGMOD25-artifact/out/fig8b/plush_gets.csv
+Wrote /home/shweta/testing/H-Rocks-SIGMOD25-artifact/out/fig8b/utree_gets.csv
+Wrote /home/shweta/testing/H-Rocks-SIGMOD25-artifact/out/fig8b/fig8b_gets.pdf
+Done: /home/shweta/testing/H-Rocks-SIGMOD25-artifact/out/fig8b
+[run_all] ==> run_figure8c.sh
+make: Nothing to be done for 'lib'.
+make: 'bin/test_puts' is up to date.
+make: *** No rule to make target 'bin/test_deletes'.
+WARNING: ./bin/test_deletes not found; skipping deletes.
+make: Entering directory '/home/shweta/testing/H-Rocks-SIGMOD25-artifact/pmem-rocksdb/benchmarks'
+g++ -fno-rtti -I/usr/local/include -DON_DCPMM test_deletes.cc -obin/test_deletes ../librocksdb.a -I../include -O2 -std=c++11 -lpthread -lrt -lsnappy -lgflags -lz -lbz2 -llz4 -lzstd -lnuma -ltbb -std=c++11  -faligned-new -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX  -DOS_LINUX -fno-builtin-memcmp -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DLZ4 -DZSTD -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -march=native   -DHAVE_SSE42  -DHAVE_PCLMUL  -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL -DROCKSDB_JEMALLOC -DJEMALLOC_NO_DEMANGLE   -ldl -lpthread -L/usr/local/lib/ -L/usr/local/lib64/ -lpmem -lpmemobj
+/usr/bin/ld: cannot open output file bin/test_deletes: No such file or directory
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:32: bin/test_deletes] Error 1
+make: Leaving directory '/home/shweta/testing/H-Rocks-SIGMOD25-artifact/pmem-rocksdb/benchmarks'
+[pmem-rocksdb] run_deletes.sh not found.
+-- Failed to find LLVM FileCheck
+-- Google Benchmark version: v1.9.4-66-g18b746f8, normalized to 1.9.4.66
+-- Performing Test HAVE_STD_REGEX -- success
+-- Performing Test HAVE_GNU_POSIX_REGEX -- failed to compile
+-- Performing Test HAVE_POSIX_REGEX -- success
+-- Performing Test HAVE_STEADY_CLOCK -- success
+-- Performing Test HAVE_PTHREAD_AFFINITY -- failed to compile
+-- Found PMDK. Including /usr/include and linking /usr/local/lib/libpmem.so
+-- IPO enabled
+-- The tbbbind_2_0 target will be configured using the HWLOC 2.1.0
+-- BUILDING BENCHMARKS IN RELEASE
+-- Configuring done (4.2s)
+-- Generating done (0.1s)
+-- Build files have been written to: /home/shweta/testing/H-Rocks-SIGMOD25-artifact/viper/microbenchmarks/build
+[  2%] Built target tbbbind_2_0
+[  9%] Built target tbbmalloc
+[ 30%] Built target benchmark
+[ 33%] Built target tbbmalloc_proxy
+[ 37%] Built target put_latency
+[ 37%] Built target prefill_put
+[ 40%] Built target test_same_key3
+[ 42%] Built target same_key_update
+[ 44%] Built target put_key_value
+[ 46%] Built target prefill_delete
+[ 48%] Built target get_rps
+[ 50%] Built target put_rps
+[ 52%] Built target recovery_test
+[ 87%] Built target tbb
+[ 89%] Built target benchmark_main
+[ 91%] Built target ycsbB
+[ 93%] Built target get_key_value
+[ 95%] Built target prefill_get
+[ 97%] Built target prefill_update
+[100%] Built target ycsbA
+8 500
+8 1000
+./run_prefill_delete.sh: line 16: 3604304 Segmentation fault      (core dumped) ./build/prefill_delete -p $PREFILL_SIZE -n $size -k 8 -v $val_size -t 128 > output_prefill_delete2/output_8_${val_size}_$size
+8 2000
+8 4000
+8 8000
+8 10000
+8 16000
+8 25000
+8 50000
+8 100000
+8 200000
+8 400000
+8 800000
+8 1000000
+8 2000000
+8 4000000
+8 8000000
+8 10000000
+8 20000000
+8 40000000
+./run_prefill_delete.sh: line 16: 3612842 Segmentation fault      (core dumped) ./build/prefill_delete -p $PREFILL_SIZE -n $size -k 8 -v $val_size -t 128 > output_prefill_delete2/output_8_${val_size}_$size
+8 50000000
+8 80000000
+8 100000000
+10000
+1000000
+10000000
+25000000
+50000000
+75000000
+100000000
+main-gu-zipfian.c: In function ‘int main(int, char**)’:
+main-gu-zipfian.c:512:23: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
+  512 |         bt->insert(i, (char*) i);
+      |                       ^~~~~~~~~
+In file included from main-gu-zipfian.c:1:
+utree.h: In static member function ‘static void* page::operator new(size_t)’:
+utree.h:204:21: warning: ignoring return value of ‘int posix_memalign(void**, size_t, size_t)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  204 |       posix_memalign(&ret,64,size);
+      |       ~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+In file included from insert_test.cc:1:
+utree.h: In static member function ‘static void* page::operator new(size_t)’:
+utree.h:204:21: warning: ignoring return value of ‘int posix_memalign(void**, size_t, size_t)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  204 |       posix_memalign(&ret,64,size);
+      |       ~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+In file included from get_test.cc:1:
+utree.h: In static member function ‘static void* page::operator new(size_t)’:
+utree.h:204:21: warning: ignoring return value of ‘int posix_memalign(void**, size_t, size_t)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  204 |       posix_memalign(&ret,64,size);
+      |       ~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+In file included from remove_test.cc:1:
+utree.h: In static member function ‘static void* page::operator new(size_t)’:
+utree.h:204:21: warning: ignoring return value of ‘int posix_memalign(void**, size_t, size_t)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  204 |       posix_memalign(&ret,64,size);
+      |       ~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+In file included from update_test.cc:1:
+utree.h: In static member function ‘static void* page::operator new(size_t)’:
+utree.h:204:21: warning: ignoring return value of ‘int posix_memalign(void**, size_t, size_t)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  204 |       posix_memalign(&ret,64,size);
+      |       ~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+In file included from concurrency_test.cc:1:
+utree.h: In static member function ‘static void* page::operator new(size_t)’:
+utree.h:204:21: warning: ignoring return value of ‘int posix_memalign(void**, size_t, size_t)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  204 |       posix_memalign(&ret,64,size);
+      |       ~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+500
+1000
+2000
+4000
+8000
+10000
+16000
+25000
+50000
+100000
+200000
+400000
+800000
+1000000
+2000000
+4000000
+8000000
+10000000
+20000000
+40000000
+500000000
+./run_removes.sh: line 8: 3634461 Segmentation fault      (core dumped) ./remove_test -p $PREFILL_SIZE -n $size -k 8 -v 8 -t 16 > output_removes/output_${size}_8_8
+Wrote /home/shweta/testing/H-Rocks-SIGMOD25-artifact/out/fig8c/hrocks_deletes.csv
+Wrote /home/shweta/testing/H-Rocks-SIGMOD25-artifact/out/fig8c/pmem_deletes.csv
+Wrote /home/shweta/testing/H-Rocks-SIGMOD25-artifact/out/fig8c/viper_deletes.csv
+Wrote /home/shweta/testing/H-Rocks-SIGMOD25-artifact/out/fig8c/plush_deletes.csv
+Wrote /home/shweta/testing/H-Rocks-SIGMOD25-artifact/out/fig8c/utree_deletes.csv
+Wrote /home/shweta/testing/H-Rocks-SIGMOD25-artifact/out/fig8c/fig8c_deletes.pdf
+Done: /home/shweta/testing/H-Rocks-SIGMOD25-artifact/out/fig8c
+[run_all] ==> run_figure8d.sh
+rm -rf bin libgpu.a
+mkdir -p bin
+nvcc -O3 -std=c++14 -Xcompiler -fopenmp -rdc=true -arch=sm_75 -DON_DCPMM -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX -DOS_LINUX -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -DHAVE_SSE42 -DHAVE_PCLMUL -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL -I/usr/local/include -I. -Ibin -I../libgpm/include -I/usr/local/cuda/include -I../include -c gpu_puts.cu -o bin/gpu_puts.o
+gpu_puts.cu(165): warning #177-D: variable "gridSize" was declared but never referenced
+      int gridSize = (num_elems + 512 - 1) / 512;
+          ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+libgpm.cuh: In function ‘void pmem_mt_persist(void*, size_t)’:
+libgpm.cuh:351:8: warning: format ‘%d’ expects argument of type ‘int’, but argument 2 has type ‘size_t’ {aka ‘long unsigned int’} [-Wformat=]
+  351 |     printf("Using %d threads to persist\n", threads);
+      |        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~
+      |                                         |
+      |                                         size_t {aka long unsigned int}
+nvcc -O3 -std=c++14 -Xcompiler -fopenmp -rdc=true -arch=sm_75 -DON_DCPMM -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX -DOS_LINUX -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -DHAVE_SSE42 -DHAVE_PCLMUL -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL -I/usr/local/include -I. -Ibin -I../libgpm/include -I/usr/local/cuda/include -I../include -c gpu_puts_values.cu -o bin/gpu_puts_values.o
+libgpm.cuh: In function ‘void pmem_mt_persist(void*, size_t)’:
+libgpm.cuh:351:8: warning: format ‘%d’ expects argument of type ‘int’, but argument 2 has type ‘size_t’ {aka ‘long unsigned int’} [-Wformat=]
+  351 |     printf("Using %d threads to persist\n", threads);
+      |        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~
+      |                                         |
+      |                                         size_t {aka long unsigned int}
+nvcc -O3 -std=c++14 -Xcompiler -fopenmp -rdc=true -arch=sm_75 -DON_DCPMM -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX -DOS_LINUX -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -DHAVE_SSE42 -DHAVE_PCLMUL -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL -I/usr/local/include -I. -Ibin -I../libgpm/include -I/usr/local/cuda/include -I../include -c gpu_gets_values.cu -o bin/gpu_gets_values.o
+gpu_gets_values.cu(41): warning #68-D: integer conversion resulted in a change of sign
+      if (tag == -1);
+                 ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+gpu_gets_values.cu(41): warning #68-D: integer conversion resulted in a change of sign
+      if (tag == -1);
+                 ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+gpu_gets_values.cu(149): warning #177-D: variable "h_resultIdx" was declared but never referenced
+      int* resultIdx, *h_resultIdx;
+                       ^
+
+nvcc -O3 -std=c++14 -Xcompiler -fopenmp -rdc=true -arch=sm_75 -DON_DCPMM -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX -DOS_LINUX -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -DHAVE_SSE42 -DHAVE_PCLMUL -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL -I/usr/local/include -I. -Ibin -I../libgpm/include -I/usr/local/cuda/include -I../include -c memtable.cu -o bin/memtable.o
+nvcc -O3 -std=c++14 -Xcompiler -fopenmp -rdc=true -arch=sm_75 -DON_DCPMM -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX -DOS_LINUX -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -DHAVE_SSE42 -DHAVE_PCLMUL -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL -I/usr/local/include -I. -Ibin -I../libgpm/include -I/usr/local/cuda/include -I../include -c gpu_gets.cu -o bin/gpu_gets.o
+gpu_gets.cu(41): warning #68-D: integer conversion resulted in a change of sign
+      if (tag == -1);
+                 ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+gpu_gets.cu(41): warning #68-D: integer conversion resulted in a change of sign
+      if (tag == -1);
+                 ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+gpu_gets.cu(82): warning #181-D: argument is incompatible with corresponding format string conversion (expected type "int" but argument has type "unsigned long")
+          printf("%s %d\n", active->d_sortedKeys + (i * 8), active->d_sortedOperationIDs[i]);
+                                                            ^
+
+gpu_gets.cu(148): warning #177-D: variable "h_resultIdx" was declared but never referenced
+      int* resultIdx, *h_resultIdx;
+                       ^
+
+nvcc -O3 -std=c++14 -Xcompiler -fopenmp -rdc=true -arch=sm_75 -DON_DCPMM -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX -DOS_LINUX -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -DHAVE_SSE42 -DHAVE_PCLMUL -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL -I/usr/local/include -I. -Ibin -I../libgpm/include -I/usr/local/cuda/include -I../include -c search.cu -o bin/search.o
+nvcc -O3 -std=c++14 -Xcompiler -fopenmp -rdc=true -arch=sm_75 -DON_DCPMM -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX -DOS_LINUX -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -DHAVE_SSE42 -DHAVE_PCLMUL -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL -I/usr/local/include -I. -Ibin -I../libgpm/include -I/usr/local/cuda/include -I../include -c gpu_updates.cu -o bin/gpu_updates.o
+libgpm.cuh: In function ‘void pmem_mt_persist(void*, size_t)’:
+libgpm.cuh:351:8: warning: format ‘%d’ expects argument of type ‘int’, but argument 2 has type ‘size_t’ {aka ‘long unsigned int’} [-Wformat=]
+  351 |     printf("Using %d threads to persist\n", threads);
+      |        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~
+      |                                         |
+      |                                         size_t {aka long unsigned int}
+nvcc -O3 -std=c++14 -Xcompiler -fopenmp -rdc=true -arch=sm_75 -DON_DCPMM -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX -DOS_LINUX -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -DHAVE_SSE42 -DHAVE_PCLMUL -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL -I/usr/local/include -I. -Ibin -I../libgpm/include -I/usr/local/cuda/include -I../include -c batch.cu -o bin/batch.o
+batch.cu(440): warning #549-D: variable "getValuePointers" is used before its value is set
+      searchGetsOnGPU(getCommand.keys, activeMemtable, immutableMemtable, keyLength, numReads, getValuePointers, getCommand.operationIDs, cache);
+                                                                                               ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+batch.cu(440): warning #549-D: variable "getValuePointers" is used before its value is set
+      searchGetsOnGPU(getCommand.keys, activeMemtable, immutableMemtable, keyLength, numReads, getValuePointers, getCommand.operationIDs, cache);
+                                                                                               ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+libgpm.cuh: In function ‘void pmem_mt_persist(void*, size_t)’:
+libgpm.cuh:351:8: warning: format ‘%d’ expects argument of type ‘int’, but argument 2 has type ‘size_t’ {aka ‘long unsigned int’} [-Wformat=]
+  351 |     printf("Using %d threads to persist\n", threads);
+      |        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~
+      |                                         |
+      |                                         size_t {aka long unsigned int}
+nvcc -O3 -std=c++14 -Xcompiler -fopenmp -rdc=true -arch=sm_75 -DON_DCPMM -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX -DOS_LINUX -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -DHAVE_SSE42 -DHAVE_PCLMUL -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL -I/usr/local/include -I. -Ibin -I../libgpm/include -I/usr/local/cuda/include -I../include -c block_cache.cu -o bin/block_cache.o
+g++  -O3 -std=c++14 -std=c++11  -faligned-new -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX  -DOS_LINUX -fno-builtin-memcmp -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DLZ4 -DZSTD -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -march=native   -DHAVE_SSE42  -DHAVE_PCLMUL  -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL -DON_DCPMM -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX -DOS_LINUX -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -DHAVE_SSE42 -DHAVE_PCLMUL -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL -I/usr/local/include -I. -Ibin -I../libgpm/include -I/usr/local/cuda/include -I../include -c sst_writer.cc -o bin/sst_writer.o
+sst_writer.cc:17: warning: "TOMBSTONE_MARKER" redefined
+   17 | #define TOMBSTONE_MARKER nullptr
+      | 
+In file included from sst_writer.cc:14:
+batch.h:13: note: this is the location of the previous definition
+   13 | #define TOMBSTONE_MARKER NULL
+      | 
+nvcc -O3 -std=c++14 -Xcompiler -fopenmp -rdc=true -arch=sm_75 -DON_DCPMM -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX -DOS_LINUX -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -DHAVE_SSE42 -DHAVE_PCLMUL -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL -I/usr/local/include -I. -Ibin -I../libgpm/include -I/usr/local/cuda/include -I../include -c gpu_range.cu -o bin/gpu_range.o
+libgpm.cuh: In function ‘void pmem_mt_persist(void*, size_t)’:
+libgpm.cuh:351:8: warning: format ‘%d’ expects argument of type ‘int’, but argument 2 has type ‘size_t’ {aka ‘long unsigned int’} [-Wformat=]
+  351 |     printf("Using %d threads to persist\n", threads);
+      |        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~
+      |                                         |
+      |                                         size_t {aka long unsigned int}
+ar rcs libgpu.a bin/gpu_puts.o bin/gpu_puts_values.o bin/gpu_gets_values.o bin/memtable.o bin/gpu_gets.o bin/search.o bin/gpu_updates.o bin/batch.o bin/block_cache.o bin/sst_writer.o bin/gpu_range.o
+nvcc -O3 -std=c++14 -Xcompiler -fopenmp -rdc=true -arch=sm_75 -DON_DCPMM -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX -DOS_LINUX -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -DHAVE_SSE42 -DHAVE_PCLMUL -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL -I/usr/local/include -I. -Ibin -I../libgpm/include -I/usr/local/cuda/include -I../include -DON_DCPMM -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX -DOS_LINUX -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -DHAVE_SSE42 -DHAVE_PCLMUL -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL test_updates.cc -o bin/test_updates libgpu.a ../librocksdb.a -L/usr/local/lib/ -L/usr/local/lib64/ -L/usr/local/cuda/lib64 -lsnappy -lgflags -lz -lbz2 -llz4 -lzstd -ldl -lpthread -lrt -lm -lnuma -ltbb -lpmem -lpmemobj -lcuda -lcudart -lnvidia-ml -lpci -lpthread -lrt -lsnappy -lgflags -lz -lbz2 -llz4 -lzstd -lnuma -ltbb -L/usr/local/lib/ -L/usr/local/lib64/ -lpmem -lpmemobj
+==> updates: prefill=50000000 ops=10000 k=8 v=8
+rm: cannot remove '/dev/shm/fdbserver_shared_memory_id': Operation not permitted
+rm: cannot remove '/dev/shm/PostgreSQL.2063724637': Operation not permitted
+[H-Rocks] run_updates.sh not found.
+make: Entering directory '/home/shweta/testing/H-Rocks-SIGMOD25-artifact/pmem-rocksdb/benchmarks'
+g++ -fno-rtti -I/usr/local/include -DON_DCPMM test_updates.cc -obin/test_updates ../librocksdb.a -I../include -O2 -std=c++11 -lpthread -lrt -lsnappy -lgflags -lz -lbz2 -llz4 -lzstd -lnuma -ltbb -std=c++11  -faligned-new -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX  -DOS_LINUX -fno-builtin-memcmp -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DLZ4 -DZSTD -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -march=native   -DHAVE_SSE42  -DHAVE_PCLMUL  -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL -DROCKSDB_JEMALLOC -DJEMALLOC_NO_DEMANGLE   -ldl -lpthread -L/usr/local/lib/ -L/usr/local/lib64/ -lpmem -lpmemobj
+/usr/bin/ld: cannot open output file bin/test_updates: No such file or directory
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:38: bin/test_updates] Error 1
+make: Leaving directory '/home/shweta/testing/H-Rocks-SIGMOD25-artifact/pmem-rocksdb/benchmarks'
+[pmem-rocksdb] run_updates.sh not found.
+-- Failed to find LLVM FileCheck
+-- Google Benchmark version: v1.9.4-66-g18b746f8, normalized to 1.9.4.66
+-- Performing Test HAVE_STD_REGEX -- success
+-- Performing Test HAVE_GNU_POSIX_REGEX -- failed to compile
+-- Performing Test HAVE_POSIX_REGEX -- success
+-- Performing Test HAVE_STEADY_CLOCK -- success
+-- Performing Test HAVE_PTHREAD_AFFINITY -- failed to compile
+-- Found PMDK. Including /usr/include and linking /usr/local/lib/libpmem.so
+-- IPO enabled
+-- The tbbbind_2_0 target will be configured using the HWLOC 2.1.0
+-- BUILDING BENCHMARKS IN RELEASE
+-- Configuring done (4.2s)
+-- Generating done (0.1s)
+-- Build files have been written to: /home/shweta/testing/H-Rocks-SIGMOD25-artifact/viper/microbenchmarks/build
+[  2%] Built target tbbbind_2_0
+[  9%] Built target tbbmalloc
+[ 30%] Built target benchmark
+[ 33%] Built target tbbmalloc_proxy
+[ 35%] Built target prefill_delete
+[ 37%] Built target test_same_key3
+[ 40%] Built target prefill_put
+[ 42%] Built target get_rps
+[ 44%] Built target put_rps
+[ 46%] Built target same_key_update
+[ 48%] Built target put_key_value
+[ 83%] Built target tbb
+[ 85%] Built target put_latency
+[ 87%] Built target recovery_test
+[ 89%] Built target benchmark_main
+[ 92%] Built target ycsbA
+[ 93%] Built target get_key_value
+[ 95%] Built target prefill_get
+[ 97%] Built target ycsbB
+[100%] Built target prefill_update
+500
+1000
+2000
+4000
+8000
+10000
+16000
+25000
+50000
+100000
+200000
+400000
+800000
+1000000
+2000000
+4000000
+8000000
+10000000
+20000000
+10000
+1000000
+10000000
+25000000
+50000000
+75000000
+100000000
+main-gu-zipfian.c: In function ‘int main(int, char**)’:
+main-gu-zipfian.c:512:23: warning: cast to pointer from integer of different size [-Wint-to-pointer-cast]
+  512 |         bt->insert(i, (char*) i);
+      |                       ^~~~~~~~~
+In file included from main-gu-zipfian.c:1:
+utree.h: In static member function ‘static void* page::operator new(size_t)’:
+utree.h:204:21: warning: ignoring return value of ‘int posix_memalign(void**, size_t, size_t)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  204 |       posix_memalign(&ret,64,size);
+      |       ~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+In file included from insert_test.cc:1:
+utree.h: In static member function ‘static void* page::operator new(size_t)’:
+utree.h:204:21: warning: ignoring return value of ‘int posix_memalign(void**, size_t, size_t)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  204 |       posix_memalign(&ret,64,size);
+      |       ~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+In file included from get_test.cc:1:
+utree.h: In static member function ‘static void* page::operator new(size_t)’:
+utree.h:204:21: warning: ignoring return value of ‘int posix_memalign(void**, size_t, size_t)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  204 |       posix_memalign(&ret,64,size);
+      |       ~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+In file included from remove_test.cc:1:
+utree.h: In static member function ‘static void* page::operator new(size_t)’:
+utree.h:204:21: warning: ignoring return value of ‘int posix_memalign(void**, size_t, size_t)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  204 |       posix_memalign(&ret,64,size);
+      |       ~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+In file included from update_test.cc:1:
+utree.h: In static member function ‘static void* page::operator new(size_t)’:
+utree.h:204:21: warning: ignoring return value of ‘int posix_memalign(void**, size_t, size_t)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  204 |       posix_memalign(&ret,64,size);
+      |       ~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+In file included from concurrency_test.cc:1:
+utree.h: In static member function ‘static void* page::operator new(size_t)’:
+utree.h:204:21: warning: ignoring return value of ‘int posix_memalign(void**, size_t, size_t)’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+  204 |       posix_memalign(&ret,64,size);
+      |       ~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+500
+rm: cannot remove '/pmem/utree': No such file or directory
+./run_updates.sh: line 8: 3663247 Segmentation fault      (core dumped) ./update_test -p $PREFILL_SIZE -n $size -k 8 -v 8 -t 16 > output_updates/output_${size}_8_8
+1000
+./run_updates.sh: line 8: 3663343 Segmentation fault      (core dumped) ./update_test -p $PREFILL_SIZE -n $size -k 8 -v 8 -t 16 > output_updates/output_${size}_8_8
+2000
+./run_updates.sh: line 8: 3663468 Segmentation fault      (core dumped) ./update_test -p $PREFILL_SIZE -n $size -k 8 -v 8 -t 16 > output_updates/output_${size}_8_8
+4000
+./run_updates.sh: line 8: 3663566 Segmentation fault      (core dumped) ./update_test -p $PREFILL_SIZE -n $size -k 8 -v 8 -t 16 > output_updates/output_${size}_8_8
+8000
+./run_updates.sh: line 8: 3663662 Segmentation fault      (core dumped) ./update_test -p $PREFILL_SIZE -n $size -k 8 -v 8 -t 16 > output_updates/output_${size}_8_8
+10000
+./run_updates.sh: line 8: 3663794 Segmentation fault      (core dumped) ./update_test -p $PREFILL_SIZE -n $size -k 8 -v 8 -t 16 > output_updates/output_${size}_8_8
+16000
+./run_updates.sh: line 8: 3663893 Segmentation fault      (core dumped) ./update_test -p $PREFILL_SIZE -n $size -k 8 -v 8 -t 16 > output_updates/output_${size}_8_8
+25000
+./run_updates.sh: line 8: 3663990 Segmentation fault      (core dumped) ./update_test -p $PREFILL_SIZE -n $size -k 8 -v 8 -t 16 > output_updates/output_${size}_8_8
+50000
+./run_updates.sh: line 8: 3664118 Segmentation fault      (core dumped) ./update_test -p $PREFILL_SIZE -n $size -k 8 -v 8 -t 16 > output_updates/output_${size}_8_8
+100000
+./run_updates.sh: line 8: 3664217 Segmentation fault      (core dumped) ./update_test -p $PREFILL_SIZE -n $size -k 8 -v 8 -t 16 > output_updates/output_${size}_8_8
+200000
+./run_updates.sh: line 8: 3664308 Segmentation fault      (core dumped) ./update_test -p $PREFILL_SIZE -n $size -k 8 -v 8 -t 16 > output_updates/output_${size}_8_8
+400000
+./run_updates.sh: line 8: 3664438 Segmentation fault      (core dumped) ./update_test -p $PREFILL_SIZE -n $size -k 8 -v 8 -t 16 > output_updates/output_${size}_8_8
+800000
+./run_updates.sh: line 8: 3664533 Segmentation fault      (core dumped) ./update_test -p $PREFILL_SIZE -n $size -k 8 -v 8 -t 16 > output_updates/output_${size}_8_8
+1000000
+./run_updates.sh: line 8: 3664627 Segmentation fault      (core dumped) ./update_test -p $PREFILL_SIZE -n $size -k 8 -v 8 -t 16 > output_updates/output_${size}_8_8
+2000000
+./run_updates.sh: line 8: 3664759 Segmentation fault      (core dumped) ./update_test -p $PREFILL_SIZE -n $size -k 8 -v 8 -t 16 > output_updates/output_${size}_8_8
+4000000
+./run_updates.sh: line 8: 3664857 Segmentation fault      (core dumped) ./update_test -p $PREFILL_SIZE -n $size -k 8 -v 8 -t 16 > output_updates/output_${size}_8_8
+8000000
+./run_updates.sh: line 8: 3664952 Segmentation fault      (core dumped) ./update_test -p $PREFILL_SIZE -n $size -k 8 -v 8 -t 16 > output_updates/output_${size}_8_8
+10000000
+./run_updates.sh: line 8: 3665078 Segmentation fault      (core dumped) ./update_test -p $PREFILL_SIZE -n $size -k 8 -v 8 -t 16 > output_updates/output_${size}_8_8
+20000000
+./run_updates.sh: line 8: 3665178 Segmentation fault      (core dumped) ./update_test -p $PREFILL_SIZE -n $size -k 8 -v 8 -t 16 > output_updates/output_${size}_8_8
+40000000
+./run_updates.sh: line 8: 3665276 Segmentation fault      (core dumped) ./update_test -p $PREFILL_SIZE -n $size -k 8 -v 8 -t 16 > output_updates/output_${size}_8_8
+500000000
+./run_updates.sh: line 8: 3665420 Segmentation fault      (core dumped) ./update_test -p $PREFILL_SIZE -n $size -k 8 -v 8 -t 16 > output_updates/output_${size}_8_8
+Wrote /home/shweta/testing/H-Rocks-SIGMOD25-artifact/out/fig8d/hrocks_updates.csv
+Wrote /home/shweta/testing/H-Rocks-SIGMOD25-artifact/out/fig8d/pmem_updates.csv
+Wrote /home/shweta/testing/H-Rocks-SIGMOD25-artifact/out/fig8d/viper_updates.csv
+Wrote /home/shweta/testing/H-Rocks-SIGMOD25-artifact/out/fig8d/plush_updates.csv
+Wrote /home/shweta/testing/H-Rocks-SIGMOD25-artifact/out/fig8d/utree_updates.csv
+Wrote /home/shweta/testing/H-Rocks-SIGMOD25-artifact/out/fig8d/fig8d_updates.pdf
+Done: /home/shweta/testing/H-Rocks-SIGMOD25-artifact/out/fig8d
+[run_all] ==> run_figure9a.sh
+[Fig9a] output dir: /home/shweta/testing/H-Rocks-SIGMOD25-artifact/out/fig9a
+make: Nothing to be done for 'lib'.
+nvcc -O3 -std=c++14 -Xcompiler -fopenmp -rdc=true -arch=sm_75 -DON_DCPMM -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX -DOS_LINUX -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -DHAVE_SSE42 -DHAVE_PCLMUL -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL -I/usr/local/include -I. -Ibin -I../libgpm/include -I/usr/local/cuda/include -I../include -DON_DCPMM -DHAVE_ALIGNED_NEW -DROCKSDB_PLATFORM_POSIX -DROCKSDB_LIB_IO_POSIX -DOS_LINUX -DROCKSDB_FALLOCATE_PRESENT -DSNAPPY -DGFLAGS=1 -DZLIB -DBZIP2 -DNUMA -DTBB -DROCKSDB_MALLOC_USABLE_SIZE -DROCKSDB_PTHREAD_ADAPTIVE_MUTEX -DROCKSDB_BACKTRACE -DROCKSDB_RANGESYNC_PRESENT -DROCKSDB_SCHED_GETCPU_PRESENT -DROCKSDB_AUXV_GETAUXVAL_PRESENT -DHAVE_SSE42 -DHAVE_PCLMUL -DHAVE_AVX2 -DHAVE_UINT128_EXTENSION -DROCKSDB_SUPPORT_THREAD_LOCAL test_range.cc -o bin/test_range libgpu.a ../librocksdb.a -L/usr/local/lib/ -L/usr/local/lib64/ -L/usr/local/cuda/lib64 -lsnappy -lgflags -lz -lbz2 -llz4 -lzstd -ldl -lpthread -lrt -lm -lnuma -ltbb -lpmem -lpmemobj -lcuda -lcudart -lnvidia-ml -lpci -lpthread -lrt -lsnappy -lgflags -lz -lbz2 -llz4 -lzstd -lnuma -ltbb -L/usr/local/lib/ -L/usr/local/lib64/ -lpmem -lpmemobj
+rm: cannot remove '/dev/shm/fdbserver_shared_memory_id': Operation not permitted
+rm: cannot remove '/dev/shm/PostgreSQL.2063724637': Operation not permitted

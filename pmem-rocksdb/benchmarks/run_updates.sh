@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+mkdir -p "$DIR/bin"
 make -C "$DIR" bin/test_updates
 OUT_DIR=output_updates
 mkdir -p "$OUT_DIR"

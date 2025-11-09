@@ -16,9 +16,7 @@ SIZES_LIST="${SIZES:-}"
 # Fall back to the actual output directories used by run scripts if needed
 if [[ ! -d "$IN_DIR" ]]; then
   for alt in "${IN_DIR/output_gets/output_prefill_get}" \
-             "${IN_DIR/output_gets/output_prefill_get2}" \
-             output_prefill_get \
-             output_prefill_get2; do
+             output_prefill_get; do
     if [[ "$alt" != "$IN_DIR" && -d "$alt" ]]; then
       IN_DIR="$alt"
       break

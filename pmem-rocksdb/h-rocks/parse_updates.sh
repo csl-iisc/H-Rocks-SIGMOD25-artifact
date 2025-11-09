@@ -1,11 +1,28 @@
 #!/usr/bin/env bash
 # parse_updates.sh
 # Usage: ./parse_updates.sh [INPUT_DIR] [OUTPUT_CSV]
-# Ex:    ./parse_updates.sh output_updates updates_throughput.csv
+# Ex:    ./parse_updates.sh               # auto-detects output_updates, then .
+#        ./parse_updates.sh output_updates custom.csv
 set -euo pipefail
-IN_DIR="${1:-.}"
+IN_ARG="${1:-}"
 OUT_CSV="${2:-updates_throughput.csv}"
 SIZES_LIST="${SIZES:-}"   # optional: "100000 200000 ..."
+
+if [[ -n "$IN_ARG" ]]; then
+  IN_DIR="$IN_ARG"
+else
+  for candidate in output_updates .; do
+    if [[ -d "$candidate" ]]; then
+      IN_DIR="$candidate"
+      break
+    fi
+  done
+fi
+
+if [[ -z "${IN_DIR:-}" || ! -d "$IN_DIR" ]]; then
+  echo "Input directory '${IN_ARG:-output_updates}' not found." >&2
+  exit 1
+fi
 
 echo "size,throughput_ops_per_s" > "$OUT_CSV"
 shopt -s nullglob
