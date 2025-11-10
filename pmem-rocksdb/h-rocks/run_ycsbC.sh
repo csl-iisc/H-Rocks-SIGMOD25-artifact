@@ -16,7 +16,7 @@ for v in $VAL_SIZES; do
   for n in $SIZES; do
     echo "==> ycsbC: ops=$n k=$KEY_SIZE v=$v"
     rm -rf "$DB_PATH" /dev/shm/*
-    ./bin/test_ycsbC -n "$n" -k "$KEY_SIZE" -v "$v" \
+    ./bin/test_ycsbC -p 50000000 -n "$n" -k "$KEY_SIZE" -v "$v" \
       > "${OUT_DIR}/output_${n}_${KEY_SIZE}_${v}"
     sleep 1
   done
