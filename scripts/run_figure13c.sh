@@ -14,10 +14,10 @@ PL="$ROOT/Plush/examples"
 [[ -x "$PL/run_ycsbC.sh" ]] && (cd "$PL" && ./run_ycsbC.sh) || echo "[Plush] run_ycsbC.sh not found."
 
 SIZES="${SIZES:-}"
-( cd "$HR" && SIZES="$SIZES" ./parse_ycsbC.sh . "$OUT/hrocks_ycsbC.csv" )
+( cd "$HR" && SIZES="$SIZES" ./parse_ycsbC.sh output_ycsbC "$OUT/hrocks_ycsbC.csv" )
 ( cd "$PM" && SIZES="$SIZES" ./parse_ycsbC.sh output_ycsbC "$OUT/pmem_ycsbC.csv" )
 ( cd "$VP" && SIZES="$SIZES" ./parse_ycsbC.sh output_ycsbC "$OUT/viper_ycsbC.csv" )
-( cd "$PL" && SIZES="$SIZES" ./parse_ycsbC.sh . "$OUT/plush_ycsbC.csv" )
+( cd "$PL" && SIZES="$SIZES" ./parse_ycsbC.sh ../output_ycsbC "$OUT/plush_ycsbC.csv" )
 
 python3 "$ROOT/scripts/plot_lines_from_csvs.py" \
   --title "Figure 13c: YCSB-C Throughput vs Size" \

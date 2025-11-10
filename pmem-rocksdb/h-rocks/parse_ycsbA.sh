@@ -12,10 +12,11 @@ shopt -s nullglob
 
 get_num() { local k="$1" f="$2" v; v="$(grep -m1 -E "$k" "$f" 2>/dev/null | grep -Eo '[0-9]+(\.[0-9]+)?' | tail -1 || true)"; [[ -n "${v:-}" ]] && echo "$v" || echo 0; }
 
-for f in "$IN_DIR"/output_*_8_8; do
+for f in "$IN_DIR"/output_*; do
+  [[ -f "$f" ]] || continue
   base="$(basename "$f")"
-  IFS=_ read -r tag size t1 t2 <<<"$base"  # output SIZE 8 8
-  [[ "$tag" == "output" && "$t1" == "8" && "$t2" == "8" ]] || continue
+  IFS=_ read -r tag size rest <<<"$base"  # output SIZE ...
+  [[ "$tag" == "output" && "$size" =~ ^[0-9]+$ ]] || continue
   [[ -z "$SIZES_LIST" || " $SIZES_LIST " == *" $size "* ]] || continue
 
   # writes (skip sst_setup_time)

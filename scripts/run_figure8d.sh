@@ -16,7 +16,7 @@ UT="$ROOT/utree/multiThread/utree"
 [[ -x "$UT/run_updates.sh" ]] && (cd "$UT" && ./run_updates.sh) || echo "[uTree] run_updates.sh not found."
 
 SIZES="${SIZES:-}"
-( cd "$HR" && SIZES="$SIZES" ./parse_updates.sh . "$OUT/hrocks_updates.csv" )
+( cd "$HR" && SIZES="$SIZES" ./parse_updates.sh output_updates "$OUT/hrocks_updates.csv" )
 ( cd "$PM" && SIZES="$SIZES" ./parse_updates.sh output_updates "$OUT/pmem_updates.csv" )
 ( cd "$VP" && SIZES="$SIZES" ./parse_update.sh output_updates "$OUT/viper_updates.csv" )
 ( cd "$PL" && SIZES="$SIZES" ./parse_updates.sh ../output_updates "$OUT/plush_updates.csv" )

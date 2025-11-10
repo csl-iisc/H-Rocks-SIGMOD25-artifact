@@ -16,7 +16,7 @@ UT="$ROOT/utree/multiThread/utree"
 [[ -x "$UT/run_removes.sh" ]] && (cd "$UT" && ./run_removes.sh) || echo "[uTree] run_removes.sh not found."
 
 SIZES="${SIZES:-}"
-( cd "$HR" && SIZES="$SIZES" ./parse_deletes.sh . "$OUT/hrocks_deletes.csv" )
+( cd "$HR" && SIZES="$SIZES" ./parse_deletes.sh output_deletes "$OUT/hrocks_deletes.csv" )
 ( cd "$PM" && SIZES="$SIZES" ./parse_deletes.sh output_deletes "$OUT/pmem_deletes.csv" )
 ( cd "$VP" && SIZES="$SIZES" ./parse_delete.sh output_deletes "$OUT/viper_deletes.csv" )
 ( cd "$PL" && SIZES="$SIZES" ./parse_deletes.sh ../output_deletes "$OUT/plush_deletes.csv" )

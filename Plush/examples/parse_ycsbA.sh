@@ -7,8 +7,14 @@ OUT_CSV="${2:-plush_ycsbA_throughput.csv}"
 SIZES_LIST="${SIZES:-}"
 
 echo "size,throughput_ops_per_s" > "$OUT_CSV"; shopt -s nullglob
-for f in "$IN_DIR"/output_8_8_*; do
-  base="$(basename "$f")"; size="${base##*_}"
+for f in "$IN_DIR"/output_*; do
+  [[ -f "$f" ]] || continue
+  base="$(basename "$f")"
+  if [[ "$base" =~ ^output_([0-9]+)_ ]]; then
+    size="${BASH_REMATCH[1]}"
+  else
+    continue
+  fi
   [[ -n "$SIZES_LIST" && " $SIZES_LIST " != *" $size "* ]] && continue
   pt="$(grep -m1 -E 'put_time' "$f" 2>/dev/null | awk '{print $NF}')"; : "${pt:=0}"
   gt="$(grep -m1 -E 'get_time' "$f" 2>/dev/null | awk '{print $NF}')"; : "${gt:=0}"

@@ -14,7 +14,7 @@ SIZES_LIST="${SIZES:-}"
 
 if [[ ! -d "$IN_DIR" ]]; then
   for alt in "${IN_DIR/output_ycsbA/output_ycsbA4}" \
-             output_ycsbA4; do
+             output_ycsbA; do
     if [[ "$alt" != "$IN_DIR" && -d "$alt" ]]; then
       IN_DIR="$alt"
       break
@@ -30,9 +30,14 @@ fi
 echo "size,throughput_ops_per_s" > "$OUT_CSV"
 shopt -s nullglob
 
-for f in "$IN_DIR"/output_8_8_*; do
-  base="$(basename "$f")"            # output_8_8_<size>
-  size="${base##*_}"
+for f in "$IN_DIR"/output_*; do
+  [[ -f "$f" ]] || continue
+  base="$(basename "$f")"
+  if [[ "$base" =~ ^output_[0-9]+_[0-9]+_([0-9]+)$ ]]; then
+    size="${BASH_REMATCH[1]}"
+  else
+    continue
+  fi
   if [[ -n "$SIZES_LIST" && " $SIZES_LIST " != *" $size "* ]]; then continue; fi
 
   pt_line=""
