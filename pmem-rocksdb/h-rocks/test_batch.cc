@@ -22,6 +22,7 @@
 #include <rocksdb/write_batch.h>
 #include "rocksdb/statistics.h"
 #include "batch.h"
+#include "pmem_paths.h"
 
 
 
@@ -82,7 +83,7 @@ int main(int argc, char **argv)
     options.IncreaseParallelism(10);
     options.OptimizeLevelStyleCompaction();
     options.create_if_missing = true;
-    rocksdb::Status s = rocksdb::DB::Open(options, "/pmem/rocksdb_put", &db);
+    rocksdb::Status s = rocksdb::DB::Open(options, hrocks::PmemPath("rocksdb_put"), &db);
     assert(s.ok());
     std::cout << "DB opened." << std::endl;
 

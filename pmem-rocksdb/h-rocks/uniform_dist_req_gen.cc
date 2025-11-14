@@ -15,6 +15,7 @@
 #include <unistd.h>
 
 #include "batch.h"
+#include "pmem_paths.h"
 #include <rocksdb/db.h>
 #include <rocksdb/slice.h>
 #include <rocksdb/options.h>
@@ -84,7 +85,7 @@ int main(int argc, char **argv) {
     // Create the DB if it's not already present
     options.create_if_missing = true;
     // Open db
-    std::string file_name = "/pmem/" + file_loc; 
+    std::string file_name = hrocks::PmemPath(file_loc); 
     cout << file_name; 
     auto start = TIME_NOW; 
     rocksdb::Status s = rocksdb::DB::Open(options, file_name, &db);
@@ -138,4 +139,3 @@ int main(int argc, char **argv) {
 
     return 0;
 }
-

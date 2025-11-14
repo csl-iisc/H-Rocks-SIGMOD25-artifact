@@ -105,8 +105,8 @@ cd ..
 
 # 4) Build H-Rocks (release)
 cd pmem-rocksdb/h-rocks
-make hrocksdb            # produces hrocksdb.a
-# or: make hrocksdb -DENABLE_DEBUG
+make                     # builds libgpu.a and all test binaries
+# or: make lib DEBUG=1   # build only libgpu.a with debug flags
 
 # 5) Sanity tests (microbenchmarks)
 make bin/test_puts
@@ -429,7 +429,8 @@ We mount /pmem so the container can access host PMEM. Adjust if your PMEM path d
 
 1. PMEM path confusion (/pmem/...)
 Some scripts auto-prefix /pmem. If you also pass a path including /pmem, you may end up with a non-existent double prefix like /pmem/pmem/....
-✔️ Use a relative or non-/pmem path if the script auto-prefixes; or export PMEM_DIR explicitly.
+Use a relative or non-/pmem path if the script auto-prefixes; or export PMEM_DIR explicitly.
+H-Rocks runners now honor `HR_PMEM_DIR`. By default they fall back to `pmem-rocksdb/h-rocks/tmp/{pmem,shm}` so sandboxed runs "just work". Set `HR_PMEM_DIR=/pmem` on bare metal to target a real DAX mount.
 
 2. Permissions
 PMEM setup requires root; experiments do not (except external profilers you might use).

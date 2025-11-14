@@ -17,6 +17,7 @@
 #include <rocksdb/write_batch.h>
 #include "rocksdb/statistics.h"
 #include "batch.h"
+#include "pmem_paths.h"
 
 #define NTHREADS 128
 
@@ -83,7 +84,7 @@ int main (int argc, char** argv)
     options.IncreaseParallelism(NTHREADS);
     options.OptimizeLevelStyleCompaction();
     options.create_if_missing = true;
-    rocksdb::Status s = rocksdb::DB::Open(options, "/pmem/rocksdb_batches", &db);
+    rocksdb::Status s = rocksdb::DB::Open(options, hrocks::PmemPath("rocksdb_batches"), &db);
     assert(s.ok());
     std::cout << "DB opened." << std::endl;
     

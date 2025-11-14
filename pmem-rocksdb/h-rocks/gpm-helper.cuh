@@ -1,7 +1,9 @@
 #ifndef PMEM_HELPER
 #define PMEM_HELPER
 #include "libpmem.h"
+#include "pmem_paths.h"
 #include <fstream>
+#include <string>
 #include <stdio.h>
 #include <thread>
 // Size of persistent memory partition, default = 2 GiB
@@ -135,17 +137,15 @@ static cudaError_t create_gpm_file(const char *path, void **var, size_t size)
     // Allocate required memory for file
     return get_memory(var, size);
 #else
-    char *full_path = new char[sizeof("/pmem/") + strlen(path)];
-    strcpy(full_path, "/pmem/");
-    strcat(full_path, path);
+    std::string full_path = hrocks::PmemPath(path);
     int is_pmem;
     // Create a pmem file and memory map it
-    if ((*var = pmem_map_file(full_path, size,
+    if ((*var = pmem_map_file(full_path.c_str(), size,
         PMEM_FILE_CREATE, 0666, &size, &is_pmem)) == NULL) {
         perror("pmem_map_file");
         exit(1);
     }
-    printf("Created pmem (%d) file at %s of size %ld\n", is_pmem, path, size);
+    printf("Created pmem (%d) file at %s of size %ld\n", is_pmem, full_path.c_str(), size);
     // Map to GPU address space
     return cudaHostRegister(*var, size, 0);
 #endif
@@ -179,17 +179,15 @@ static cudaError_t open_gpm_file(const char *path, void **var, size_t &size)
     
     return cudaMemcpy(*var, input, size, cudaMemcpyHostToDevice);
 #else
-    char *full_path = new char[sizeof("/pmem/") + strlen(path)];
-    strcpy(full_path, "/pmem/");
-    strcat(full_path, path);
+    std::string full_path = hrocks::PmemPath(path);
     int is_pmem;
     // Open a pmem file and memory map it
-    if ((*var = pmem_map_file(full_path, size,
+    if ((*var = pmem_map_file(full_path.c_str(), size,
         0, 0666, &size, &is_pmem)) == NULL) {
         perror("pmem_map_file");
         exit(1);
     }
-    printf("Opened pmem (%d) file at %s of size %ld\n", is_pmem, path, size);
+    printf("Opened pmem (%d) file at %s of size %ld\n", is_pmem, full_path.c_str(), size);
     // Map to GPU address space
     return cudaHostRegister(*var, size, 0);
 #endif

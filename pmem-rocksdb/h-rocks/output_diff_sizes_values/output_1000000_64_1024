@@ -2,3 +2,38 @@ Number of puts: 1000000
 Number of gets: 0
 Key size: 64
 Value size: 1024
+DB opened.
+Error 0 cudaPeekError
+Created pmem (1) file at values.dat of size 1024000000
+Using 32 threads to persist
+value_copy_time: 193.186
+write_batch_time: 33.8541
+delete_batch_time: 0.000234
+update_batch_time: 3.3e-05
+read_batch_time: 3.1e-05
+range_batch_time: 3.4e-05
+Size of batch: 1000000
+Error 0 cudaPeekerror
+Error 0 cudaPeekerror
+Error 0 cudaPeekerror
+Filename: rdb_log1
+Created pmem (1) file at rdb_log1 of size 8000000
+Created pmem (1) file at valueLog.dat of size 8000000
+Created pmem (1) file at keyLog.dat of size 64000000
+Error 0 cudaPeekerror
+Using 32 threads to persist
+Using 32 threads to persist
+Using 32 threads to persist
+setup_time: 12.4157
+sort_time: 20.7546
+memtable_time: 26.5966
+log_persist_time: 3.52398
+Error 0 cudaPeekError
+sorted keys: AAAASQYUDKVKTRITRVHYKZWEMTIYYUXWNUDDSNMFATJWJBHOSNYBRWIBGTCLUWE
+numWrites: 1000000
+keyLength: 64
+valueLength: 1024
+sst_insertion_time: 4022.88
+INSERTED INTO FILE
+sst_setup_time: 4056.25
+0

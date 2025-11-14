@@ -13,6 +13,7 @@
 
 #include "batch.h"
 #include "block_cache.cuh"
+#include "pmem_paths.h"
 
 #define TOMBSTONE_MARKER nullptr
 #define TIME_NOW std::chrono::high_resolution_clock::now()
@@ -52,7 +53,7 @@ int sstWriter(char* keys,
   writers.reserve(NTHREADS);
 
   for (int i = 0; i < NTHREADS; ++i) {
-    file_path[i] = std::string("/dev/shm/file") + std::to_string(i) + ".sst";
+    file_path[i] = hrocks::ShmPath(std::string("file") + std::to_string(i) + ".sst");
     std::unique_ptr<rocksdb::SstFileWriter> w(new rocksdb::SstFileWriter(env_opts, options));
     rocksdb::Status s = w->Open(file_path[i]);
     if (!s.ok()) {

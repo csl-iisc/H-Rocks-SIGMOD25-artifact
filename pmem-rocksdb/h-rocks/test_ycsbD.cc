@@ -1,4 +1,5 @@
 #include "batch.h"
+#include "pmem_paths.h"
 #include <cassert>
 #include <cstdio>
 #include <string>
@@ -113,7 +114,7 @@ int main(int argc, char **argv) {
   rocksdb::Options options;
   options.IncreaseParallelism(64);
   options.create_if_missing = true;
-  rocksdb::Status s = rocksdb::DB::Open(options, "/pmem/rdb_ycsbD", &db);
+  rocksdb::Status s = rocksdb::DB::Open(options, hrocks::PmemPath("rdb_ycsbD"), &db);
   assert(s.ok());
   std::cout << "DB opened\n";
 
