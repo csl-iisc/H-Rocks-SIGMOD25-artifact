@@ -12,14 +12,14 @@ PL="$ROOT/Plush/examples"
 echo "[Figure 10] output dir: $OUT"
 
 # 1) (optional) run variable-KV experiments if runners exist
-[[ -x "$HR/run_var_kv_puts.sh" ]] && (cd "$HR" && ./run_var_kv_puts.sh) || echo "[H-Rocks] run_var_kv_puts.sh not found, skipping."
-[[ -x "$HR/run_var_kv_gets.sh" ]] && (cd "$HR" && ./run_var_kv_gets.sh) || echo "[H-Rocks] run_var_kv_gets.sh not found, skipping."
+# [[ -x "$HR/run_var_kv_puts.sh" ]] && (cd "$HR" && ./run_var_kv_puts.sh) || echo "[H-Rocks] run_var_kv_puts.sh not found, skipping."
+# [[ -x "$HR/run_var_kv_gets.sh" ]] && (cd "$HR" && ./run_var_kv_gets.sh) || echo "[H-Rocks] run_var_kv_gets.sh not found, skipping."
 
-[[ -x "$PM/run_var_kv_puts.sh" ]] && (cd "$PM" && ./run_var_kv_puts.sh) || echo "[pmem-rocksdb] run_var_kv_puts.sh not found, skipping."
-[[ -x "$PM/run_var_kv_gets.sh" ]] && (cd "$PM" && ./run_var_kv_gets.sh) || echo "[pmem-rocksdb] run_var_kv_gets.sh not found, skipping."
+# [[ -x "$PM/run_var_kv_puts.sh" ]] && (cd "$PM" && ./run_var_kv_puts.sh) || echo "[pmem-rocksdb] run_var_kv_puts.sh not found, skipping."
+# [[ -x "$PM/run_var_kv_gets.sh" ]] && (cd "$PM" && ./run_var_kv_gets.sh) || echo "[pmem-rocksdb] run_var_kv_gets.sh not found, skipping."
 
-[[ -x "$VP/run_var_kv_puts.sh" ]] && (cd "$VP" && ./run_var_kv_puts.sh) || echo "[Viper] run_var_kv_puts.sh not found, skipping."
-[[ -x "$VP/run_var_kv_gets.sh" ]] && (cd "$VP" && ./run_var_kv_gets.sh) || echo "[Viper] run_var_kv_gets.sh not found, skipping."
+# [[ -x "$VP/run_var_kv_puts.sh" ]] && (cd "$VP" && ./run_var_kv_puts.sh) || echo "[Viper] run_var_kv_puts.sh not found, skipping."
+# [[ -x "$VP/run_var_kv_gets.sh" ]] && (cd "$VP" && ./run_var_kv_gets.sh) || echo "[Viper] run_var_kv_gets.sh not found, skipping."
 
 [[ -x "$PL/run_var_kv_puts.sh" ]] && (cd "$PL" && ./run_var_kv_puts.sh) || echo "[Plush] run_var_kv_puts.sh not found, skipping."
 [[ -x "$PL/run_var_kv_gets.sh" ]] && (cd "$PL" && ./run_var_kv_gets.sh) || echo "[Plush] run_var_kv_gets.sh not found, skipping."
@@ -69,7 +69,7 @@ if [[ -x "$PL/parse_var_kv_gets.sh" ]]; then
 fi
 
 # 3) Plot two panels (PUTs / GETs) over kv = {8/8,16/32,16/128,32/256,64/128,128/1024}
-python3 "$ROOT/scripts/plot_kv_mops.py" \
+python3 "$ROOT/scripts/run_kv_mops.py" \
   --title_puts "PUTs with varying key-value sizes" \
   --title_gets "GETs with varying key-value sizes" \
   --out_dir "$OUT" \

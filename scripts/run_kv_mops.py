@@ -9,46 +9,58 @@ KV_LABELS = [f"{k}/{v}" for k,v in KV_ORDER]
 def load_series(csv_path: Path):
     """
     Accept either:
-      - size,k,v,throughput_ops_per_s
-      - kv,count,throughput_mops
+      - size,k,v,throughput_ops_per_s (headered)
+      - kv,count,throughput_mops (headered or headerless)
     Returns dict: { "8/8": mops, ... }
     If multiple counts present, chooses the largest 'size' (count).
     """
     with csv_path.open() as f:
-        reader = csv.DictReader(f)
-        rows = list(reader)
+        rows = [ [col.strip() for col in row] for row in csv.reader(f) if row ]
     if not rows:
         return {}
 
-    # Detect schema
-    has_ops = all(h in reader.fieldnames for h in ("size","k","v","throughput_ops_per_s"))
-    has_mops = all(h in reader.fieldnames for h in ("kv","count","throughput_mops"))
+    header = [col.lower() for col in rows[0]]
+    header_map = {name: idx for idx, name in enumerate(header)}
+    data_rows = rows[1:]
+
+    def has_fields(fields):
+        return all(field in header_map for field in fields)
 
     data = {}
-    if has_ops:
-        # Group by kv, pick largest size
+    if has_fields(("size","k","v","throughput_ops_per_s")):
         grouped = {}
-        for r in rows:
-            k = int(r["k"]); v = int(r["v"])
-            size = int(r["size"])
-            ops = float(r["throughput_ops_per_s"]) if r["throughput_ops_per_s"] else 0.0
+        for r in data_rows:
+            k = int(r[header_map["k"]]); v = int(r[header_map["v"]])
+            size = int(r[header_map["size"]])
+            ops_str = r[header_map["throughput_ops_per_s"]]
+            ops = float(ops_str) if ops_str else 0.0
             kv = f"{k}/{v}"
             if kv not in grouped or size > grouped[kv][0]:
-                grouped[kv] = (size, ops/1e6)  # -> Mops/s
+                grouped[kv] = (size, ops / 1e6)  # convert to Mops/s
         for kv, (_, mops) in grouped.items():
             data[kv] = mops
-    elif has_mops:
+    elif has_fields(("kv","count","throughput_mops")):
         grouped = {}
-        for r in rows:
-            kv = r["kv"]
-            cnt = int(r["count"])
-            mops = float(r["throughput_mops"]) if r["throughput_mops"] else 0.0
+        for r in data_rows:
+            kv = r[header_map["kv"]]
+            cnt = int(r[header_map["count"]])
+            mops_str = r[header_map["throughput_mops"]]
+            mops = float(mops_str) if mops_str else 0.0
             if kv not in grouped or cnt > grouped[kv][0]:
                 grouped[kv] = (cnt, mops)
         for kv, (_, mops) in grouped.items():
             data[kv] = mops
     else:
-        raise ValueError(f"Unrecognized CSV schema: {csv_path}")
+        # Headerless CSV assumed to be kv,count,throughput_mops
+        grouped = {}
+        for r in rows:
+            if len(r) < 3:
+                raise ValueError(f"Unrecognized CSV schema (too few columns): {csv_path}")
+            kv, cnt, mops = r[0], int(r[1]), float(r[2]) if r[2] else 0.0
+            if kv not in grouped or cnt > grouped[kv][0]:
+                grouped[kv] = (cnt, mops)
+        for kv, (_, mops) in grouped.items():
+            data[kv] = mops
     return data
 
 def plot_panel(series_list, title: str, out_png: Path):
