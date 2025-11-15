@@ -13,11 +13,11 @@ echo "[Fig9a] output dir: $OUT"
 ############################
 # 1) (optional) run sweeps #
 ############################
-if [[ -x "$HR/run_range.sh" ]]; then (cd "$HR" && ./run_range.sh)
-else echo "[H-Rocks] run_range.sh not found, skipping run."; fi
+# if [[ -x "$HR/run_range.sh" ]]; then (cd "$HR" && ./run_range.sh)
+# else echo "[H-Rocks] run_range.sh not found, skipping run."; fi
 
-if [[ -x "$PM/run_range.sh" ]]; then (cd "$PM" && ./run_range.sh)
-else echo "[pmem-rocksdb] run_range.sh not found, skipping run."; fi
+# if [[ -x "$PM/run_range.sh" ]]; then (cd "$PM" && ./run_range.sh)
+# else echo "[pmem-rocksdb] run_range.sh not found, skipping run."; fi
 
 if [[ -x "$PL/run_range.sh" ]]; then (cd "$PL" && ./run_range.sh)
 else echo "[Plush] run_range.sh not found, skipping run."; fi

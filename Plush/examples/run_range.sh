@@ -10,17 +10,20 @@ NQUERIES="${NQUERIES:-100}"
 OUT_DIR="${OUT_DIR:-output_range}"
 DB_PATH="/pmem/plush_table"
 
-mkdir -p "$OUT_DIR" build
-pushd ../build >/dev/null
-cmake .. >/dev/null
+mkdir -p "$OUT_DIR"
+mkdir -p build
+pushd build >/dev/null
+cmake ../.. >/dev/null
 make -j"$(nproc)" test_range
 popd >/dev/null
+
+BIN="./build/test_range"
 
 for size in $SIZES; do
   echo "RANGE  arrival_n=$size  prefill=$PREFILL_SIZE  v=$VAL_SIZE  t=$THREADS"
   rm -rf "$DB_PATH" /dev/shm/*
   mkdir -p "$DB_PATH"
-  ./build/test_range \
+  "$BIN" \
     -p "$PREFILL_SIZE" \
     -n "$size" \
     -e "$NQUERIES" \

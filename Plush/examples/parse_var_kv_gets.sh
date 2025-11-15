@@ -21,7 +21,7 @@ in_list(){ # $1=val $2=list
 
 for f in "$IN_DIR"/output_*_*_*; do
   base="$(basename "$f")"                  # output_<N>_<K>_<V>
-  IFS_= read -r _ N K V <<< "$base"
+  IFS=_ read -r _ N K V <<< "$base"
 
   in_list "$N" "${SIZES_LIST}" || continue
   in_list "$K" "${KEYS_LIST}"  || continue

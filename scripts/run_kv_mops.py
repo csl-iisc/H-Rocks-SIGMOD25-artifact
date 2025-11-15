@@ -19,15 +19,24 @@ def load_series(csv_path: Path):
     if not rows:
         return {}
 
-    header = [col.lower() for col in rows[0]]
-    header_map = {name: idx for idx, name in enumerate(header)}
-    data_rows = rows[1:]
-
-    def has_fields(fields):
-        return all(field in header_map for field in fields)
+    def find_header(fields):
+        for idx, row in enumerate(rows):
+            lower = [col.lower() for col in row]
+            mapping = {}
+            for field in fields:
+                if field in lower:
+                    mapping[field] = lower.index(field)
+                else:
+                    mapping = None
+                    break
+            if mapping:
+                return idx, mapping
+        return None, None
 
     data = {}
-    if has_fields(("size","k","v","throughput_ops_per_s")):
+    header_idx, header_map = find_header(("size","k","v","throughput_ops_per_s"))
+    if header_idx is not None:
+        data_rows = rows[header_idx + 1 :]
         grouped = {}
         for r in data_rows:
             k = int(r[header_map["k"]]); v = int(r[header_map["v"]])
@@ -39,7 +48,11 @@ def load_series(csv_path: Path):
                 grouped[kv] = (size, ops / 1e6)  # convert to Mops/s
         for kv, (_, mops) in grouped.items():
             data[kv] = mops
-    elif has_fields(("kv","count","throughput_mops")):
+        return data
+
+    header_idx, header_map = find_header(("kv","count","throughput_mops"))
+    if header_idx is not None:
+        data_rows = rows[header_idx + 1 :]
         grouped = {}
         for r in data_rows:
             kv = r[header_map["kv"]]
@@ -50,25 +63,27 @@ def load_series(csv_path: Path):
                 grouped[kv] = (cnt, mops)
         for kv, (_, mops) in grouped.items():
             data[kv] = mops
-    else:
-        # Headerless CSV assumed to be kv,count,throughput_mops
-        grouped = {}
-        for r in rows:
-            if len(r) < 3:
-                raise ValueError(f"Unrecognized CSV schema (too few columns): {csv_path}")
-            lower = [col.lower() for col in r[:3]]
-            if lower[0] == "kv" and lower[1] == "count":
-                continue  # tolerate trailing or duplicated headers
-            kv = r[0]
-            try:
-                cnt = int(r[1])
-            except ValueError as exc:
-                raise ValueError(f"Failed to parse count '{r[1]}' in {csv_path}") from exc
-            mops = float(r[2]) if r[2] else 0.0
-            if kv not in grouped or cnt > grouped[kv][0]:
-                grouped[kv] = (cnt, mops)
-        for kv, (_, mops) in grouped.items():
-            data[kv] = mops
+
+    # Headerless CSV assumed to be kv,count,throughput_mops
+    grouped = {}
+    for r in rows:
+        if len(r) < 3:
+            raise ValueError(f"Unrecognized CSV schema (too few columns): {csv_path}")
+        lower = [col.lower() for col in r[:3]]
+        if (lower[0] == "kv" and lower[1] == "count") or (lower[0] == "size" and lower[1] == "k"):
+            continue  # tolerate trailing or duplicated headers
+        kv = r[0].strip()
+        if not kv or not r[1].strip():
+            continue  # skip blank lines or rows missing counts
+        try:
+            cnt = int(r[1])
+        except ValueError as exc:
+            raise ValueError(f"Failed to parse count '{r[1]}' in {csv_path}") from exc
+        mops = float(r[2]) if r[2] else 0.0
+        if kv not in grouped or cnt > grouped[kv][0]:
+            grouped[kv] = (cnt, mops)
+    for kv, (_, mops) in grouped.items():
+        data[kv] = mops
     return data
 
 def plot_panel(series_list, title: str, out_png: Path):

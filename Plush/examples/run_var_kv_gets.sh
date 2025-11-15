@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Defaults (override via env: VAL_SIZES, KEY_SIZES, NKEYS, THREADS, OUT_DIR)
 VAL_SIZES="${VAL_SIZES:-8 16 32 64 128 256 512 1024}"
-KEY_SIZES="${KEY_SIZES:-8 16 32 64}"
+KEY_SIZES="${KEY_SIZES:-8 16 32 64 128}"
 NKEYS="${NKEYS:-5000000}"
 THREADS="${THREADS:-32}"
 OUT_DIR="${OUT_DIR:-output_var_kv_gets}"
