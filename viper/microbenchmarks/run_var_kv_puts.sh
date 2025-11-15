@@ -5,7 +5,7 @@ set -euo pipefail
 VAL_SIZES="${VAL_SIZES:-8 16 32 64 100 128 256 512 1024}"
 KEY_SIZES="${KEY_SIZES:-8 16 32 64 100}"
 NKEYS="${NKEYS:-1000000 5000000}"     # number of PUT ops
-THREADS="${THREADS:-128}"
+THREADS="${THREADS:-32}"
 OUT_DIR="${OUT_DIR:-output_var_kv_puts}"
 
 mkdir -p "$OUT_DIR" build
