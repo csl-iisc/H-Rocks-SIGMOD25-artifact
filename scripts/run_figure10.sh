@@ -12,14 +12,14 @@ PL="$ROOT/Plush/examples"
 echo "[Figure 10] output dir: $OUT"
 
 # 1) (optional) run variable-KV experiments if runners exist
-# [[ -x "$HR/run_var_kv_puts.sh" ]] && (cd "$HR" && ./run_var_kv_puts.sh) || echo "[H-Rocks] run_var_kv_puts.sh not found, skipping."
-# [[ -x "$HR/run_var_kv_gets.sh" ]] && (cd "$HR" && ./run_var_kv_gets.sh) || echo "[H-Rocks] run_var_kv_gets.sh not found, skipping."
+[[ -x "$HR/run_var_kv_puts.sh" ]] && (cd "$HR" && ./run_var_kv_puts.sh) || echo "[H-Rocks] run_var_kv_puts.sh not found, skipping."
+[[ -x "$HR/run_var_kv_gets.sh" ]] && (cd "$HR" && ./run_var_kv_gets.sh) || echo "[H-Rocks] run_var_kv_gets.sh not found, skipping."
 
-# [[ -x "$PM/run_var_kv_puts.sh" ]] && (cd "$PM" && ./run_var_kv_puts.sh) || echo "[pmem-rocksdb] run_var_kv_puts.sh not found, skipping."
-# [[ -x "$PM/run_var_kv_gets.sh" ]] && (cd "$PM" && ./run_var_kv_gets.sh) || echo "[pmem-rocksdb] run_var_kv_gets.sh not found, skipping."
+[[ -x "$PM/run_var_kv_puts.sh" ]] && (cd "$PM" && ./run_var_kv_puts.sh) || echo "[pmem-rocksdb] run_var_kv_puts.sh not found, skipping."
+[[ -x "$PM/run_var_kv_gets.sh" ]] && (cd "$PM" && ./run_var_kv_gets.sh) || echo "[pmem-rocksdb] run_var_kv_gets.sh not found, skipping."
 
-# [[ -x "$VP/run_var_kv_puts.sh" ]] && (cd "$VP" && ./run_var_kv_puts.sh) || echo "[Viper] run_var_kv_puts.sh not found, skipping."
-# [[ -x "$VP/run_var_kv_gets.sh" ]] && (cd "$VP" && ./run_var_kv_gets.sh) || echo "[Viper] run_var_kv_gets.sh not found, skipping."
+[[ -x "$VP/run_var_kv_puts.sh" ]] && (cd "$VP" && ./run_var_kv_puts.sh) || echo "[Viper] run_var_kv_puts.sh not found, skipping."
+[[ -x "$VP/run_var_kv_gets.sh" ]] && (cd "$VP" && ./run_var_kv_gets.sh) || echo "[Viper] run_var_kv_gets.sh not found, skipping."
 
 [[ -x "$PL/run_var_kv_puts.sh" ]] && (cd "$PL" && ./run_var_kv_puts.sh) || echo "[Plush] run_var_kv_puts.sh not found, skipping."
 [[ -x "$PL/run_var_kv_gets.sh" ]] && (cd "$PL" && ./run_var_kv_gets.sh) || echo "[Plush] run_var_kv_gets.sh not found, skipping."
@@ -59,13 +59,17 @@ if [[ -x "$VP/parse_var_kv_gets.sh" ]]; then
 fi
 
 # Plush
-if [[ -x "$PL/parse_var_kv_puts.sh" ]]; then
-  (cd "$PL" && ./parse_var_kv_puts.sh output_var_kv_puts "$OUT/plush_puts.csv")
+if [[ -f "$PL/parse_var_kv_puts.sh" ]]; then
+  (cd "$PL" && bash ./parse_var_kv_puts.sh output_var_kv_puts "$OUT/plush_puts.csv")
   PUTS_ARGS+=( "--puts" "$OUT/plush_puts.csv:Plush" )
+else
+  echo "[Plush] parse_var_kv_puts.sh not found, skipping."
 fi
-if [[ -x "$PL/parse_var_kv_gets.sh" ]]; then
-  (cd "$PL" && ./parse_var_kv_gets.sh output_var_kv_gets "$OUT/plush_gets.csv")
+if [[ -f "$PL/parse_var_kv_gets.sh" ]]; then
+  (cd "$PL" && bash ./parse_var_kv_gets.sh output_var_kv_gets "$OUT/plush_gets.csv")
   GETS_ARGS+=( "--gets" "$OUT/plush_gets.csv:Plush" )
+else
+  echo "[Plush] parse_var_kv_gets.sh not found, skipping."
 fi
 
 # 3) Plot two panels (PUTs / GETs) over kv = {8/8,16/32,16/128,32/256,64/128,128/1024}
