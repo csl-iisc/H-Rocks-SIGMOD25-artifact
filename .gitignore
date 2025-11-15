@@ -9,5 +9,6 @@ out**
 **output**
 **output*
 pmem-rocksdb/h-rocks/output**
+pmem-rocksdb/h-rocks/output_diff_sizes_gets/
 pmem-rocksdb/h-rocks/output_puts/puts_k8_v8_n10000.log
 pmem-rocksdb/h-rocks/tmp/
