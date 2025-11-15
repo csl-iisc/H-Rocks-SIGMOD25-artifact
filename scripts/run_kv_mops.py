@@ -56,7 +56,15 @@ def load_series(csv_path: Path):
         for r in rows:
             if len(r) < 3:
                 raise ValueError(f"Unrecognized CSV schema (too few columns): {csv_path}")
-            kv, cnt, mops = r[0], int(r[1]), float(r[2]) if r[2] else 0.0
+            lower = [col.lower() for col in r[:3]]
+            if lower[0] == "kv" and lower[1] == "count":
+                continue  # tolerate trailing or duplicated headers
+            kv = r[0]
+            try:
+                cnt = int(r[1])
+            except ValueError as exc:
+                raise ValueError(f"Failed to parse count '{r[1]}' in {csv_path}") from exc
+            mops = float(r[2]) if r[2] else 0.0
             if kv not in grouped or cnt > grouped[kv][0]:
                 grouped[kv] = (cnt, mops)
         for kv, (_, mops) in grouped.items():

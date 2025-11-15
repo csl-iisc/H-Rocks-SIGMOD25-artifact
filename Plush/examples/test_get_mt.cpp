@@ -54,11 +54,9 @@ std::string generate_random_string(size_t length, std::function<char(void)> rand
 
 int main(int argc, char **argv) {
     int option_char;
-    uint64_t num_puts, num_gets;
-    int nthreads; 
-    int batch;
-    int ratio;
-    size_t key_size, value_size;
+    uint64_t num_puts = 0, num_gets = 0;
+    int nthreads = 1;
+    size_t key_size = 0, value_size = 0;
 
     // Declare R and provide seed
 
@@ -73,6 +71,21 @@ int main(int argc, char **argv) {
             case ':': fprintf (stderr, "option needs a value\n");
             case '?': fprintf (stderr, "usage: %s [-n <number of keys>] [-k <key size>] [-v <value size>] [-b <batch size>] [-r <put to get ratio>]\n", argv[0]);
         }
+    }
+
+    if (nthreads <= 0) {
+        fprintf(stderr, "Number of threads must be positive\n");
+        return 1;
+    }
+    if (num_puts == 0 && num_gets == 0) {
+        fprintf(stderr, "Either -p or -n must be provided\n");
+        return 1;
+    }
+    if (num_puts == 0) {
+        num_puts = num_gets;
+    }
+    if (num_gets == 0) {
+        num_gets = num_puts;
     }
 
     std::cout << "Number of keys: " << num_puts << std::endl;
