@@ -9,7 +9,30 @@ PM="$ROOT/pmem-rocksdb/benchmarks"
 
 echo "[Fig12] output dir: $OUT"
 
-# 1) (Re)parse to build throughput CSVs (we only need H-Rocks + RocksDB)
+# 1) (optional) run PUT/GET sweeps if runners exist
+if [[ -x "$HR/run_puts.sh" ]]; then
+  (cd "$HR" && ./run_puts.sh)
+else
+  echo "[H-Rocks] run_puts.sh not found; skipping run."
+fi
+if [[ -x "$HR/run_gets.sh" ]]; then
+  (cd "$HR" && ./run_gets.sh)
+else
+  echo "[H-Rocks] run_gets.sh not found; skipping run."
+fi
+
+if [[ -x "$PM/run_puts.sh" ]]; then
+  (cd "$PM" && ./run_puts.sh)
+else
+  echo "[pmem-rocksdb] run_puts.sh not found; skipping run."
+fi
+if [[ -x "$PM/run_gets.sh" ]]; then
+  (cd "$PM" && ./run_gets.sh)
+else
+  echo "[pmem-rocksdb] run_gets.sh not found; skipping run."
+fi
+
+# 2) Parse to build throughput CSVs (we only need H-Rocks + RocksDB)
 SIZES="${SIZES:-}"
 
 # PUTS
@@ -20,7 +43,7 @@ SIZES="${SIZES:-}"
 ( cd "$HR" && SIZES="$SIZES" ./parse_gets.sh   .             "$OUT/hrocks_gets.csv" )
 ( cd "$PM" && SIZES="$SIZES" ./parse_gets.sh   output_gets   "$OUT/pmem_gets.csv" )
 
-# 2) Plot latency (ms). Use log-x to match the figure look. Y-limits from your panel.
+# 3) Plot latency (ms). Use log-x to match the figure look. Y-limits from your panel.
 python3 "$ROOT/scripts/plot_latency_from_csvs.py" \
   --title "PUT latencies with varying request rate" \
   --xlabel "Arrival request rate (ops/sec)" \

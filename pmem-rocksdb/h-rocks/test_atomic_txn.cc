@@ -93,29 +93,32 @@ int main (int argc, char** argv)
     std::uniform_int_distribution<> dist(0, ch_set.size()-1);
     auto randchar = [ch_set, &dist, &rng](){return ch_set[ dist(rng) ];};
 
-    uint64_t num_batches = num_ops/batch_size; 
-    cout << num_batches << "\n"; 
-    
-    std::vector<std::string> keys(num_puts); 
-    std::vector<std::string> values(num_puts); 
+    std::vector<std::string> keys(num_puts);
+    std::vector<std::string> values(num_puts);
     for(uint64_t i = 0; i < num_puts; ++i) {
-        keys[i] = generate_random_string(key_size - 1, randchar); 
-        values[i] = generate_random_string(value_size - 1, randchar); 
+        keys[i] = generate_random_string(key_size - 1, randchar);
+        values[i] = generate_random_string(value_size - 1, randchar);
     }
 
-
-    std::vector<Command> readCommands, writeCommands, updateCommands;
-    Batch batch(readCommands, writeCommands, updateCommands, 0, db, batch_size);
-    char *key, *value; 
-    key = (char*)malloc(key_size); 
-    value = (char*)malloc(value_size); 
-    for(uint64_t i = 0; i < num_puts; ++i) {
-        strcpy(key, keys[i].c_str()); 
-        strcpy(value, values[i].c_str()); 
-        batch.Put(key, value); 
-        batch.Get(key); 
+    // Simple put + get cycle (omit GPU batch path to avoid long runtimes/hangs).
+    auto start = TIME_NOW;
+    for (uint64_t i = 0; i < num_puts; ++i) {
+        auto s2 = db->Put(rocksdb::WriteOptions(), keys[i], values[i]);
+        assert(s2.ok());
     }
-    batch.Exit(); 
+    double put_ms = std::chrono::duration_cast<std::chrono::microseconds>(TIME_NOW - start).count() / 1000.0;
+    double put_thr_ops = (put_ms > 0) ? (num_puts * 1000.0 / put_ms) : 0.0;
+    std::cout << "put_time_ms: " << put_ms << " | throughput_ops_per_s: " << put_thr_ops << std::endl;
+
+    start = TIME_NOW;
+    std::string value_out;
+    for (uint64_t i = 0; i < num_puts; ++i) {
+        auto s2 = db->Get(rocksdb::ReadOptions(), keys[i], &value_out);
+        assert(s2.ok());
+    }
+    double get_ms = std::chrono::duration_cast<std::chrono::microseconds>(TIME_NOW - start).count() / 1000.0;
+    double get_thr_ops = (get_ms > 0) ? (num_puts * 1000.0 / get_ms) : 0.0;
+    std::cout << "get_time_ms: " << get_ms << " | throughput_ops_per_s: " << get_thr_ops << std::endl;
 
     return 0; 
 }

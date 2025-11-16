@@ -20,7 +20,8 @@ EXEC_LDFLAGS += $(LDFLAGS)
 .PHONY: clean librocksdb begin
 
 all: begin $(BIN_DIR)/test_puts $(BIN_DIR)/test_deletes $(BIN_DIR)/test_gets $(BIN_DIR)/test_updates \
-	$(BIN_DIR)/test_ranges $(BIN_DIR)/test_ycsbA $(BIN_DIR)/test_ycsbB $(BIN_DIR)/test_ycsbC $(BIN_DIR)/test_ycsbD
+	$(BIN_DIR)/test_ranges $(BIN_DIR)/test_ycsbA $(BIN_DIR)/test_ycsbB $(BIN_DIR)/test_ycsbC $(BIN_DIR)/test_ycsbD \
+	$(BIN_DIR)/test_atomic_txn
 
 begin:
 	mkdir -p $(BIN_DIR)
@@ -51,6 +52,9 @@ bin/test_ycsbC: librocksdb test_ycsbC.cc
 
 bin/test_ycsbD: librocksdb test_ycsbD.cc
 	$(CXX) $(CXXFLAGS) test_ycsbD.cc -o$@ ../librocksdb.a -I../include -O2 -std=c++11 $(PLATFORM_LDFLAGS) $(PLATFORM_CXXFLAGS) $(EXEC_LDFLAGS)
+
+bin/test_atomic_txn: librocksdb test_atomic_txn.cc
+	$(CXX) $(CXXFLAGS) test_atomic_txn.cc -o$@ ../librocksdb.a -I../include -O2 -std=c++11 $(PLATFORM_LDFLAGS) $(PLATFORM_CXXFLAGS) $(EXEC_LDFLAGS)
 
 clean:
 	rm -rf $(BIN_DIR)
