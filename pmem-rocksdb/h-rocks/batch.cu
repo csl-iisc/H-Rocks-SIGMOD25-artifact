@@ -12,6 +12,8 @@
 #include "gpu_puts_values.cuh"
 #include "gpu_gets_values.cuh"
 #include "libgpm.cuh"
+#include <cstring>
+#include <strings.h>
 
 #define TIME_NOW std::chrono::high_resolution_clock::now()
 #define NTHREADS 100
@@ -300,7 +302,9 @@ void Batch::batchUpdates()
 
 void Batch::Execute() 
 {
-    putsWithValues = false; 
+    const char* use_values = std::getenv("HR_PUTS_WITH_VALUES");
+    putsWithValues = (use_values &&
+        (strcmp(use_values, "1") == 0 || strcasecmp(use_values, "true") == 0));
     if(putsWithValues) {
         std::cout << "Here\n"; 
         batchWritesValues(); 
@@ -434,7 +438,7 @@ void Batch::processGets()
     std::cout << numReads << "\n"; 
     if (!numReads)
         return; 
-    char** getValuePointers;
+    char** getValuePointers = nullptr;
 
         //immutableMemtable = activeMemtable; 
     searchGetsOnGPU(getCommand.keys, activeMemtable, immutableMemtable, keyLength, numReads, getValuePointers, getCommand.operationIDs, cache); 
