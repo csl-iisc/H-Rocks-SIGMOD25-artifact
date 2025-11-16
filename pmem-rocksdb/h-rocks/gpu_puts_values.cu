@@ -13,11 +13,22 @@
 #include "gpm-helper.cuh"
 #include "libgpmlog.cuh"
 #include "string.h"
+#include <stdexcept>
 
 #define NTHREADS_PER_BLK 512
 #define NBLKS 144
 
 #define TIME_NOW std::chrono::high_resolution_clock::now()
+
+// Surface CUDA allocation/copy failures immediately to avoid later illegal-address faults.
+#define CUDA_CHECK(cmd)                                                         \
+    do {                                                                        \
+        cudaError_t _e = (cmd);                                                 \
+        if (_e != cudaSuccess) {                                                \
+            fprintf(stderr, "[gpu_puts_values] %s failed: %s (%d)\n", #cmd, cudaGetErrorString(_e), _e); \
+            throw std::runtime_error("cuda failure");                           \
+        }                                                                       \
+    } while (0)
 struct StringCompare
 {
     __host__ __device__ bool operator()(const char *a, const char *b) const
@@ -113,26 +124,26 @@ void sortPutsOnGPUWithValues(PutCommand &putCommand, uint64_t num_elems, uint64_
     table->batchID = batchID; 
 
     MemtableWithValues *temp; 
-    cudaMallocManaged(&temp, sizeof(MemtableWithValues)); 
+    CUDA_CHECK(cudaMallocManaged(&temp, sizeof(MemtableWithValues))); 
     temp->size = table->size;  
     auto start = TIME_NOW; 
-    cudaMalloc((void**)&table->d_sortedKeys, num_elems * keyLength);
-    cudaMalloc((void**)&table->d_sortedValues, num_elems * valueLength);
-    cudaMalloc((void**)&table->d_sortedOperationIDs, num_elems * sizeof(uint64_t));
+    CUDA_CHECK(cudaMalloc((void**)&table->d_sortedKeys, num_elems * keyLength));
+    CUDA_CHECK(cudaMalloc((void**)&table->d_sortedValues, num_elems * valueLength));
+    CUDA_CHECK(cudaMalloc((void**)&table->d_sortedOperationIDs, num_elems * sizeof(uint64_t)));
 
     char *d_tempStr, *sortedStr, *d_tempValue; 
     //cudaMalloc((void**)&temp.d_sortedKeys, num_elems * keyLength);
-    cudaMalloc((void**)&d_tempStr, num_elems * keyLength);
-    cudaMalloc((void**)&sortedStr, num_elems * keyLength);
-    cudaMalloc((void**)&d_tempValue, num_elems * valueLength);
-    cudaMalloc((void**)&temp->d_sortedOperationIDs, num_elems * sizeof(uint64_t));
-    cudaMalloc((void**)&temp->d_sortedValues, num_elems * valueLength);
+    CUDA_CHECK(cudaMalloc((void**)&d_tempStr, num_elems * keyLength));
+    CUDA_CHECK(cudaMalloc((void**)&sortedStr, num_elems * keyLength));
+    CUDA_CHECK(cudaMalloc((void**)&d_tempValue, num_elems * valueLength));
+    CUDA_CHECK(cudaMalloc((void**)&temp->d_sortedOperationIDs, num_elems * sizeof(uint64_t)));
+    CUDA_CHECK(cudaMalloc((void**)&temp->d_sortedValues, num_elems * valueLength));
 
     // Copy input arrays to corresponding device arrays inside memtable
-    cudaMemcpy(d_tempStr, putCommand.keys, num_elems * keyLength, cudaMemcpyHostToDevice);
-    cudaMemcpy(d_tempValue, putCommand.values, num_elems * valueLength, cudaMemcpyHostToDevice);
-    cudaMemcpy(temp->d_sortedOperationIDs, putCommand.operationIDs, num_elems * sizeof(uint64_t), cudaMemcpyHostToDevice);
-    cudaMemcpy(temp->d_sortedValues, putCommand.values, num_elems * valueLength, cudaMemcpyHostToDevice);
+    CUDA_CHECK(cudaMemcpy(d_tempStr, putCommand.keys, num_elems * keyLength, cudaMemcpyHostToDevice));
+    CUDA_CHECK(cudaMemcpy(d_tempValue, putCommand.values, num_elems * valueLength, cudaMemcpyHostToDevice));
+    CUDA_CHECK(cudaMemcpy(temp->d_sortedOperationIDs, putCommand.operationIDs, num_elems * sizeof(uint64_t), cudaMemcpyHostToDevice));
+    CUDA_CHECK(cudaMemcpy(temp->d_sortedValues, putCommand.values, num_elems * valueLength, cudaMemcpyHostToDevice));
 
     // Create thrust device pointers for sorted keys and operation IDs
     thrust::device_vector<char> d_strings(keyLength * num_elems); 
@@ -245,4 +256,3 @@ void sortPutsOnGPUWithValues(PutCommand &putCommand, uint64_t num_elems, uint64_
        cudaFree(d_tempStr); 
      */
 }
-

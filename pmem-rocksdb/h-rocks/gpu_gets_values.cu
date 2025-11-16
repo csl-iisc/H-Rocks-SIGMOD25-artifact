@@ -6,10 +6,20 @@
 #include "gpu_gets_values.cuh"
 #include "search.cuh"
 #include "block_cache.cuh"
+#include <stdexcept>
 
 #define NTHREADS_PER_BLK 512
 #define NBLKS 144
 #define TIME_NOW std::chrono::high_resolution_clock::now()
+
+#define CUDA_CHECK(cmd)                                                         \
+    do {                                                                        \
+        cudaError_t _e = (cmd);                                                 \
+        if (_e != cudaSuccess) {                                                \
+            fprintf(stderr, "[gpu_gets_values] %s failed: %s (%d)\n", #cmd, cudaGetErrorString(_e), _e); \
+            throw std::runtime_error("cuda failure");                           \
+        }                                                                       \
+    } while (0)
 
 const unsigned long long FNV_offset_basis = 14695981039346656037U;
 const unsigned long long FNV_prime = 1099511628211U;
@@ -129,9 +139,9 @@ void get_values(char* getKeys, MemtableWithValues *activeMemtable, MemtableWithV
 {
     char *notFound; 
     unsigned int *notFoundIdx; 
-    cudaMallocManaged(&notFoundIdx, 4);
+    CUDA_CHECK(cudaMallocManaged(&notFoundIdx, 4));
     *notFoundIdx = 0;
-    cudaMallocManaged((void**)&notFound, numReads * keyLength); 
+    CUDA_CHECK(cudaMallocManaged((void**)&notFound, numReads * keyLength)); 
 
     std::cout << "active memtable size: " << activeMemtable->size << "\n"; 
     std::cout << "value length: " << activeMemtable->valueLength << "\n"; 
@@ -145,17 +155,17 @@ void get_values(char* getKeys, MemtableWithValues *activeMemtable, MemtableWithV
     cudaHostRegister(getOperationIds, numReads * sizeof(uint64_t), 0); 
 
     char* d_queryData;
-    cudaMalloc(&d_queryData, numReads * keyLength);
+    CUDA_CHECK(cudaMalloc(&d_queryData, numReads * keyLength));
     int* resultIdx, *h_resultIdx;
     uint64_t* d_getOperationIds; 
-    cudaMalloc(&d_getOperationIds, numReads * sizeof(uint64_t));
-    cudaMalloc(&resultIdx, numReads * sizeof(int));
+    CUDA_CHECK(cudaMalloc(&d_getOperationIds, numReads * sizeof(uint64_t)));
+    CUDA_CHECK(cudaMalloc(&resultIdx, numReads * sizeof(int)));
     char * d_values; 
-    cudaMalloc(&d_values, numReads * activeMemtable->valueLength);
+    CUDA_CHECK(cudaMalloc(&d_values, numReads * activeMemtable->valueLength));
 
     auto start_time = TIME_NOW; 
-    cudaMemcpy(d_queryData, getKeys, numReads * keyLength, cudaMemcpyHostToDevice);
-    cudaMemcpy(d_getOperationIds, getOperationIds, numReads * sizeof(uint64_t), cudaMemcpyHostToDevice);
+    CUDA_CHECK(cudaMemcpy(d_queryData, getKeys, numReads * keyLength, cudaMemcpyHostToDevice));
+    CUDA_CHECK(cudaMemcpy(d_getOperationIds, getOperationIds, numReads * sizeof(uint64_t), cudaMemcpyHostToDevice));
     auto read_setup_time = (TIME_NOW - start_time).count(); 
     cudaError_t err = cudaPeekAtLastError();
     printf("Error %d cudaPeekerror\n", err);
@@ -174,7 +184,7 @@ void get_values(char* getKeys, MemtableWithValues *activeMemtable, MemtableWithV
     getValues = (char*)malloc(numReads * activeMemtable->valueLength); 
     cudaHostRegister(getValues, numReads * activeMemtable->valueLength, 0); 
     start_time = TIME_NOW; 
-    cudaMemcpy(getValues, d_values, numReads * activeMemtable->valueLength, cudaMemcpyDeviceToHost);
+    CUDA_CHECK(cudaMemcpy(getValues, d_values, numReads * activeMemtable->valueLength, cudaMemcpyDeviceToHost));
     cudaDeviceSynchronize(); 
     auto copy_back_time = (TIME_NOW - start_time).count();
     err = cudaPeekAtLastError();

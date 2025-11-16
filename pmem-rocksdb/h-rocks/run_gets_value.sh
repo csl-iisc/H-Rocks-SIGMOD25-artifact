@@ -7,7 +7,7 @@ source "$SCRIPT_DIR/env.sh"
 VAL_SIZES="${VAL_SIZES:-8 16 32 64 128 256 512}"
 KEY_SIZE="${KEY_SIZE:-8}"
 NGETS="${NGETS:-10000000}"          # total GETs (prefill is fixed in test_get_put)
-PREFILL="${PREFILL:-50000000}"
+PREFILL="${PREFILL:-10000000}"
 OUT_DIR="${OUT_DIR:-output_get_values}"
 SLEEP_BETWEEN="${SLEEP_BETWEEN:-1}"
 

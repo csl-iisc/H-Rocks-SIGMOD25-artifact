@@ -20,12 +20,37 @@
 
 using namespace ROCKSDB_NAMESPACE; 
 
+namespace {
+void InitMemtable(Memtable* mt) {
+    mt->d_sortedKeys = nullptr;
+    mt->d_sortedValuePointers = nullptr;
+    mt->d_sortedOperationIDs = nullptr;
+    mt->locks = nullptr;
+    mt->size = 0;
+    mt->batchID = -1;
+    mt->keyLength = 0;
+    mt->valueLength = 0;
+}
+
+void InitMemtable(MemtableWithValues* mt) {
+    mt->d_sortedKeys = nullptr;
+    mt->d_sortedValues = nullptr;
+    mt->d_sortedValuePointers = nullptr;
+    mt->d_sortedOperationIDs = nullptr;
+    mt->locks = nullptr;
+    mt->size = 0;
+    mt->batchID = -1;
+    mt->keyLength = 0;
+    mt->valueLength = 0;
+}
+} // namespace
+
 Batch::Batch(std::vector<Command>& readCommands, std::vector<Command>& writeCommands, std::vector<Command>& updateCommands, uint64_t operationID, rocksdb::DB *db_)
     : readCommands(readCommands), writeCommands(writeCommands), updateCommands(updateCommands), operationID(0), db(db_) {
         start = TIME_NOW;
         timeOut = 100000000;
-        //BlockCache bCache; 
-        cache = bCache->createCache(cache); 
+        bCache = new BlockCache();
+        cache = bCache->createCache(nullptr);
         db = db_; 
         BATCH_SIZE = 200000000; 
         numReads = 0; 
@@ -38,17 +63,17 @@ Batch::Batch(std::vector<Command>& readCommands, std::vector<Command>& writeComm
         putCommand.tOpID.reserve(BATCH_SIZE); 
 
         cudaMallocManaged(&activeMemtable, sizeof(Memtable)); 
-        activeMemtable->batchID = -1; 
+        InitMemtable(activeMemtable);
         cudaMallocManaged(&immutableMemtable, sizeof(Memtable)); 
-        immutableMemtable->batchID = -1; 
+        InitMemtable(immutableMemtable);
     }
 
 Batch::Batch(std::vector<Command>& readCommands, std::vector<Command>& writeCommands, std::vector<Command>& updateCommands, uint64_t operationID, rocksdb::DB *db_, uint64_t batchSize)
     : readCommands(readCommands), writeCommands(writeCommands), updateCommands(updateCommands), operationID(0), db(db_) {
         start = TIME_NOW;
         timeOut = 1000000;
-        BlockCache bCache; 
-        cache = bCache.createCache(cache); 
+        bCache = new BlockCache();
+        cache = bCache->createCache(nullptr);
         db = db_; 
         BATCH_SIZE = batchSize;
         numReads = 0; 
@@ -59,10 +84,10 @@ Batch::Batch(std::vector<Command>& readCommands, std::vector<Command>& writeComm
         putCommand.tKeys.reserve(BATCH_SIZE * 8); 
         putCommand.tValues.reserve(BATCH_SIZE * 8); 
         putCommand.tOpID.reserve(BATCH_SIZE); 
-         cudaMallocManaged(&activeMemtable, sizeof(Memtable)); 
-        activeMemtable->batchID = -1; 
+        cudaMallocManaged(&activeMemtable, sizeof(Memtable)); 
+        InitMemtable(activeMemtable);
         cudaMallocManaged(&immutableMemtable, sizeof(Memtable)); 
-        immutableMemtable->batchID = -1; 
+        InitMemtable(immutableMemtable);
     }
 
 
@@ -355,6 +380,8 @@ void Batch::processPuts()
         MemtableWithValues *immutable; 
         cudaMallocManaged(&active, sizeof(MemtableWithValues)); 
         cudaMallocManaged(&immutable, sizeof(MemtableWithValues)); 
+        InitMemtable(active);
+        InitMemtable(immutable);
         active->size = writeCommands.size();
         active->valueLength = valueLength; 
         immutable->size = 0;
@@ -467,8 +494,10 @@ void Batch::processUpdates()
     mergeCommand.numMerges = numUpdates; 
     std::cout << "num updates: " << mergeCommand.numMerges << "\n"; 
     cudaMallocManaged((void**)&immutableMemtable, sizeof(Memtable)); 
+    InitMemtable(immutableMemtable);
     immutableMemtable = activeMemtable; 
     cudaMallocManaged((void**)&activeMemtable, sizeof(Memtable)); 
+    InitMemtable(activeMemtable);
     activeMemtable->batchID = batchID; 
     gpuIncrements(activeMemtable, immutableMemtable, numUpdates, mergeCommand, batchID, cache); 
 }
