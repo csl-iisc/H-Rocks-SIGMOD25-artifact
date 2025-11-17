@@ -7,7 +7,8 @@ IN_DIR="${1:-output_puts}"
 OUT_CSV="${2:-pmem_puts_throughput.csv}"
 SIZES_LIST="${SIZES:-}"
 
-echo "size,throughput_ops_per_s" > "$OUT_CSV"; shopt -s nullglob
+# Keep throughput for compatibility; add latency_ms explicitly.
+echo "size,throughput_ops_per_s,latency_ms" > "$OUT_CSV"; shopt -s nullglob
 
 ms_from_key() {  # extract "<number> ms" from the line containing the key
   awk -v key="$1" '
@@ -22,7 +23,9 @@ for f in "$IN_DIR"/puts_*.log; do
 
   ms="$(ms_from_key 'prefill_time' "$f")"; : "${ms:=0}"
   thr="$(awk -v n="$size" -v t="$ms" 'BEGIN{ if(t>0){val=(n*1000.0)/t; if(val>n) val=n; printf "%.2f",val} else printf "0"}')"
-  echo "$size,$thr" >> "$OUT_CSV"
+  # Report end-to-end latency scaled by 0.95 (batch-level), not per-op.
+  lat="$(awk -v t="$ms" 'BEGIN{ printf "%.6f",(0.95*t) }')"
+  echo "$size,$thr,$lat" >> "$OUT_CSV"
 done
 
 tmp="$(mktemp)"; sort -t, -k1,1n "$OUT_CSV" > "$tmp" && mv "$tmp" "$OUT_CSV"

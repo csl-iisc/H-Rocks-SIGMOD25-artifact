@@ -2,8 +2,8 @@
 import argparse, csv, os
 from matplotlib import pyplot as plt
 
-def read_size_throughput(csv_path, pick_val_size=None):
-    xs, thr = [], []
+def read_size_latency(csv_path, pick_val_size=None):
+    xs, lat = [], []
     with open(csv_path, newline="") as f:
         r = csv.DictReader(f)
         headers = [h.strip() for h in r.fieldnames]
@@ -12,16 +12,17 @@ def read_size_throughput(csv_path, pick_val_size=None):
             if has_val and pick_val_size is not None and str(row.get("val_size","")).strip() != str(pick_val_size):
                 continue
             x = float(row["size"])
-            y = float(row.get("throughput_ops_per_s") or row.get("throughput"))
-            xs.append(x); thr.append(y)
-    pairs = sorted(zip(xs, thr), key=lambda p: p[0])
+            # Prefer latency column if present; otherwise derive from throughput.
+            if "latency_ms" in headers and row.get("latency_ms"):
+                y = float(row["latency_ms"])
+            else:
+                thr = float(row.get("throughput_ops_per_s") or row.get("throughput") or 0)
+                y = (1000.0 / thr) if thr > 0 else 0.0
+            xs.append(x); lat.append(y)
+    pairs = sorted(zip(xs, lat), key=lambda p: p[0])
     xs_sorted = [p[0] for p in pairs]
-    thr_sorted = [p[1] for p in pairs]
-    return xs_sorted, thr_sorted
-
-def to_latency_ms(ops_per_s):
-    # latency (ms/op) = 1000 / throughput(ops/s)
-    return [(1000.0/x if x > 0 else 0.0) for x in ops_per_s]
+    lat_sorted = [p[1] for p in pairs]
+    return xs_sorted, lat_sorted
 
 def main():
     ap = argparse.ArgumentParser()
@@ -38,10 +39,9 @@ def main():
     plt.figure()
     for item in args.series:
         path, label = item.split(":", 1)
-        xs, thr = read_size_throughput(path, pick_val_size=args.val_size)
+        xs, lat_ms = read_size_latency(path, pick_val_size=args.val_size)
         if not xs:
             continue
-        lat_ms = to_latency_ms(thr)
         plt.plot(xs, lat_ms, marker="o", label=label)
 
     plt.title(args.title)

@@ -4,36 +4,36 @@ Key size: 8
 Value size: 8
 DB opened.
 Error 0 cudaPeekError
-Created pmem (1) file at values.dat of size 80000
+Created pmem (1) file at /pmem/values.dat of size 80000
 Using 32 threads to persist
-value_copy_time: 2.52731
-write_batch_time: 0.079008
-delete_batch_time: 0.000208
-update_batch_time: 3.4e-05
-read_batch_time: 3.5e-05
-range_batch_time: 9.8e-05
+value_copy_time: 1.90203
+write_batch_time: 0.131711
+delete_batch_time: 0.002834
+update_batch_time: 0.003
+read_batch_time: 0.002666
+range_batch_time: 0.00275
 Size of batch: 10000
 Error 0 cudaPeekerror
 Error 0 cudaPeekerror
 Error 0 cudaPeekerror
 Filename: rdb_log1
-Created pmem (1) file at rdb_log1 of size 80000
-Created pmem (1) file at valueLog.dat of size 80000
-Created pmem (1) file at keyLog.dat of size 80000
+Created pmem (1) file at /pmem/rdb_log1 of size 80000
+Created pmem (1) file at /pmem/valueLog.dat of size 80000
+Created pmem (1) file at /pmem/keyLog.dat of size 80000
 Error 0 cudaPeekerror
 Using 32 threads to persist
 Using 32 threads to persist
 Using 32 threads to persist
-setup_time: 0.181848
-sort_time: 0.346677
-memtable_time: 0.460686
-log_persist_time: 0.21222
+setup_time: 0.274881
+sort_time: 0.375424
+memtable_time: 0.859891
+log_persist_time: 0.167628
 Error 0 cudaPeekError
-sorted keys: AAAXVMX
+sorted keys: AAADLOB
 numWrites: 10000
 keyLength: 8
 valueLength: 8
-sst_insertion_time: 71.8143
+sst_insertion_time: 107.244
 INSERTED INTO FILE
-sst_setup_time: 132.054
+sst_setup_time: 109.486
 0

@@ -11,7 +11,8 @@ set -euo pipefail
 IN_DIR="${1:-output_puts}"
 OUT_CSV="${2:-put_throughput.csv}"
 
-echo "size,throughput_ops_per_s" > "$OUT_CSV"
+# Columns: keep throughput for backward compatibility, add latency_ms explicitly.
+echo "size,throughput_ops_per_s,latency_ms" > "$OUT_CSV"
 shopt -s nullglob
 
 # extract last numeric on a matching line from a file (or 0 if missing)
@@ -49,8 +50,10 @@ for f in "$IN_DIR"/output_*_*_* "$IN_DIR"/puts_*.log; do
                  'BEGIN{printf "%.6f",(a+b+c+d)}')"
   thr_ops_s="$(awk -v n="$size" -v ms="$total_ms" \
                  'BEGIN{if(ms>0){val=(n*1000.0)/ms;if(val>n)val=n;printf "%.2f",val}else printf "0"}')"
+  # Report end-to-end latency for the batch (total_ms), not per-op latency.
+  lat_ms="$total_ms"
 
-  echo "${size},${thr_ops_s}" >> "$OUT_CSV"
+  echo "${size},${thr_ops_s},${lat_ms}" >> "$OUT_CSV"
 done
 
 # sort by size numerically

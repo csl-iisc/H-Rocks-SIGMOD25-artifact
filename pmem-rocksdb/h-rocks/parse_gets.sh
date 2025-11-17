@@ -33,7 +33,8 @@ if [[ -z "${IN_DIR:-}" || ! -d "$IN_DIR" ]]; then
   exit 1
 fi
 
-echo "size,throughput_ops_per_s" > "$OUT_CSV"
+# Columns: keep throughput for backward compatibility, add latency_ms explicitly.
+echo "size,throughput_ops_per_s,latency_ms" > "$OUT_CSV"
 shopt -s nullglob
 
 # Extract last numeric (float) on the matching line; 0 if not found
@@ -70,8 +71,10 @@ emit_row() {
 
   total_ms="$(awk -v a="$rs" -v b="$rk" -v c="$rb" -v d="$cb" 'BEGIN{printf "%.6f",(a+b+c+d)}')"
   thr_ops_s="$(awk -v n="$size" -v ms="$total_ms" 'BEGIN{if(ms>0){val=(n*1000.0)/ms;if(val>n)val=n;printf "%.2f",val}else printf "0"}')"
+  # Report end-to-end latency for the batch (total_ms), not per-op latency.
+  lat_ms="$total_ms"
 
-  echo "${size},${thr_ops_s}" >> "$OUT_CSV"
+  echo "${size},${thr_ops_s},${lat_ms}" >> "$OUT_CSV"
 }
 
 # Legacy GPU logs
