@@ -247,9 +247,9 @@ To switch to CUDA 12.1, ensure it appears first in your PATH before other CUDA v
 From pmem-rocksdb/h-rocks:
 
 ```bash
-make hrocksdb                  # release
+make lib                  # release
 # or
-make hrocksdb -DENABLE_DEBUG   # debug with extra logs
+make lib -DENABLE_DEBUG   # debug with extra logs
 ```
 
 ## 7. Running H-Rocks Manually (Optional)
